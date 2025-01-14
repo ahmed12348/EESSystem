@@ -18,9 +18,9 @@
         </li>
         <li class="nav-item dropdown dropdown-large">
           <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
-            <!-- <div class="projects">
+            <div class="projects">
               <i class="bi bi-grid-3x3-gap-fill"></i>
-            </div> -->
+            </div>
           </a>
           <div class="dropdown-menu dropdown-menu-end">
              <div class="row row-cols-3 gx-2">
@@ -117,7 +117,7 @@
              </div><!--end row-->
           </div>
         </li>
-        <!-- <li class="nav-item dropdown dropdown-large">
+        <li class="nav-item dropdown dropdown-large">
           <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
             <div class="messages">
               <span class="notify-badge">5</span>
@@ -338,7 +338,7 @@
                </a>
            </div>
           </div>
-        </li> -->
+        </li>
         </ul>
         </div>
         <div class="dropdown dropdown-user-setting">

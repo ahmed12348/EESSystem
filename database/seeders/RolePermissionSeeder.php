@@ -14,10 +14,19 @@ class RolePermissionSeeder extends Seeder
         // Create permissions (Add all the necessary permissions you want)
         $permissions = [
             'view users',
+            'edit users',
+            'delete users',
+            'create users',
+            'view roles',
+            'edit roles',
+            'create roles',
+            'delete roles',
+
             'view products',
             'view dashboard',
-            'view orders'
-           
+            'view orders',
+            'view vendors',
+            'view customers',
         ];
 
         foreach ($permissions as $permission) {
@@ -27,17 +36,25 @@ class RolePermissionSeeder extends Seeder
         // Create roles
         $adminRole = Role::create(['name' => 'admin']);
         $vendorRole = Role::create(['name' => 'vendor']);
+        $customerRole = Role::create(['name' => 'customer']);
 
         // Assign permissions to admin role (Admin has full control)
         $adminRole->givePermissionTo($permissions);
 
         // Assign permissions to vendor role (Vendor has restricted permissions)
         $vendorPermissions = [
-            'view products', 
-            'view dashboard', 
-            'view orders'
+            'view products',
+            'view orders',
+            'view dashboard',
         ];
         $vendorRole->givePermissionTo($vendorPermissions);
+
+        // Assign permissions to customer role (Customer has minimal permissions)
+        $customerPermissions = [
+            'view products',
+            'view orders',
+        ];
+        $customerRole->givePermissionTo($customerPermissions);
 
         // Create users and assign roles
         $adminUser = User::create([
@@ -47,18 +64,18 @@ class RolePermissionSeeder extends Seeder
         ]);
         $adminUser->assignRole('admin');
 
-        $vendorUser1 = User::create([
+        $vendorUser = User::create([
             'name' => 'Vendor User 1',
-            'email' => 'vendor1@ees.com',
+            'email' => 'vendor@ees.com',
             'password' => bcrypt('password')
         ]);
-        $vendorUser1->assignRole('vendor');
+        $vendorUser->assignRole('vendor');
 
-        $vendorUser2 = User::create([
-            'name' => 'Vendor User 2',
-            'email' => 'vendor2@ees.com',
+        $customerUser = User::create([
+            'name' => 'Customer User 1',
+            'email' => 'customer@ees.com',
             'password' => bcrypt('password')
         ]);
-        $vendorUser2->assignRole('vendor');
+        $customerUser->assignRole('customer');
     }
 }

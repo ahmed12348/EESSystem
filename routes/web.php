@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -22,8 +24,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::prefix('admin')->group(function () {
-    Route::get('/dashboard', [UserController::class, 'index'])->name('admin.dashboard');
-
+Route::prefix('admin')->name('admin.')->group(function () {
+    
+    Route::get('/', [HomeController::class, 'index'])->name('index');
+    Route::resource('users', UserController::class);  
+    Route::resource('roles', RoleController::class);  
 });
 
+// Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(function () {
+//     Route::get('/', [DashboardController::class, 'index'])->name('index'); 
+//     Route::resource('roles', RoleController::class);                    
+//     Route::resource('users', UserController::class);                      
+// });
