@@ -77,6 +77,10 @@ Route::prefix('vendor')->name('vendor.')->group(function () {
     // ✅ Protect this part with auth middleware
     Route::middleware(['auth'])->group(function () {
         Route::get('/vendor_dashboard', [HomeController::class, 'vendor_index'])->name('vendor_index');
+        Route::get('/profile', [HomeController::class, 'showProfile'])->name('profile.show');
+        Route::put('/profile/update', [HomeController::class, 'updateProfile'])->name('profile.update');
+
+
     });
 
 

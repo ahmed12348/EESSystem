@@ -345,22 +345,22 @@
         <div class="dropdown dropdown-user-setting">
           <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
             <div class="user-setting d-flex align-items-center gap-3">
-            
-              {{-- @if(Auth::guard('vendor')->user()->profile_picture)
-              
-              <img src="{{ asset('storage/' . Auth::guard('vendor')->user()->profile_picture) }}" alt="Profile" class="user-img" width="">
-              @else --}}
-                  <img src="{{ asset('assets/images/default-avatar.png') }}" alt="Default Profile" class="user-img " width="">
-              {{-- @endif --}}
+          
+
+              @if(Auth::user()->profile_picture)           
+              <img src="{{ asset('storage/' . Auth::user()?->profile_picture) }}" alt="Profile"   class="user-img" width="">
+              @else
+                  <img src="{{ asset('assets/images/default-avatar.png') }}" alt="Default Profile" class="rounded-circle mb-3" width="150">
+              @endif
               <div class="d-none d-sm-block">
-                 <p class="user-name mb-0">Jhon Deo</p>
-                <small class="mb-0 dropdown-user-designation">HR Manager</small>
+                 <p class="user-name mb-0">{{Auth::user()?->name}}</p>
+                <small class="mb-0 dropdown-user-designation">{{Auth::user()?->roles[0]->name}}</small>
               </div>
             </div>
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
              <li>
-                <a class="dropdown-item" href="pages-user-profile.html">
+                <a class="dropdown-item" href="{{ route('vendor.profile.show') }}">
                    <div class="d-flex align-items-center">
                      <div class=""><i class="bi bi-person-fill"></i></div>
                      <div class="ms-3"><span>Profile</span></div>

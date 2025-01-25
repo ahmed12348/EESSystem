@@ -91,7 +91,7 @@
                        
                       </div>
                       <input type="password" class="form-control   @error('password') is-invalid @enderror"
-                        name="password" id="inputChoosePassword" placeholder="Enter Password" required>
+                        name="password" id="inputChoosePassword" placeholder="Enter Password" >
                       @error('password')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
@@ -125,8 +125,8 @@
 
 
   <!--plugins-->
-  <script src="assets/js/jquery.min.js"></script>
-  <script src="assets/js/pace.min.js"></script>
+  <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+  <script src="{{ asset('assets/js/pace.min.js') }}"></script>
 
 
 </body>

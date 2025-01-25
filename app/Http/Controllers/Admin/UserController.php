@@ -128,7 +128,8 @@ class UserController extends Controller
         ];
     
         // Update password only if a new one is entered
-        if ($request->filled('password')) {
+        if ($request->has('password')) {
+            // return 0;
             $updateData['password'] = Hash::make($request->password);
         }
     
@@ -239,7 +240,6 @@ class UserController extends Controller
         }
 
         $user->save();
-
         return redirect()->route('admin.profile.show')->with('success', 'Profile updated successfully.');
     }
 
