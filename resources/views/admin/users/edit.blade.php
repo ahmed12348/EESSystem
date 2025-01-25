@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <!-- Breadcrumb Navigation -->
-   
+
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">Users</div>
         <div class="ps-3">
@@ -76,7 +76,7 @@
                             <label for="role" class="form-label">Select Role</label>
                             <select class="form-select select2" id="role" name="role">
                                 @foreach($roles as $role)
-                                    <option value="{{ $role->id }}" {{ $user->roles[0]->id == $role->id ? 'selected' : '' }}>{{$role->name   }}</option>
+                                    <option value="{{ $role->id }}" {{ $user->roles[0]?->id == $role->id ? 'selected' : '' }}>{{$role->name   }}</option>
                                 @endforeach
                             </select>
                             @error('role')
@@ -84,7 +84,7 @@
                             @enderror
                         </div>
 
-                   
+
 
                         <!-- File Input for Profile Picture -->
                         <div class="mb-3">
@@ -94,7 +94,7 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                
+
 
                         <!-- Submit Button -->
                         <button type="submit" class="btn btn-primary">Update User</button>
