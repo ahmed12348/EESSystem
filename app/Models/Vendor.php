@@ -4,18 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+
 
 class Vendor extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
+    
 
-    protected $fillable = [
-        'business_name',
-        'phone_number',
-        'city',
-        'state',
-        'country',
-        'description',
-        'verification_status'
-    ];
+
+    protected $fillable = ['business_name', 'business_number','city', 'state','zone','user_id']; 
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

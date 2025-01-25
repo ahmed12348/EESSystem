@@ -3,46 +3,38 @@
       <img src="{{ asset('assets/images/group.png') }}" class="logo-icon" alt="logo icon">
     </div>
     <div>
-      <h4 class="logo-text">EES</h4>
+      {{-- <h4 class="logo-text">EES</h4> --}}
     </div>
-    <div class="toggle-icon ms-auto"> <i class="bi bi-list"></i>
+    <div class="toggle-icon ms-auto"> 
+      {{-- <i class="bi bi-list"></i> --}}
     </div>
   </div>
   <!--navigation-->
   <ul class="metismenu" id="menu">
   
-  
-    <li class="menu-label">Pages</li>
-   
-    <li>
-      <a href="pages-user-profile.html">
-        <div class="parent-icon"><i class="bi bi-person-lines-fill"></i>
+    <li class="{{ request()->routeIs('vendor.vendor_index') ? 'mm-active' : '' }}">
+      <a href="{{route('vendor.vendor_index')}}">
+        <div class="parent-icon"><i class="bi-house-door"></i>
         </div>
-        <div class="menu-title">User Profile</div>
+        <div class="menu-title">Dashboard</div>
       </a>
     </li>
     <li>
-      <a href="pages-timeline.html">
-        <div class="parent-icon"><i class="bi bi-collection-play-fill"></i>
+      <a href="#">
+        <div class="parent-icon"><i class="bi-box"></i>
         </div>
-        <div class="menu-title">Timeline</div>
+        <div class="menu-title">Products</div>
       </a>
     </li>
     
     <li>
-      <a href="pages-faq.html">
-        <div class="parent-icon"><i class="bi bi-question-lg"></i>
+      <a href="#">
+        <div class="parent-icon"><i class="bi-list"></i>
         </div>
-        <div class="menu-title">FAQ</div>
+        <div class="menu-title">Order List</div>
       </a>
     </li>
-    <li>
-      <a href="pages-pricing-tables.html">
-        <div class="parent-icon"><i class="bi bi-tags-fill"></i>
-        </div>
-        <div class="menu-title">Pricing Tables</div>
-      </a>
-    </li>
+    
     
   </ul>
   <!--end navigation-->

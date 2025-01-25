@@ -51,8 +51,8 @@
         <div class="menu-title">Roles & permission</div>
       </a>
     </li>
-    <li>
-      <a href="#">
+    <li class="{{ request()->routeIs('admin.vendor.index') ? 'mm-active' : '' }}">
+      <a href="{{route('admin.vendors.index')}}">
         <div class="parent-icon"><i class="bi bi-people"></i>
         </div>
         <div class="menu-title">Vendor</div>

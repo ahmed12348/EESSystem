@@ -1,4 +1,4 @@
-@extends('dashboard.layout')
+@extends('admin.layouts.app')
 
 @section('content')
     <div class="container">
@@ -18,11 +18,17 @@
             </div>
             <div class="ms-auto">
                 <!-- Back Button -->
-                <a href="{{ route('dashboard.users.index') }}" class="btn btn-secondary">Back</a>
+                <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Back</a>
             </div>
         </div>
         <!-- End Breadcrumb -->
+        @if (session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
 
+    @if (session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
         <!-- User Creation Form -->
         <div class="row">
             <div class="col-xl-9 mx-auto">
@@ -30,11 +36,11 @@
                 <hr />
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('dashboard.users.store') }}" method="POST" id="create"
+                        <form action="{{ route('admin.users.store') }}" method="POST" id="create"
                             enctype="multipart/form-data">
                             @csrf
                             <!-- Text Inputs -->
-                            <div class="mb-3">
+                            <div class="mb-1">
                                 <label for="name" class="form-label">Name</label>
                                 <input class="form-control" type="text" id="name" name="name"
                                     placeholder="Enter user name" required>
@@ -42,7 +48,17 @@
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="mb-3">
+
+                            <div class="mb-1">
+                                <label for="phone" class="form-label">Phone</label>
+                                <input class="form-control" type="text" id="phone" name="phone"
+                                    placeholder="Enter phone" required>
+                                @error('phone')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-1">
                                 <label for="email" class="form-label">Email</label>
                                 <input class="form-control" type="email" id="email" name="email"
                                     placeholder="Enter user email" required>
@@ -52,16 +68,16 @@
                             </div>
 
                             <!-- Password Input -->
-                            <div class="mb-3">
+                            <div class="mb-1">
                                 <label for="password" class="form-label">Password</label>
                                 <input class="form-control" type="password" id="password" name="password"
                                     placeholder="Enter user password" required>
                             </div>
 
                             <!-- Select Role Input with Select2 -->
-                            <div class="mb-3">
+                            <div class="mb-1">
                                 <label for="role" class="form-label">Select Role</label>
-                                <select class="form-select select2" id="role" name="roles[]" multiple>
+                                <select class="form-select select2" id="role" name="role[]" multiple>
                                     @foreach ($roles as $role)
                                         <option value="{{ $role->id }}">{{ $role->name }}</option>
                                     @endforeach
@@ -71,30 +87,15 @@
                                 @enderror
                             </div>
 
-                            <!-- Select office_code  Input using select2 -->
                             <div class="mb-3">
-                                <label for="office_code" class="form-label">Select Office</label>
-                                 <select class="form-select select2" id="office_code" name="office_code" required>
-                                  <option value="October">October</option>
-                                    <option value="El_Dokki_">El_Dokki_</option>
-                                    <option value="Gomhoriat_Ein_Shams">Gomhoriat_Ein_Shams</option>
-                                    <option value="Heliopolis_Wast">Heliopolis_Wast</option>
-                                    <option value="Helwan">Helwan</option>
-                                </select>
-                                @error('office_code')
-                                    <div class="text-danger">{{ $message }}</div>
+                                <label for="profile_picture" class="form-label">Profile Picture</label>
+                                <input class="form-control" type="file" id="profile_picture" name="profile_picture">
+                                @error('profile_picture')
+                                    <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
 
-                            <!-- Job Title -->
-                            <div class="mb-3">
-                                <label for="job_title" class="form-label">Job Title</label>
-                                <input class="form-control" type="text" id="job_title" name="job_title"
-                                    placeholder="Enter job title">
-                                @error('job_title')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
+                       
 
                             <!-- Submit Button -->
                             <button type="submit" class="btn btn-primary">Create User</button>

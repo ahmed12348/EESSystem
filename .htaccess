@@ -2,7 +2,12 @@
     Options +FollowSymLinks
     RewriteEngine On
 
+    # Redirect everything to index.php
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ index.php/$1 [L]
+    RewriteRule ^ index.php [L]
+
+       # Fix storage asset links
+    RewriteCond %{REQUEST_URI} ^/storage/(.*)$
+    RewriteRule ^storage/(.*)$ /public/storage/$1 [L]
 </IfModule>

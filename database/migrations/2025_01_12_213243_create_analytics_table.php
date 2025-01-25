@@ -18,6 +18,7 @@ class CreateAnalyticsTable extends Migration
             $table->foreignId('vendor_id')->constrained('vendors')->onDelete('cascade');
             $table->decimal('total_sales', 10, 2)->default(0);
             $table->foreignId('most_viewed_product')->nullable()->constrained('products')->onDelete('set null');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

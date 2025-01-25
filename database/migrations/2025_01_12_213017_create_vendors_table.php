@@ -15,17 +15,18 @@ class CreateVendorsTable extends Migration
     {
         Schema::create('vendors', function (Blueprint $table) {
             $table->id();
-            $table->string('business_name')->nullable();  // Business Name
-            $table->string('phone_number')->nullable(); // Contact Number
-            $table->string('city')->nullable();           // City
-            $table->string('state')->nullable();          // State
-            $table->string('zone')->nullable();        // Country
-            $table->text('description')->nullable();      // Business Description
-            $table->enum('verification_status', ['Pending', 'Approved', 'Rejected'])->default('Pending');
+            $table->string('business_name')->nullable();
+            $table->string('business_number')->nullable();
+            $table->string('city')->nullable();     
+            $table->string('state')->nullable();  
+            $table->string('zone')->nullable(); 
+            $table->unsignedBigInteger('user_id')->unique(); 
             $table->timestamps();
+            $table->softDeletes();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
-    
+
 
     /**
      * Reverse the migrations.

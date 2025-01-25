@@ -4,22 +4,27 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-    Route::get('register', [RegisteredUserController::class, 'create'])
-                ->name('register');
-
+    Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
     Route::post('register', [RegisteredUserController::class, 'store']);
 
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
-                ->name('login');
+        // ✅ Custom Admin Registration Route
+    Route::get('register/admin', [RegisterController::class, 'showAdminRegistrationForm'])->name('admin.register');
+    Route::post('register/admin', [RegisterController::class, 'registerAdmin']);
 
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+    // Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
+    // Route::post('login', [AuthenticatedSessionController::class, 'store']);
+
+    // Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+    // Route::post('login', [LoginController::class, 'login']);
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
                 ->name('password.request');
@@ -51,6 +56,6 @@ Route::middleware('auth')->group(function () {
 
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-                ->name('logout');
+    // Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+    Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 });

@@ -17,7 +17,10 @@ return [
         'guard' => 'web',
         'passwords' => 'users',
     ],
-
+    // 'default' => [
+    //     'guard' => 'api',  // Change from "web" to "api"
+    //     'passwords' => 'users',
+    // ],
     /*
     |--------------------------------------------------------------------------
     | Authentication Guards
@@ -39,6 +42,24 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
+        ],
+        'vendor' => [
+            'driver' => 'session',
+            'provider' => 'vendors',  // Make sure this matches the provider below
+        ],
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins',  // Admins are also in users table
+        ],
+    
+        // 'api' => [
+        //     'driver' => 'token', // Or 'passport' if you're using Laravel Passport
+        //     'provider' => 'users',
+        // ],
+        'api' => [
+            'driver' => 'jwt',
+            'provider' => 'users',
+            'hash' => false,
         ],
     ],
 
@@ -64,7 +85,17 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+            'where' => ['role' => 'admin'],  // Only users with 'admin' role
+        ],
+    
+        'vendors' => [
+            'driver' => 'eloquent', // Use Eloquent for fetching vendors
+            'model' => App\Models\User::class, // Ensure this points to your Vendor model
+        ],
+        
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',

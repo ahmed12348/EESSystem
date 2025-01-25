@@ -23,6 +23,12 @@ class HomeController extends Controller
      */
     public function index()
     {
+    
         return view('admin.index');
+    }
+    public function vendor_index()
+    {
+        // dd('vendor');
+        return view('vendor.index');
     }
 }

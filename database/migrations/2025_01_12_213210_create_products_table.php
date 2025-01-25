@@ -22,7 +22,9 @@ class CreateProductsTable extends Migration
             $table->integer('stock_quantity')->default(0);
             $table->string('category')->nullable();
             $table->boolean('approved')->default(false);
+     
             $table->timestamps();
+            $table->softDeletes();
         });
     }
     

@@ -61,12 +61,12 @@
                                             <i class="bi bi-eye-fill"></i>
                                         </a> -->
                                        
-                                            <a href="{{ route('admin.roles.edit', $role->id) }}" class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
+                                            <a href="{{ route('admin.roles.edit', $role->id) }}" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
                                                 <i class="bi bi-pencil-fill"></i>
                                                 
                                             </a>
                                             @can('role-edit')
-                                        @endcan
+                                            @endcan
                                       
                                             <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST" style="display:inline;">
                                                 @csrf

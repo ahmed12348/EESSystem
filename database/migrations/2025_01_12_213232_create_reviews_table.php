@@ -19,6 +19,7 @@ class CreateReviewsTable extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->tinyInteger('rating')->checkBetween(1, 5);
             $table->text('comment')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -16,7 +16,7 @@
               </div>
             </a>
         </li>
-        <li class="nav-item dropdown dropdown-large">
+        {{-- <li class="nav-item dropdown dropdown-large">
           <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
             <div class="projects">
               <i class="bi bi-grid-3x3-gap-fill"></i>
@@ -116,8 +116,8 @@
               </div>
              </div><!--end row-->
           </div>
-        </li>
-        <li class="nav-item dropdown dropdown-large">
+        </li> --}}
+        {{-- <li class="nav-item dropdown dropdown-large">
           <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
             <div class="messages">
               <span class="notify-badge">5</span>
@@ -218,7 +218,7 @@
               </a>
           </div>
          </div>
-        </li>
+        </li> --}}
         <li class="nav-item dropdown dropdown-large">
           <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
             <div class="notifications">
@@ -341,10 +341,17 @@
         </li>
         </ul>
         </div>
+        
         <div class="dropdown dropdown-user-setting">
           <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
             <div class="user-setting d-flex align-items-center gap-3">
-              <img src="{{ asset('assets/images/avatars/avatar-1.png') }}" class="user-img" alt="">
+            
+              {{-- @if(Auth::guard('vendor')->user()->profile_picture)
+              
+              <img src="{{ asset('storage/' . Auth::guard('vendor')->user()->profile_picture) }}" alt="Profile" class="user-img" width="">
+              @else --}}
+                  <img src="{{ asset('assets/images/default-avatar.png') }}" alt="Default Profile" class="user-img " width="">
+              {{-- @endif --}}
               <div class="d-none d-sm-block">
                  <p class="user-name mb-0">Jhon Deo</p>
                 <small class="mb-0 dropdown-user-designation">HR Manager</small>
@@ -360,7 +367,8 @@
                    </div>
                  </a>
               </li>
-              <li>
+              
+              {{-- <li>
                 <a class="dropdown-item" href="#">
                    <div class="d-flex align-items-center">
                      <div class=""><i class="bi bi-gear-fill"></i></div>
@@ -392,14 +400,19 @@
                    </div>
                  </a>
               </li>
-              <li><hr class="dropdown-divider"></li>
+              <li><hr class="dropdown-divider"></li> --}}
+          
               <li>
-                <a class="dropdown-item" href="authentication-signup-with-header-footer.html">
-                   <div class="d-flex align-items-center">
-                     <div class=""><i class="bi bi-lock-fill"></i></div>
-                     <div class="ms-3"><span>Logout</span></div>
-                   </div>
-                 </a>
+              <form id="logout-form" action="{{ route('vendor.logout') }}" method="POST" style="display: none;">
+                  @csrf
+              </form>
+
+              <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                  <div class="d-flex align-items-center">
+                      <div class=""><i class="bi bi-lock-fill"></i></div>
+                      <div class="ms-3"><span>Logout</span></div>
+                  </div>
+              </a>
               </li>
           </ul>
         </div>

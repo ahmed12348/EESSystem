@@ -6,7 +6,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="{{ asset('assets/images/favicon-32x32.png') }}" type="image/png" />
+  <link rel="icon" href="{{ asset('assets/images/favicon-l.png') }}" type="image/png" />
   <!--plugins-->
   <link href="{{ asset('assets/plugins/vectormap/jquery-jvectormap-2.0.2.css') }}') }}" rel="stylesheet"/>
   <link href="{{ asset('assets/plugins/simplebar/css/simplebar.css') }}" rel="stylesheet" />
@@ -34,13 +34,13 @@
   <div class="wrapper">
   
       <header class="top-header">        
-        @include('admin.layouts.header')
+        @include('vendor.layouts.header')
       </header>
   
 
     
         <aside class="sidebar-wrapper" data-simplebar="true">
-          @include('admin.layouts.sidebar')
+          @include('vendor.layouts.sidebar')
        </aside>
      
 
@@ -50,7 +50,7 @@
 
 
 
-          @include('admin.layouts.footer')
+          @include('vendor.layouts.footer')
   </div>
   <!--end wrapper-->
 

@@ -21,6 +21,7 @@ class CreateDiscountsTable extends Migration
             $table->string('target_value')->nullable();
             $table->date('start_date');
             $table->date('end_date');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

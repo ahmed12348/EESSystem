@@ -27,8 +27,10 @@ return [
         'role' => Spatie\Permission\Models\Role::class,
 
     ],
-
-    'table_names' => [
+        'guards' => [
+            'vendor',
+        ],
+        'table_names' => [
 
         /*
          * When using the "HasRoles" trait from this package, we need to know which
