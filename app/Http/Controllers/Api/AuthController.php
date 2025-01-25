@@ -58,25 +58,33 @@ class AuthController extends Controller
         $credentials = $request->only('phone', 'password');
 
         try {
-
-            $user = JWTAuth::user();
-
-            if ($user->status !== 'active' || $user->is_verified !== 'yes') {
-                return response()->json(['error' => 'Your account is either inactive or not verified.'], 403);
-            }
-
+            // Attempt authentication FIRST
             if (! $token = JWTAuth::attempt($credentials)) {
                 return response()->json(['error' => 'Unauthorized'], 401);
             }
 
+            // Now get authenticated user AFTER JWTAuth::attempt() succeeds
+            $user = auth()->user();
 
+            // Ensure user exists
+            if (!$user) {
+                return response()->json(['error' => 'User not found.'], 404);
+            }
 
+            // Check status and verification
+            if ($user->status !== 'active' || $user->is_verified !== 'yes') {
+                return response()->json(['error' => 'Your account is either inactive or not verified.'], 403);
+            }
 
         } catch (JWTException $e) {
             return response()->json(['error' => 'Could not create token'], 500);
         }
 
-        return response()->json(['token' => $token]);
+        return response()->json([
+            'message' => 'Login successful',
+            'token' => $token,
+            'user' => $user,
+        ]);
     }
 
 
