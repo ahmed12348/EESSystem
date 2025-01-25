@@ -55,6 +55,7 @@ class AuthController extends Controller
         $credentials = $request->only('phone', 'password');
     
         try {
+            
             if (! $token = JWTAuth::attempt($credentials)) {
                 return response()->json(['error' => 'Unauthorized'], 401);
             }
@@ -63,7 +64,7 @@ class AuthController extends Controller
             $user = JWTAuth::user();
     
             // Check if the user's status is 'yes' and verified is true
-            if ($user->status !== 'inactive' || $user->is_verified !== 'yes') {
+            if ($user->status !== 'active' || $user->is_verified !== 'yes') {
                 return response()->json(['error' => 'Your account is either inactive or not verified.'], 403);
             }
         } catch (JWTException $e) {
@@ -106,7 +107,7 @@ class AuthController extends Controller
     {
         $user = $request->user();  // Get the user object
 
-        if ($user->status !== 'inactive' || $user->is_verified !== 'yes') {
+        if ($user->status !== 'active' || $user->is_verified !== 'yes') {
             return response()->json(['error' => 'Your account is either inactive or not verified.'], 403);
         }
         return response()->json($user);  
@@ -117,7 +118,7 @@ class AuthController extends Controller
         try {
             $user = JWTAuth::user();  
 
-            if ($user->status !== 'inactive' || $user->is_verified !== 'yes') {
+            if ($user->status !== 'active' || $user->is_verified !== 'yes') {
                 return response()->json(['error' => 'Your account is either inactive or not verified.'], 403);
             }
     
@@ -133,7 +134,7 @@ class AuthController extends Controller
     {
         try {
             $user = $request->user();  
-            if ($user->status !== 'inactive' || $user->is_verified !== 'yes') {
+            if ($user->status !== 'active' || $user->is_verified !== 'yes') {
                 return response()->json(['error' => 'Your account is either inactive or not verified.'], 403);
             }
 
@@ -150,7 +151,7 @@ class AuthController extends Controller
         $user = $request->user();
     
         // Check if the user's status is 'yes' and verified is true
-        if ($user->status !== 'inactive' || $user->is_verified !== 'yes' ) {
+        if ($user->status !== 'active' || $user->is_verified !== 'yes' ) {
             return response()->json(['error' => 'Your account is either inactive or not verified.'], 403);
         }
     
@@ -195,7 +196,7 @@ class AuthController extends Controller
         $user = $request->user();
     
         // Check if the user's status is 'yes' and verified is true
-        if ($user->status !== 'inactive' || $user->is_verified !== 'yes' ) {
+        if ($user->status !== 'active' || $user->is_verified !== 'yes' ) {
             return response()->json(['error' => 'Your account is either inactive or not verified.'], 403);
         }
     
