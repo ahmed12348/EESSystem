@@ -416,9 +416,9 @@ a {
 }
 
 .sidebar-wrapper .sidebar-header .logo-icon {
-    width: 130px !important;
-	position: absolute;  
-    right: 40px;           
+	width: 75px !important;
+    position: absolute;
+    right: 95px;           
     top: 50%;           
     transform: translateY(-50%);
 }
