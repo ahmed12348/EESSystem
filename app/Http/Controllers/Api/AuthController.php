@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Location;
 use App\Models\User;
+use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -17,104 +20,167 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email|unique:users',
-            'phone' => 'required|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'business_name' => 'required|string',
+            'business_type' => 'required|string',
+            'phone' => 'required|string',
+            // 'tax_id' => 'required|string',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
+            'address' => 'required|string',
+            'city_id' => 'required|exists:cities,id',
+            'region_id' => 'required|exists:regions,id',
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         }
-
-        // Create User with is_verified = 0
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'password' => Hash::make($request->password),
-            'is_verified' => 'no',
-            'otp' => '1234', // Default OTP, you can later integrate actual OTP service
-        ]);
-        $user->assignRole('customer');
-        // Send OTP, for now returning it in response (you can implement OTP sending here)
-        return response()->json([
-            'message' => 'User registered successfully as a customer. OTP sent.',
-            'user' => $user
-        ], 201);
+    
+        try {
+       
+            $location = Location::create([
+                'address' => $request->address,
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
+                'city_id' => $request->city_id,
+                'region_id' => $request->region_id,
+            ]);
+    
+            // إنشاء المستخدم
+            $user = User::create([
+                'phone' => $request->phone,
+                'type' => 'customer',
+                'status' => 'inactive',
+            ]);
+    
+            $vendor = Vendor::create([
+                'business_name' => $request->business_name,
+                'business_type' => $request->business_type,
+                // 'tax_id' => $request->tax_id,
+                'location_id' => $location->id, 
+                'user_id' => $user->id,  
+            ]);
+    
+      
+            $user->assignRole('customer');
+    
+            return response()->json([
+                'message' => 'تم تسجيل المستخدم والتاجر بنجاح.',
+                'data' => [
+                    'vendor' => $vendor
+                ]
+            ], 200);
+    
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'حدث خطأ أثناء تسجيل المستخدم والتاجر.',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
-
-    // Login User
+    
+    
     public function login(Request $request)
     {
+        // التحقق من صحة المدخلات
         $validator = Validator::make($request->all(), [
-            'phone' => 'required',
-            'password' => 'required|string',
+            'phone' => 'required', // التأكد من أن رقم الهاتف موجود
+            'otp' => 'required', // التأكد من أن OTP موجود
         ]);
-
+    
+        // إذا فشلت عملية التحقق من المدخلات
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         }
-
-        $credentials = $request->only('phone', 'password');
-
-        try {
-            // Attempt authentication FIRST
-            if (! $token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'Unauthorized'], 401);
-            }
-
-            // Now get authenticated user AFTER JWTAuth::attempt() succeeds
-            $user = auth()->user();
-
-            // Ensure user exists
-            if (!$user) {
-                return response()->json(['error' => 'User not found.'], 404);
-            }
-
-            // Check status and verification
-            if ($user->status !== 'active' || $user->is_verified !== 'yes') {
-                return response()->json(['error' => 'Your account is either inactive or not verified.'], 403);
-            }
-
-        } catch (JWTException $e) {
-            return response()->json(['error' => 'Could not create token'], 500);
+    
+        // العثور على المستخدم عبر الهاتف
+        $user = User::where('phone', $request->phone)->first();
+    
+        // إذا لم يتم العثور على المستخدم
+        if (!$user) {
+            Log::error("Login Failed: User with phone {$request->phone} not found.");
+            return response()->json(['error' => 'المستخدم غير موجود.'], 404);
         }
-
+    
+        // التحقق من القيمة المخزنة للـ OTP
+        if ($request->otp !== $user->otp) {
+            return response()->json(['error' => 'OTP غير صحيح'], 400); // Return error if OTP doesn't match
+        }
+    
+        // التحقق من حالة الحساب إذا كانت نشطة
+        if ($user->status !== 'active') {
+            Log::error("Login Failed: User {$request->phone} has inactive status.");
+            return response()->json(['error' => 'حسابك غير مفعل.'], 403);
+        }
+    
+        // إذا كانت كل الأشياء صحيحة، نقوم بتوليد التوكن باستخدام الـ JWT
+        try {
+            // توليد التوكن للمستخدم باستخدام الـ JWT
+            $token = JWTAuth::fromUser($user);
+    
+            // إذا لم يتم الحصول على توكن
+            if (!$token) {
+                Log::error("JWTAuth::fromUser() failed for user {$request->phone}");
+                return response()->json(['error' => 'غير مصرح.'], 401);
+            }
+        } catch (\Exception $e) {
+            Log::error("JWT Token Generation Error: " . $e->getMessage());
+            return response()->json(['error' => 'لم نتمكن من إنشاء التوكن.'], 500);
+        }
+    
+        // إرجاع استجابة ناجحة مع التوكن
         return response()->json([
-            'message' => 'Login successful',
+            'message' => 'تم تسجيل الدخول بنجاح',
             'token' => $token,
-            'user' => $user,
-        ]);
+            'user' => $user->vendor,
+        ], 200); // حالة 200 تعني نجاح العملية
     }
+    
+    
 
 
     public function verifyOtp(Request $request)
     {
-        // Validate OTP input
-        $request->validate([
-            'otp' => 'required|digits:4',
-            'phone' => 'required|digits:11',
-        ]);
+        try {
+            // Validate OTP input
+            $request->validate([
+                'otp' => 'required|digits:4', // Ensures OTP is a 4-digit number
+                'phone' => 'required', // Ensures phone is 11 digits
+            ]);
 
-        // Find vendor by phone number
-        $user = user::where('phone', $request->phone)->first();
+            // Find user by phone number
+            $user = User::where('phone', $request->phone)->first(); // Look up user by phone number
 
-        if (!$user) {
-            return response()->json(['error' => 'user not found'], 404);
+            // Check if user exists
+            if (!$user) {
+                return response()->json(['error' => 'المستخدم غير موجود'], 404); // Return error if user is not found
+            }
+
+            // Check if the OTP entered is correct
+            if ($request->otp !== $user->otp) {
+                return response()->json(['error' => 'OTP غير صحيح'], 400); // Return error if OTP doesn't match
+            }
+
+            $user->is_verified =1; 
+            $user->save(); 
+
+      
+            return response()->json([
+                'message' => 'تم التحقق من المستخدم بنجاح!',
+                'data' => [
+                    'user' => $user->vendor 
+                ]
+            ], 200); 
+
+        } catch (\Exception $e) {
+            // Handle any errors
+            return response()->json([
+                'error' => 'حدث خطأ أثناء التحقق من المستخدم.',
+                'message' => $e->getMessage() 
+            ], 500); 
         }
-
-        // Check if the OTP is correct
-        if ($request->otp !== $user->otp) {
-            return response()->json(['error' => 'Invalid OTP'], 400);
-        }
-
-        // OTP is correct, update the vendor's verification status
-        $user->is_verified = 'yes';
-        // $user->otp = null; // Clear the OTP after successful verification
-        $user->save();
-
-        return response()->json(['message' => 'Registration successful! You are now verified.']);
     }
+
+    
 
     public function getUser(Request $request)
     {
@@ -142,22 +208,14 @@ class AuthController extends Controller
         }
     }
 
-    // Logout User (Invalidate Token)
     public function logout(Request $request)
     {
-        try {
-            $user = $request->user();
-            if ($user->status !== 'active' || $user->is_verified !== 'yes') {
-                return response()->json(['error' => 'Your account is either inactive or not verified.'], 403);
-            }
-
-            JWTAuth::invalidate(JWTAuth::getToken());
-
-            return response()->json(['message' => 'User logged out successfully']);
-        } catch (JWTException $e) {
-            return response()->json(['error' => 'Could not logout, please try again'], 500);
-        }
+        JWTAuth::invalidate(JWTAuth::getToken());
+        return response()->json(['message' => 'تم تسجيل الخروج بنجاح'], 200);
     }
+    
+    
+    
 
     public function profile(Request $request)
     {

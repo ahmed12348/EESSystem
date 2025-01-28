@@ -22,13 +22,22 @@
         <div class="menu-title">Dashboard</div>
       </a>
     </li>
-    <li>
-      <a href="#">
+     <li class="{{ request()->routeIs('admin.categories.index') ? 'mm-active' : '' }}">
+      <a href="{{route('admin.categories.index')}}">
+        <div class="parent-icon"><i class="bi bi-bookmarks"></i>
+        </div>
+        <div class="menu-title">Categories</div>
+      </a>
+    </li>
+    <li class="{{ request()->routeIs('admin.products.index') ? 'mm-active' : '' }}">
+      <a href="{{route('admin.products.index')}}">
         <div class="parent-icon"><i class="bi-box"></i>
         </div>
         <div class="menu-title">Products</div>
       </a>
     </li>
+
+
     
     <li>
       <a href="#">

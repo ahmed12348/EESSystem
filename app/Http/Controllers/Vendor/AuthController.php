@@ -96,7 +96,7 @@ class AuthController extends Controller
         $user->update(['is_verified' => 'yes']);
     
         // Redirect to login with success message
-        return redirect()->route('vendor.login')->with('status', 'OTP verified successfully. Awaiting admin approval.');
+        return redirect()->route('vendor.login')->with('success', 'OTP verified successfully. Awaiting admin approval.');
     }
     
 

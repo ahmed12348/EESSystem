@@ -26,7 +26,8 @@
         </div>
     </div>
     <!-- End Breadcrumb -->
-
+    @include('admin.layouts.alerts')
+    
     <div class="card">
         <div class="card-body">
 
@@ -94,7 +95,7 @@
                                             <i class="bi bi-eye-fill"></i>
                                         </a> --}}
                                         @if ($vendor->status == 'inactive')  
-                                            <form action="{{ route('admin.vendors.approve', $vendor->vendor->id) }}" method="POST" style="display:inline;">
+                                            <form action="{{ route('admin.vendors.approve', $vendor->id) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('PATCH')
                                                 <button type="submit" class="btn btn-link p-0 text-success"
@@ -104,7 +105,7 @@
                                                 </button>
                                             </form>
                                          @elseif ($vendor->status == 'active')
-                                            <form action="{{ route('admin.vendors.reject', $vendor->vendor->id) }}" method="POST" style="display:inline;">
+                                            <form action="{{ route('admin.vendors.reject', $vendor->id) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('PATCH')
                                                 <button type="submit" class="btn btn-link p-0 text-danger"
@@ -116,7 +117,7 @@
 
                                         @endif
 
-                                        <form action="{{ route('admin.vendors.destroy', $vendor->vendor->id) }}" method="POST"
+                                        <form action="{{ route('admin.vendors.destroy', $vendor->id) }}" method="POST"
                                             style="display:inline;">
                                             @csrf
                                             @method('DELETE')

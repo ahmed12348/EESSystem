@@ -44,8 +44,8 @@ class RolePermissionSeeder extends Seeder
         ], [
             'name' => 'Admin User',
             'phone' => '1111',
-            'is_verified' => 'yes',
-            'status' => 'Active',
+         
+            'status' => 'active',
             'password' => Hash::make('password'), // Use Hash::make for security
         ]);
         $adminUser->assignRole('admin');
@@ -64,9 +64,7 @@ class RolePermissionSeeder extends Seeder
         $vendor = Vendor::firstOrCreate([
             'user_id' => $vendorUser->id, // Link the user to vendor
             'business_name' => 'Vendor Business',
-            'business_number' => '123456789', // Add a business number
-            'city' => 'City Name',
-            'state' => 'State Name',
+            
             'zone' => 'Zone Name',
         
         ]);

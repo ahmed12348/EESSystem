@@ -101,7 +101,9 @@ class VendorController extends Controller
     public function approve($id)
     {
         $user = User::findOrFail($id);
-        if (!$user->hasRole('vendor')) {
+       
+        if ($user->hasRole('vendor')) {
+          
             $user->update(['status' => 'active']);
         }
         return back()->with('success', 'User approved successfully.');
@@ -110,7 +112,7 @@ class VendorController extends Controller
     public function reject($id)
     {
         $user = User::findOrFail($id);
-        if (!$user->hasRole('vendor')) {
+        if ($user->hasRole('vendor')) {
             $user->update(['status' => 'inactive']);
         }
         return back()->with('error', 'User rejected.');

@@ -355,8 +355,8 @@
               
 
               <div class="d-none d-sm-block">
-                 <p class="user-name mb-0">Jhon Deo</p>
-                <small class="mb-0 dropdown-user-designation">HR Manager</small>
+                 <p class="user-name mb-0">{{Auth::user()->name}}</p>
+                <small class="mb-0 dropdown-user-designation">{{Auth::user()->roles[0]?->name}}</small>
               </div>
             </div>
           </a>

@@ -17,20 +17,21 @@
         
         <div class="ms-auto">
             <div class="btn-group">
-                @can('role-create')
+           
                     <a class="btn btn-success" href="{{ route('admin.roles.create') }}"> Create New Role</a>
-                @endcan
+                    @can('role-create')
+                    @endcan
             </div>
              </div>
     
     </div>
     <!--end breadcrumb-->
-
-    @if ($message = Session::get('success'))
+    @include('admin.layouts.alerts')
+    {{-- @if ($message = Session::get('success'))
         <div class="alert alert-success">
             <p>{{ $message }}</p>
         </div>
-    @endif
+    @endif --}}
 
     <div class="card">
         <div class="card-body">
@@ -68,16 +69,7 @@
                                             @can('role-edit')
                                             @endcan
                                       
-                                            <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST" style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                           
-                                                <button type="submit" class="btn btn-link p-0 text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" onclick="return confirm('Are you sure you want to delete this user?')">
-                                                    <i class="bi bi-trash-fill"></i>
-                                                </button>
-                                            </form>
-                                            @can('role-delete')
-                                        @endcan
+                                       
                                     </div>
                                 </td>
                             </tr>

@@ -18,11 +18,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
   <style>
      body {
-      background-color: #82A7E7; /* Black background */
+      background: url("{{ asset('assets/images/Login.png') }}") no-repeat center center fixed;
     }
     .img-fluid {
-      max-width: 40% !important;
+      max-width: 25% !important;
     }
+ 
 
  </style>
   <!-- loader-->

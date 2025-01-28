@@ -16,17 +16,19 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('vendor_id')->constrained('vendors')->onDelete('cascade');
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);
             $table->integer('stock_quantity')->default(0);
-            $table->string('category')->nullable();
             $table->boolean('approved')->default(false);
-     
+            $table->string('image')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
     }
+
+ 
     
 
     /**

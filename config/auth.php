@@ -52,10 +52,6 @@ return [
             'provider' => 'admins',  // Admins are also in users table
         ],
     
-        // 'api' => [
-        //     'driver' => 'token', // Or 'passport' if you're using Laravel Passport
-        //     'provider' => 'users',
-        // ],
         'api' => [
             'driver' => 'jwt',
             'provider' => 'users',

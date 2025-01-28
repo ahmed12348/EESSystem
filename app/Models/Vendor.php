@@ -14,10 +14,16 @@ class Vendor extends Model
     
 
 
-    protected $fillable = ['business_name', 'business_number','city', 'state','zone','user_id']; 
+    protected $fillable = ['business_name','zone','user_id', 'tax_id', 'location_id','photo','business_type']; 
+ 
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function location() {
+        return $this->belongsTo(Location::class, 'location_id');
+    }
+
+  
 }

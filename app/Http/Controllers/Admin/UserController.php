@@ -119,7 +119,7 @@ class UserController extends Controller
             'password' => 'nullable|min:6', // Password is optional
             'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048', // 2MB max
         ]);
-    
+     
         // Update user details
         $updateData = [
             'name' => $request->name,
@@ -128,8 +128,7 @@ class UserController extends Controller
         ];
     
         // Update password only if a new one is entered
-        if ($request->has('password')) {
-            // return 0;
+        if ($request->filled('password')) {
             $updateData['password'] = Hash::make($request->password);
         }
     
@@ -207,8 +206,7 @@ class UserController extends Controller
     public function updateProfile(Request $request)
     {
         $user = Auth::user();
-
-        // Validation for name, password, and profile picture
+       
         $validator = Validator::make($request->all(), [
             'name' => 'nullable|string|max:255',
             'password' => 'nullable|string|min:6|confirmed',
@@ -225,18 +223,22 @@ class UserController extends Controller
         }
 
         if ($request->has('password')) {
+     
             $user->password = Hash::make($request->password);
         }
-
-        if ($request->hasFile('profile_picture')) {
-            // Handle file upload and save the path
-            $filename = time() . '.' . $request->file('profile_picture')->getClientOriginalExtension();
-            $path = $request->file('profile_picture')->storeAs('profile_pictures', $filename);
+        if ($request->hasFile('profile_picture') && $request->file('profile_picture')->isValid()) {
             // Delete old picture if exists
-            if ($user->profile_picture && Storage::exists($user->profile_picture)) {
-                Storage::delete($user->profile_picture);
+            if (!empty($user->profile_picture) && Storage::disk('public')->exists($user->profile_picture)) {
+                Storage::disk('public')->delete($user->profile_picture);
             }
-            $user->profile_picture = $path;
+    
+            // Upload new picture
+            $image = $request->file('profile_picture');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->storeAs('profile_pictures', $imageName, 'public');
+    
+            // Save new profile picture path
+            $user->update(['profile_picture' => 'profile_pictures/' . $imageName]);
         }
 
         $user->save();

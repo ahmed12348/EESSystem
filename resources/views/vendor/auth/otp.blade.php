@@ -17,10 +17,10 @@
 
   <style>
     body {
-      background-color: #82A7E7; /* Blue background like your registration */
+      background: url("{{ asset('assets/images/Login.png') }}") no-repeat center center fixed;
     }
     .img-fluid {
-      max-width: 40% !important;
+      max-width: 25% !important;
     }
   </style>
 

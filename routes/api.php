@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\LocationController;
 use App\Http\Middleware\JwtMiddleware;
 
 
@@ -15,10 +16,20 @@ Route::group(['prefix' => 'auth'], function () {
    
     // Protected routes (requiring JWT token)
     Route::middleware('jwt.auth')->group(function () {
-        Route::get('/me', [AuthController::class, 'getUser']);
         Route::post('/logout', [AuthController::class, 'logout']);
+  
+        Route::get('/me', [AuthController::class, 'getUser']);
         Route::post('/refresh', [AuthController::class, 'refresh']);
         Route::get('/getUser', [AuthController::class, 'getUser']);
         Route::post('/profile', [AuthController::class, 'profile']);
+        Route::get('/cities', [LocationController::class, 'getCities']);
+        Route::get('/cities/{city_id}/regions', [LocationController::class, 'getRegionsByCity']);
     });
 });
+
+// Route::middleware('jwt.auth')->group(function () {
+    
+//     Route::get('/cities', [LocationController::class, 'getCities']);
+//     Route::get('/cities/{city_id}/regions', [LocationController::class, 'getRegionsByCity']);
+
+// });
