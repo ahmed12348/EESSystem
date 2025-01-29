@@ -27,9 +27,3 @@ Route::group(['prefix' => 'auth'], function () {
     });
 });
 
-// Route::middleware('jwt.auth')->group(function () {
-    
-//     Route::get('/cities', [LocationController::class, 'getCities']);
-//     Route::get('/cities/{city_id}/regions', [LocationController::class, 'getRegionsByCity']);
-
-// });
