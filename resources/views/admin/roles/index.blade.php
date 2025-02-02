@@ -17,8 +17,10 @@
         
         <div class="ms-auto">
             <div class="btn-group">
-           
-                    <a class="btn btn-success" href="{{ route('admin.roles.create') }}"> Create New Role</a>
+                    <a class="btn btn-info text-white" href="{{ route('admin.roles.create') }}">
+                        <i class="bi bi-plus-circle"></i> Create New Role
+                    </a>
+                 
                     @can('role-create')
                     @endcan
             </div>

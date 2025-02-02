@@ -15,7 +15,6 @@
             </nav>
         </div>
         <div class="ms-auto">
-            <!-- Back Button -->
             <a href="{{ route('admin.roles.index') }}" class="btn btn-secondary">Back</a>
         </div>
     </div>
@@ -30,9 +29,8 @@
                 <div class="card-body">
                     <form action="{{ route('admin.roles.update', $role->id) }}" method="POST">
                         @csrf
-                        @method('PUT') <!-- Use PUT method for updating -->
+                        @method('PUT')
                         
-                        <!-- Role Name Input -->
                         <div class="mb-3">
                             <label for="name" class="form-label">Role Name</label>
                             <input class="form-control" type="text" id="name" name="name" value="{{ $role->name }}" placeholder="Enter role name" required>
@@ -51,19 +49,12 @@
                             @endforeach
                         </div>
 
-                        <!-- Submit Button -->
                         <button type="submit" class="btn btn-primary">Update Role</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-    <!-- End Role Edit Form -->
 </div>
-
-<!-- Optional Scripts -->
-@push('scripts')
-    <!-- No additional scripts needed for this page -->
-@endpush
 
 @endsection

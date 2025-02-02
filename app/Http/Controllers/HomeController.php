@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
+use App\Models\Product;
+use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,11 +34,31 @@ class HomeController extends Controller
     
         return view('admin.index');
     }
+
     public function vendor_index()
     {
-        // dd('vendor');
-        return view('vendor.index');
-    }
+           // Get the vendor's ID
+           $vendorId = Auth::id(); 
+
+           // Fetch total orders for the vendor
+           $totalOrders = Order::where('vendor_id', $vendorId)->count();
+   
+         
+           $totalRevenue = Order::where('vendor_id', $vendorId)->sum('total_price');
+   
+           $totalCustomers = User::whereHas('orders', function ($query) use ($vendorId) {
+            $query->where('vendor_id', $vendorId);
+           })->whereHas('roles', function ($query) {
+            $query->where('name', 'customer'); // Filter by the customer role
+           })->distinct()->count();
+   
+           // Fetch total views for the vendor (You can link it to products or use a dedicated views table)
+            $totalViews = Product::where('vendor_id', $vendorId)->sum('id'); // Assuming a 'views' column in the products table
+   
+           // Return view with dynamic data
+           return view('vendor.index', compact('totalOrders', 'totalRevenue', 'totalCustomers', 'totalViews'));
+       }
+ 
 
     public function showProfile()
     {

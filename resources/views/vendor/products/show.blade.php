@@ -1,21 +1,21 @@
-@extends('admin.layouts.app')
+@extends('vendor.layouts.app')
 
 @section('content')
 <div class="container">
     <!-- Breadcrumb Navigation -->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Users</div>
+        <div class="breadcrumb-title pe-3">Product</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="{{ url('/') }}"><i class="bx bx-home-alt"></i></a></li>
-                    <li class="breadcrumb-item active" aria-current="page">View User</li>
+                    <li class="breadcrumb-item active" aria-current="page">View Product</li>
                 </ol>
             </nav>
         </div>
         <div class="ms-auto">
             <!-- Back Button -->
-            <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Back</a>
+            <a href="{{ route('vendor.products.index') }}" class="btn btn-secondary">Back</a>
         </div>
     </div>
     <!-- End Breadcrumb -->
@@ -50,7 +50,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="mb-3">Filter Orders</h5>
-                    <form method="GET" action="{{ route('admin.users.show', $user->id) }}">
+                    <form method="GET" action="{{ route('vendor.products.show', $user->id) }}">
                         <div class="row">
                             <!-- Filter by Name -->
                             <div class="col-md-5">

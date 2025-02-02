@@ -24,29 +24,29 @@ class AuthController extends Controller
     {
         // Validate request
         $request->validate([
-            'phone' => 'required',
+            'email' => 'required',
             'password' => 'required'
         ]);
 
-        $user = User::where('phone', $request->phone)->first();
+        $user = User::where('email', $request->email)->first();
         
         if (!$user) {
-            return back()->withErrors(['phone' => 'User not found.']);
+            return back()->withErrors(['email' => 'User not found.']);
         }
 
         if ($user->status == 'inactive') {
-            return back()->withErrors(['phone' => 'Admin has not approved your account yet.']);
+            return back()->withErrors(['email' => 'Admin has not approved your account yet.']);
         }
       
-        if ($user->roles->first()->name !== 'admin') {
-            return back()->withErrors(['phone' => 'failed Login.']);
-        }
+        // if ($user->roles->first()->name == 'vendor' || 'customer') {
+        //     return back()->withErrors(['email' => 'failed Login.']);
+        // }
 
-        if (Auth::attempt(['phone' => $request->phone, 'password' => $request->password])) {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             return redirect()->route('admin.index');
         }
 
-        return back()->withErrors(['phone' => 'Invalid credentials.']);
+        return back()->withErrors(['email' => 'Invalid credentials.']);
     }
 
     public function logout()

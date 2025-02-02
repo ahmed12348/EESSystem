@@ -76,11 +76,7 @@
                                             </button>
                                         </form>
 
-                                        {{-- View Subcategories Button --}}
-                                        <a href="{{ route('admin.categories.show', $category->id) }}" class="text-warning"
-                                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="View Subcategories">
-                                            <i class="bi bi-eye-fill"></i>
-                                        </a>
+                                 
 
                                     </div>
                                 </td>

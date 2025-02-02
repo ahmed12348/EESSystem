@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Location;
 use App\Models\Order;
 use App\Models\Role;
 use App\Models\User;
@@ -23,19 +24,21 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        // Filter users based on the role 'customers'
-        $users = User::whereDoesntHave('roles', function ($query) {
-            $query->where('name', 'vendor');
+        $users = User::whereHas('roles', function ($query) {
+            $query->where('name', 'customer');
         })
-        ->with('orders')
+        ->with(['vendor.location'])
+        ->withCount('orders') 
         ->when($request->search, function ($query, $search) {
-            return $query->where('name', 'LIKE', "%{$search}%")
-                         ->orWhere('email', 'LIKE', "%{$search}%")
-                         ->orWhere('phone', 'LIKE', "%{$search}%");
+            $query->where(function ($q) use ($search) { 
+                $q->where('name', 'LIKE', "%{$search}%")
+                  ->orWhere('email', 'LIKE', "%{$search}%")
+                  ->orWhere('phone', 'LIKE', "%{$search}%");
+            });
         })
-        // Paginate results
-        ->paginate(6);
+        ->paginate(10); // Paginate results
     
+        // Return view with users
         return view('admin.users.index', compact('users'));
     }
 
@@ -55,8 +58,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
             'role' => 'required',
-            'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',  // 2MB Max Image Size
-
+            'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
 
         if ($request->hasFile('profile_picture')) {
@@ -97,63 +99,57 @@ class UserController extends Controller
                 })
                 ->paginate(6);
 
-    return view('admin.users.show', compact('user', 'orders', 'categories'));
+        return view('admin.users.show', compact('user', 'orders', 'categories'));
     }
 
 
-    public function edit(User $user)
+    public function edit($id)
     {
-        $roles = Role::all();
-        return view('admin.users.edit', compact('user', 'roles'));
+         $user = User::with('vendor.location')->find($id); // Eager load vendor and location
+     
+        return view('admin.users.edit', compact('user'));
     }
 
  
     
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
+        // Validate the inputs
         $request->validate([
-            'name' => 'required',
-            'phone' => 'required',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'role' => 'required',
-            'password' => 'nullable|min:6', // Password is optional
-            'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048', // 2MB max
+            'name' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:255',
+            'business_name' => 'nullable|string|max:255',
+            'zone' => 'nullable|string|max:255', // Only validate the zone
+            'tax_id' => 'nullable|string|max:255',
+            'business_type' => 'nullable|string|max:255',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-     
-        // Update user details
-        $updateData = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-        ];
     
-        // Update password only if a new one is entered
-        if ($request->filled('password')) {
-            $updateData['password'] = Hash::make($request->password);
+        $user = User::find($id);
+        $user->name = $request->input('name');
+        $user->phone = $request->input('phone');
+    
+        
+        // Profile Picture (optional)
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $path = $file->store('profile_pictures', 'public');
+            $user->photo = $path;
         }
     
-        $user->update($updateData);
+        $user->save();
     
-        // Handle profile picture update only if a new one is uploaded
-        if ($request->hasFile('profile_picture') && $request->file('profile_picture')->isValid()) {
-            // Delete old picture if exists
-            if (!empty($user->profile_picture) && Storage::disk('public')->exists($user->profile_picture)) {
-                Storage::disk('public')->delete($user->profile_picture);
-            }
-    
-            // Upload new picture
-            $image = $request->file('profile_picture');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->storeAs('profile_pictures', $imageName, 'public');
-    
-            // Save new profile picture path
-            $user->update(['profile_picture' => 'profile_pictures/' . $imageName]);
+        // Update vendor's zone (this assumes you're using the vendor's zone for a specific logic)
+        if ($user->vendor) {
+            $vendor = $user->vendor;
+            $vendor->zone = $request->input('zone');
+            $vendor->save();
         }
-    
-        $user->syncRoles([$request->role]);
     
         return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
     }
+    
+
     
     public function destroy(User $user)
     {
@@ -244,5 +240,7 @@ class UserController extends Controller
         $user->save();
         return redirect()->route('admin.profile.show')->with('success', 'Profile updated successfully.');
     }
+
+
 
 }

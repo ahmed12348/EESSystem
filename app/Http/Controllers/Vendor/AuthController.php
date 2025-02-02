@@ -39,10 +39,7 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'phone' => $request->phone,
                 'password' => bcrypt($request->password),
-                 'otp' => '1234',
-                // 'otp' => rand(1000, 9999), // Generate random OTP
-                'is_verified' => 'no', 
-                'is_approved' => 'no', // Admin approval required
+                'is_verified' => 'yes', 
             ]);
 
             if (!Role::where('name', 'vendor')->exists()) {
@@ -55,14 +52,14 @@ class AuthController extends Controller
                 'business_name' => $request->business_name,
                 'business_number' => $request->business_number,
                 'city' => $request->city,
-                'state' => $request->state,
-                'zone' => $request->zone,
+ 
+          
             ]);
 
             DB::commit();
-
-            // Redirect to OTP verification
-            return redirect()->route('vendor.otp.form', ['phone' => $user->phone]);
+            return redirect()->route('vendor.login')->with('success', 'Register successfully. Awaiting admin approval.');
+    
+            // return redirect()->route('vendor.otp.form', ['phone' => $user->phone]);
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -71,33 +68,33 @@ class AuthController extends Controller
     }
 
     // Show OTP Verification Form
-    public function showOtpForm(Request $request)
-    {
-        return view('vendor.auth.otp', ['phone' => $request->phone]);
-    }
+    // public function showOtpForm(Request $request)
+    // {
+    //     return view('vendor.auth.otp', ['phone' => $request->phone]);
+    // }
 
-    public function verifyOtp(Request $request)
-    {
-        // Validate OTP input
-        $request->validate([
-            // 'phone' => 'required|string', // Ensure phone is provided
-            'otp' => 'required|string',
-        ]);
+    // public function verifyOtp(Request $request)
+    // {
+    //     // Validate OTP input
+    //     $request->validate([
+    //         // 'phone' => 'required|string', // Ensure phone is provided
+    //         'otp' => 'required|string',
+    //     ]);
     
-        // Retrieve user by phone number
-        $user = User::where('phone', $request->phone)->first();
+    //     // Retrieve user by phone number
+    //     $user = User::where('phone', $request->phone)->first();
     
-        // Check if user exists and OTP is correct
-        if (!$user || $user->otp !== $request->otp) {
-            return back()->withErrors(['otp' => 'Invalid OTP. Please try again.']);
-        }
+    //     // Check if user exists and OTP is correct
+    //     if (!$user || $user->otp !== $request->otp) {
+    //         return back()->withErrors(['otp' => 'Invalid OTP. Please try again.']);
+    //     }
     
-        // Update user as verified
-        $user->update(['is_verified' => 'yes']);
+    //     // Update user as verified
+    //     $user->update(['is_verified' => 'yes']);
     
-        // Redirect to login with success message
-        return redirect()->route('vendor.login')->with('success', 'OTP verified successfully. Awaiting admin approval.');
-    }
+    //     // Redirect to login with success message
+    //     return redirect()->route('vendor.login')->with('success', 'OTP verified successfully. Awaiting admin approval.');
+    // }
     
 
     // Show Login Form
@@ -110,29 +107,29 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'phone' => 'required|string',
+            'email' => 'required',
             'password' => 'required',
         ]);
 
-        $user = User::where('phone', $request->phone)->first();
+        $user = User::where('email', $request->email)->first();
 
         if (!$user) {
-            return back()->withErrors(['phone' => 'Phone number not found.']);
+            return back()->withErrors(['email' => 'email number not found.']);
         }
 
-        if ($user->is_verified == 'no') {
-            return redirect()->route('vendor.otp.form', ['phone' => $user->phone]);
-        }
+        // if ($user->is_verified == 'no') {
+        //     return redirect()->route('vendor.otp.form', ['email' => $user->phone]);
+        // }
 
         if ($user->status == 'inactive') {
-            return back()->withErrors(['phone' => 'Admin has not approved your account yet.']);
+            return back()->withErrors(['email' => 'Admin has not approved your account yet.']);
         }
       
         if ($user->roles->first()->name !== 'vendor') {
-            return back()->withErrors(['phone' => 'failed Login.']);
+            return back()->withErrors(['email' => 'failed Login.']);
         }
 
-        if (Auth::attempt(['phone' => $request->phone, 'password' => $request->password])) {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             return redirect()->route('vendor.vendor_index');
         }
 

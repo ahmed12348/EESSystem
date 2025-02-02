@@ -12,8 +12,9 @@
   <link href="{{ asset('assets/css/bootstrap-extended.css') }}" rel="stylesheet" />
   <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet" />
   <link href="{{ asset('assets/css/icons.css') }}" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  {{-- <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet"> --}}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
 
   <style>
     body {

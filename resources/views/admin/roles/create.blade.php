@@ -1,9 +1,9 @@
-@extends('dashboard.layout')
+@extends('admin.layouts.app')
 
 @section('content')
 
 <div class="container">
-dd(session()->all())
+
     <!-- Breadcrumb Navigation -->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">Roles</div>
@@ -17,8 +17,7 @@ dd(session()->all())
         </div>
 
         <div class="ms-auto">
-            <!-- Back Button -->
-            <a href="{{ route('dashboard.roles.index') }}" class="btn btn-secondary">Back</a>
+            <a href="{{ route('admin.roles.index') }}" class="btn btn-secondary">Back</a>
         </div>
     </div>
     <!-- End Breadcrumb -->
@@ -27,11 +26,10 @@ dd(session()->all())
     <div class="row">
         <div class="col-xl-9 mx-auto">
             <h6 class="mb-0 text-uppercase">Create New Role</h6>
-
             <hr/>
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('dashboard.roles.store') }}" method="POST">
+                    <form action="{{ route('admin.roles.store') }}" method="POST">
                         @csrf
                         <!-- Role Name Input -->
                         <div class="mb-3">
@@ -51,19 +49,12 @@ dd(session()->all())
                             @endforeach
                         </div>
 
-                        <!-- Submit Button -->
                         <button type="submit" class="btn btn-primary">Create Role</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-    <!-- End Role Creation Form -->
 </div>
-
-<!-- Optional Scripts -->
-@push('scripts')
-    <!-- No additional scripts needed for this page -->
-@endpush
 
 @endsection

@@ -11,8 +11,10 @@
   <link href="{{ asset('assets/css/bootstrap-extended.css') }}" rel="stylesheet" />
   <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet" />
   <link href="{{ asset('assets/css/icons.css') }}" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  {{-- <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&family=Inter:wght@400;500&display=swap" rel="stylesheet"> --}}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+
   <style>
     body {
       background: url("{{ asset('assets/images/Login.png') }}") no-repeat center center fixed;
@@ -20,72 +22,75 @@
     .img-fluid {
       max-width: 25% !important;
     }
+    .password-wrapper {
+      position: relative;
+    }
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
   </style>
-  <!-- loader-->
-  <link href="assets/css/pace.min.css" rel="stylesheet" />
-  <title>EES</title>
+
+  <title>EES - Vendor Login</title>
 </head>
 
 <body>
 
-  <!--start wrapper-->
   <div class="wrapper">
-    
     <main class="authentication-content">
       <div class="container-fluid">
         <div class="authentication-card">
           <div class="card shadow rounded-5 overflow-hidden">
             <div class="row g-0">
               <div class="col-lg-12">
-                <div class="card-body p-4 p-sm-5 text-center"> <!-- Center Content -->
+                <div class="card-body p-4 p-sm-5 text-center">
 
                   <!-- Logo -->
                   <img src="{{ asset('assets/images/group.png') }}" class="img-fluid login-logo mb-3" alt="Logo">
 
                   <!-- Title & Subtitle -->
-                  <h5 class="card-title">Vendor Login to Account</h5>
-                  <p class="card-text mb-4">Please enter your email and password to continue</p>
-
-                  @if(session('status'))
-                  <div class="alert alert-success">
-                      {{ session('status') }}
-                  </div>
-                  @endif
+                  <h5 class="card-title">Vendor Login</h5>
+                  <p class="card-text mb-4">Enter your email and password to access your account.</p>
                   
-                  @if($errors->any())
-                      <div class="alert alert-danger">
-                          <ul>
-                              @foreach ($errors->all() as $error)
-                                  <li>{{ $error }}</li>
-                              @endforeach
-                          </ul>
-                      </div>
-                  @endif
-                
+                  @include('admin.layouts.alerts')
+
                   <form method="POST" class="form-body" action="{{ route('vendor.login') }}">
                     @csrf
                     <div class="row g-3">
-                      <!-- Phone Input -->
+                      
+                      <!-- Email Input -->
                       <div class="col-12 text-start">
-                        <label for="inputPhoneNumber" class="form-label">Phone Number</label>
+                        <label for="inputEmail" class="form-label">Email Address</label>
                         <div class="ms-auto position-relative">
-                          <input type="number" class="form-control  @error('phone') is-invalid @enderror"
-                            id="inputPhoneNumber" name="phone" placeholder="Phone Number" value="{{ old('phone') }}" required>
-                          @error('phone')
+                          <input type="email" class="form-control @error('email') is-invalid @enderror"
+                            id="inputEmail" name="email" placeholder="Enter your business email" value="{{ old('email') }}" required>
+                          @error('email')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                           @enderror
                         </div>
                       </div>
 
-                      <!-- Password Input -->
+                      <!-- Password Input with Toggle -->
                       <div class="col-12 text-start">
-                        <label for="inputChoosePassword" class="form-label">Enter Password</label>
-                        <div class="ms-auto position-relative">
-                          <input type="password" class="form-control  @error('password') is-invalid @enderror"
-                            name="password" id="inputChoosePassword" placeholder="Enter Password" required>
+                        <label for="inputChoosePassword" class="form-label">Password</label>
+                        <div class="ms-auto position-relative password-wrapper">
+                          <input type="password" class="form-control @error('password') is-invalid @enderror"
+                            name="password" id="inputChoosePassword" placeholder="Enter your password" required>
+                          <i class="bi bi-eye-slash toggle-password" id="togglePassword"></i>
                           @error('password')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                           @enderror
+                        </div>
+                      </div>
+
+                      <!-- Remember Me Checkbox -->
+                      <div class="col-12 text-start">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="rememberMe" name="remember">
+                          <label class="form-check-label" for="rememberMe">Remember Me</label>
                         </div>
                       </div>
 
@@ -99,14 +104,12 @@
                     </div>
                   </form>
 
-                  <!-- Resend OTP Button -->
-                  {{-- <div class="mt-3">
-                    <a href="{{ route('vendor.otp.resend', ['email' => old('email')]) }}" class="btn btn-link text-primary">
-                      Resend OTP
-                  </a>
-                  </div> --}}
+                  <!-- Forgot Password -->
+                  <div class="mt-3">
+                    <a href="#" class="text-primary">Forgot Password?</a>
+                  </div>
 
-                  <!-- Don't have an account? Link -->
+                  <!-- Don't have an account? -->
                   <div class="mt-3">
                     <p>Don't have an account? <a href="{{ route('vendor.register') }}" class="text-primary">Sign up here</a></p>
                   </div>
@@ -118,14 +121,27 @@
         </div>
       </div>
     </main>
-
   </div>
-  <!--end wrapper-->
 
-  <!--plugins-->
+  <!-- Plugins -->
   <script src="assets/js/jquery.min.js"></script>
   <script src="assets/js/pace.min.js"></script>
+  
+  <!-- Password Toggle Script -->
+  <script>
+    document.getElementById("togglePassword").addEventListener("click", function () {
+      const passwordInput = document.getElementById("inputChoosePassword");
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        this.classList.remove("bi-eye-slash");
+        this.classList.add("bi-eye");
+      } else {
+        passwordInput.type = "password";
+        this.classList.remove("bi-eye");
+        this.classList.add("bi-eye-slash");
+      }
+    });
+  </script>
 
 </body>
-
 </html>
