@@ -29,15 +29,7 @@ class VendorController extends Controller
         return view('admin.vendors.index', compact('vendors'));
     }
 
-    public function create()
-    {
-        return view('admin.vendors.create');
-    }
 
-    public function store(Request $request)
-    {
-        // Validate and store the vendor
-    }
 
     public function show($id)
     {
@@ -54,24 +46,26 @@ class VendorController extends Controller
     public function update(Request $request, User $vendor)
     {
         
+      
         $request->validate([
             'business_name' => 'required|string|max:255',
-            'business_number' => 'required|max:255',
+            'tax_id' => 'required|max:255',
             // 'phone' => 'required|regex:/^[0-9]{10,15}$/',
             'zone' => 'nullable|string|max:255',
         ]);
 
         // Update vendor details
         if ($vendor->vendor) {
-            $vendor->vendor->update(['business_name' => $request->business_name]);
-            $vendor->vendor->update(['business_number' => $request->business_number]);
+            $vendor->vendor->update([
+            'business_name' => $request->business_name,
+            'tax_id' => $request->tax_id,
+            'zone' => $request->zone
+            
+            ]);
+      
         }
 
-        $vendor->update([
-            // 'phone' => $request->phone,
-            'zone' => $request->zone,
-        ]);
-
+    
         return redirect()->route('admin.vendors.index')->with('success', 'Vendor updated successfully.');
     }
 

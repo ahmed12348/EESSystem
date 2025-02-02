@@ -1,13 +1,15 @@
 <?php
 
+use App\Http\Controllers\Admin\ADSController;
 use App\Http\Controllers\Admin\VendorController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\OTPController;
-use App\Http\Controllers\ProductController;
+
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Vendor\ProductController as VendorProductController;
 use App\Http\Controllers\Vendor\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,26 +37,32 @@ require __DIR__.'/auth.php';
 Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('login', [AdminAuthController::class, 'showLoginForm'])->name('login');
         Route::post('login', [AdminAuthController::class, 'login']);
-
+        Route::get('ads/getReferences', [ADSController::class, 'getReferences'])->name('ads.getReferences');
        // Protected Routes (Only Authenticated Admins Can Access)
-        Route::middleware('auth')->group(function () {
+        Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::post('logout', [AdminAuthController::class, 'logout'])->name('logout');
         Route::get('/', [HomeController::class, 'index'])->name('index');
-        Route::resource('users', UserController::class)->middleware('role:admin');
-        Route::resource('roles', RoleController::class)->middleware('role:admin');
+        Route::resource('users', UserController::class);
+        Route::resource('roles', RoleController::class);
         Route::resource('vendors', VendorController::class);
-        Route::resource('categories', CategoryController::class)->middleware('role:admin');
+        Route::resource('categories', CategoryController::class);
         Route::resource('products', ProductController::class);
-        Route::patch('/products/{id}/approve', [ProductController::class, 'approve'])->name('products.approve')->middleware('role:admin');
-        Route::patch('/products/{id}/reject', [ProductController::class, 'reject'])->name('products.reject')->middleware('role:admin');
+        Route::patch('/products/{id}/approve', [ProductController::class, 'approve'])->name('products.approve');
+        Route::patch('/products/{id}/reject', [ProductController::class, 'reject'])->name('products.reject'); 
+        Route::post('/import-products', [ProductController::class, 'import'])->name('products.import');
+        Route::get('products/export/sample', [ProductController::class, 'exportSample'])->name('products.export.sample');
 
-        Route::patch('/vendors/{id}/approve', [VendorController::class, 'approve'])->name('vendors.approve')->middleware('role:admin');
-        Route::patch('/vendors/{id}/reject', [VendorController::class, 'reject'])->name('vendors.reject')->middleware('role:admin');
-        Route::patch('/users/{id}/approve', [UserController::class, 'approve'])->name('users.approve')->middleware('role:admin');
-        Route::patch('/users/{id}/reject', [UserController::class, 'reject'])->name('users.reject')->middleware('role:admin');
+        Route::patch('/vendors/{id}/approve', [VendorController::class, 'approve'])->name('vendors.approve');
+        Route::patch('/vendors/{id}/reject', [VendorController::class, 'reject'])->name('vendors.reject');
+        Route::patch('/users/{id}/approve', [UserController::class, 'approve'])->name('users.approve');
+        Route::patch('/users/{id}/reject', [UserController::class, 'reject'])->name('users.reject');
 
         Route::get('/profile', [UserController::class, 'showProfile'])->name('profile.show');
         Route::post('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
+
+        Route::resource('ads', ADSController::class);
+        // Route::get('ads/getReferences', [ADSController::class, 'getReferences'])->name('ads.getReferences');
+
     });
 
 });
@@ -77,24 +85,14 @@ Route::prefix('vendor')->name('vendor.')->group(function () {
     Route::get('/vendor/resend-otp', [AuthController::class, 'resendOtp'])->name('otp.resend');
 
     // ✅ Protect this part with auth middleware
-    Route::middleware(['auth'])->group(function () {
+    Route::middleware(['auth', 'role:vendor'])->group(function () {
         Route::get('/vendor_dashboard', [HomeController::class, 'vendor_index'])->name('vendor_index');
         Route::get('/profile', [HomeController::class, 'showProfile'])->name('profile.show');
         Route::put('/profile/update', [HomeController::class, 'updateProfile'])->name('profile.update');
-
+        Route::resource('products', VendorProductController::class);
+        Route::post('/import-products', [VendorProductController::class, 'import'])->name('products.import');
+        Route::get('products/export/sample', [VendorProductController::class, 'exportSample'])->name('products.export.sample');
 
     });
 });
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/vendor_dashboard', [HomeController::class, 'vendor_index'])->name('vendor_index');
-    Route::get('/profile', [HomeController::class, 'showProfile'])->name('profile.show');
-    Route::put('/profile/update', [HomeController::class, 'updateProfile'])->name('profile.update');
-
-
-});
-Route::get('/otp', function () {
-    return view('otp');
-});
-Route::post('/send-otp', [OTPController::class, 'sendOTP']);
-Route::post('/verify-otp', [OTPController::class, 'verifyOTP']);

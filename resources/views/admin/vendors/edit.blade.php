@@ -19,14 +19,7 @@
                 <a href="{{ route('admin.vendors.index') }}" class="btn btn-secondary">Back</a>
             </div>
         </div>
-        <!-- End Breadcrumb -->
-        @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-    
-        @if (session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
-        @endif
+   
         <!-- User Edit Form -->
         <div class="row">
             <div class="col-xl-9 mx-auto">
@@ -41,19 +34,28 @@
                             @method('PUT')
         
                             <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="text" class="form-control" id="email" name="email" 
+                                    value="{{ old('email', $vendor->email ?? '') }}" disabled>
+                                @error('email')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
                                 <label for="business_name" class="form-label">Business Name</label>
                                 <input type="text" class="form-control" id="business_name" name="business_name" 
-                                    value="{{ old('business_name', $vendor->vendor->business_name ?? '') }}" required>
+                                    value="{{ old('business_name', $vendor->vendor->business_name ?? '') }}" disabled>
                                 @error('business_name')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                             <!-- Business Number -->
                             <div class="mb-3">
-                                <label for="business_number" class="form-label">Business Number</label>
-                                <input type="text" class="form-control" id="business_number" name="business_number" 
-                                    value="{{ old('business_number', $vendor->vendor?->business_number) }}" required>
-                                @error('business_number')
+                                <label for="tax_id" class="form-label">Tax Number</label>
+                                <input type="text" class="form-control" id="tax_id" name="tax_id" 
+                                    value="{{ old('tax_id', $vendor->vendor?->tax_id) }}" disabled>
+                                @error('tax_id')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -63,8 +65,8 @@
                             <div class="mb-3">
                                 <label for="zone" class="form-label">Zone</label>
                                 <select class="form-select" id="zone" name="zone" required>
-                                    <option value="Zone 1" {{ old('zone', $vendor->zone) == 'Zone 1' ? 'selected' : '' }}>Zone 1</option>
-                                    <option value="Zone 2" {{ old('zone', $vendor->zone) == 'Zone 2' ? 'selected' : '' }}>Zone 2</option>
+                                    <option value="Zone 1" {{ old('zone', $vendor->vendor?->zone) == 'Zone 1' ? 'selected' : '' }}>Zone 1</option>
+                                    <option value="Zone 2" {{ old('zone', $vendor->vendor?->zone) == 'Zone 2' ? 'selected' : '' }}>Zone 2</option>
                                 </select>
                                 @error('zone')
                                     <div class="text-danger">{{ $message }}</div>

@@ -17,9 +17,9 @@
 
         <div class="ms-auto">
             <div class="btn-group">
-                <a class="btn btn-info text-white" href="{{ route('admin.users.create') }}">
+                {{-- <a class="btn btn-info text-white" href="{{ route('admin.users.create') }}">
                     <i class="bi bi-plus-circle"></i> Create New User
-                </a>
+                </a> --}}
             </div>
         </div>
     </div>
@@ -43,11 +43,11 @@
                 <table class="table align-middle table-hover">
                     <thead class="table-secondary">
                         <tr>
-                            <th>Name</th>
+                            <th>Business Name</th>
                             <th>Phone Number</th>
-                            <th>Role</th>
+                            {{-- <th>Role</th> --}}
                             <th>Total Orders</th>
-                            <th>Zone</th>
+                            <th>Zone</th> 
                             <th>Status</th>  
                             <th>Actions</th>
                         </tr>
@@ -55,11 +55,11 @@
                     <tbody>
                         @foreach ($users as $user)
                             <tr>
-                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->vendor?->business_name }}</td>
                                 <td>{{ $user->phone ?? 'N/A' }}</td>
-                                <td>{{ $user->roles->first()->name ?? 'No Role' }}</td>
+                                {{-- <td>{{ $user->roles->first()->name ?? 'No Role' }}</td> --}}
                                 <td>{{ $user->orders->count() }}</td>
-                                <td>{{ $user->zone ?? 'Not Assigned' }}</td>
+                                <td>{{ $user->zone ?? 'Not Assigned' }}</td> 
                                 <td>
                                     @if ($user->status == 'inactive')
                                         <span class="badge bg-danger">Inactive</span>

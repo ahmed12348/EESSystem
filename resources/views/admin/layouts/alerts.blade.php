@@ -11,3 +11,15 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
+
+@if (session('import_error'))
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (session('import_error') as $errors)
+                @foreach ($errors as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            @endforeach
+        </ul>
+    </div>
+@endif

@@ -17,7 +17,9 @@
   <link href="{{ asset('assets/css/bootstrap-extended.css') }}" rel="stylesheet" />
   <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet" />
   <link href="{{ asset('assets/css/icons.css') }}" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+
+  {{-- <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet"> --}}
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   
   {{-- {{ asset('{{ asset('assets/css/bootstrap.min.css') }}') }} --}}

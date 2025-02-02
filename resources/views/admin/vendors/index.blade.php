@@ -51,7 +51,7 @@
                             <th>Phone Number</th>
                             <th>Zone</th>
                             <th>Status</th>
-                            <th>Verified</th>
+        
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -76,13 +76,7 @@
                                         <span class="badge bg-danger">Inactive</span>
                                     @endif
                                 </td>
-                                <td>
-                                    @if ($vendor->is_verified)
-                                        <span class="badge bg-success">Verified</span>
-                                    @else
-                                        <span class="badge bg-danger">Not Verified</span>
-                                    @endif
-                                </td>
+
                                 <td>
                                     <div class="table-actions d-flex align-items-center gap-3 fs-6">
                                         <a href="{{ route('admin.vendors.edit', $vendor->id) }}" class="text-primary"
@@ -90,10 +84,23 @@
                                             <i class="bi bi-pencil-fill"></i>
                                         </a>
 
-                                        {{-- <a href="{{ route('admin.vendors.show', $vendor->id) }}" class="text-primary"
+                                        <form action="{{ route('admin.vendors.destroy', $vendor->id) }}" method="POST"
+                                            style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-link p-0 text-danger"
+                                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"
+                                                onclick="return confirm('Are you sure you want to delete this vendor?')">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </button>
+                                        </form>
+{{--                                         
+                                        <a href="{{ route('admin.vendors.show', $vendor->id) }}" class="text-warning"
                                             data-bs-toggle="tooltip" data-bs-placement="bottom" title="View">
                                             <i class="bi bi-eye-fill"></i>
                                         </a> --}}
+
+
                                         @if ($vendor->status == 'inactive')  
                                             <form action="{{ route('admin.vendors.approve', $vendor->id) }}" method="POST" style="display:inline;">
                                                 @csrf
@@ -117,16 +124,7 @@
 
                                         @endif
 
-                                        <form action="{{ route('admin.vendors.destroy', $vendor->id) }}" method="POST"
-                                            style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-link p-0 text-danger"
-                                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"
-                                                onclick="return confirm('Are you sure you want to delete this vendor?')">
-                                                <i class="bi bi-trash-fill"></i>
-                                            </button>
-                                        </form>
+                                    
                                     </div>
                                 </td>
                             </tr>

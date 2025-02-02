@@ -28,7 +28,7 @@ return [
 
     ],
         'guards' => [
-            'vendor',
+            'web',
         ],
         'table_names' => [
 

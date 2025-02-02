@@ -3,7 +3,6 @@
 @section('content')
 <div class="container">
     <!-- Breadcrumb Navigation -->
-
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">Users</div>
         <div class="ps-3">
@@ -20,6 +19,8 @@
         </div>
     </div>
     <!-- End Breadcrumb -->
+
+    <!-- Alerts -->
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
@@ -27,86 +28,94 @@
     @if (session('error'))
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
+
     <!-- User Edit Form -->
     <div class="row">
         <div class="col-xl-9 mx-auto">
             <h6 class="mb-0 text-uppercase">Edit User</h6>
-            <hr/>
+            <hr />
             <div class="card">
                 <div class="card-body">
                     <form action="{{ route('admin.users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-                        <!-- Name Input -->
-                        <div class="mb-1">
-                            <label for="name" class="form-label">Name</label>
-                            <input class="form-control" type="text" id="name" name="name" placeholder="Enter user name" value="{{ old('name', $user->name) }}" required>
-                            @error('name')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
+
+
+                        <!-- Phone Input -->
                         <div class="mb-1">
                             <label for="phone" class="form-label">Phone</label>
-                            <input class="form-control" type="text" id="phone" name="phone" value="{{ old('name', $user->phone) }}"
-                                placeholder="Enter phone" required>
+                            <input class="form-control" type="text" id="phone" name="phone" value="{{ old('phone', $user->phone) }}" placeholder="Enter phone" disabled>
                             @error('phone')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
-                        <!-- Email Input -->
+
+                  
+
+                        <!-- Business Name Input -->
                         <div class="mb-1">
-                            <label for="email" class="form-label">Email</label>
-                            <input class="form-control" type="email" id="email" name="email" placeholder="Enter user email" value="{{ old('email', $user->email) }}" required>
-                            @error('email')
+                            <label for="business_name" class="form-label">Business Name</label>
+                            <input class="form-control" type="text" id="business_name" name="business_name" value="{{ old('business_name', $user->vendor?->business_name) }}" disabled>
+                            @error('business_name')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
 
-                        <!-- Password Input (Optional) -->
+                    
+
+                        <!-- Tax ID Input -->
                         <div class="mb-1">
-                            <label for="password" class="form-label">Password (Leave blank to keep current password)</label>
-                            <input class="form-control" type="password" id="password" name="password" placeholder="Enter new password">
-                            @error('password')
+                            <label for="tax_id" class="form-label">Tax ID</label>
+                            <input class="form-control" type="text" id="tax_id" name="tax_id" value="{{ old('tax_id', $user->vendor?->tax_id) }}" disabled>
+                            @error('tax_id')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
 
-                        <!-- Select Role Input with Select2 -->
+                        <!-- Location Address (Read-only) -->
                         <div class="mb-1">
-                            <label for="role" class="form-label">Select Role</label>
-                            <select class="form-select select2" id="role" name="role">
-                                @foreach($roles as $role)
-                                    <option value="{{ $role->id }}" {{ $user->roles[0]?->id == $role->id ? 'selected' : '' }}>{{$role->name   }}</option>
-                                @endforeach
+                            <label for="location_address" class="form-label">Location Address</label>
+                            <input class="form-control" type="text" id="location_address" value="{{ $user->vendor && $user->vendor->location ? $user->vendor->location->address : 'No location found' }}" disabled>
+                        </div>
+
+                        <!-- Business Type Input -->
+                        <div class="mb-1">
+                            <label for="business_type" class="form-label">Business Type</label>
+                            <input class="form-control" type="text" id="business_type" name="business_type" value="{{ old('business_type', $user->vendor?->business_type) }}" disabled>
+                            @error('business_type')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <!-- Zone Input -->
+                        <div class="mb-1">
+                            <label for="zone" class="form-label">Zone</label>
+                            <select class="form-select" id="zone" name="zone" required>
+                                <option value="" disabled>Select Zone</option>
+                                <option value="1" {{ old('zone', $user->vendor?->zone) == '1' ? 'selected' : '' }}>Zone 1</option>
+                                <option value="2" {{ old('zone', $user->vendor?->zone) == '2' ? 'selected' : '' }}>Zone 2</option>
                             </select>
-                            @error('role')
+                            @error('zone')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-
-
-
-                        <!-- File Input for Profile Picture -->
+                        {{-- <!-- Profile Picture (Photo) -->
                         <div class="mb-3">
-                            <label for="profile_picture" class="form-label">Profile Picture</label>
-                            <input class="form-control" type="file" id="profile_picture" name="profile_picture">
-                            @error('profile_picture')
+                            <label for="photo" class="form-label">Profile Picture</label>
+                            <input class="form-control" type="file" id="photo" name="photo">
+                            @error('photo')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
-                        </div>
-
+                        </div> --}}
 
                         <!-- Submit Button -->
-                        <button type="submit" class="btn btn-primary">Update User</button>
+                        <button type="submit" class="btn btn-primary mt-2">Update User</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-    <!-- End User Edit Form -->
 </div>
 
-<!-- Scripts to add Select2 functionality -->
 @push('scripts')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -9,27 +9,20 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the categories.
-     */
+   
     public function index()
     {
         $categories = Category::with('parent')->paginate(5); // Fetch categories with parent info
         return view('admin.categories.index', compact('categories'));
     }
 
-    /**
-     * Show the form for creating a new category.
-     */
     public function create()
     {
         $categories = Category::whereNull('parent_id')->get(); // Fetch only main categories
         return view('admin.categories.create', compact('categories'));
     }
 
-    /**
-     * Store a newly created category in the database.
-     */
+  
     public function store(Request $request)
     {
         $request->validate([
@@ -45,18 +38,14 @@ class CategoryController extends Controller
         return redirect()->route('admin.categories.index')->with('success', 'Category created successfully.');
     }
 
-    /**
-     * Show the form for editing the specified category.
-     */
+   
     public function edit(Category $category)
     {
         $categories = Category::whereNull('parent_id')->where('id', '!=', $category->id)->get();
         return view('admin.categories.edit', compact('category', 'categories'));
     }
 
-    /**
-     * Update the specified category in storage.
-     */
+    
     public function update(Request $request, Category $category)
     {
         $request->validate([
@@ -72,9 +61,7 @@ class CategoryController extends Controller
         return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully.');
     }
 
-    /**
-     * Remove the specified category from storage along with its subcategories and products.
-     */
+   
     public function destroy(Category $category)
     {
         // Delete all products under this category and its subcategories

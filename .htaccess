@@ -2,12 +2,16 @@
     Options +FollowSymLinks
     RewriteEngine On
 
+    # Redirect /admin/login to /public/admin/login
+    RewriteCond %{REQUEST_URI} ^/EESSystem/admin/login$ [NC]
+    RewriteRule ^(.*)$ /EESSystem/public/admin/login [L,R=301]
+
     # Redirect everything to index.php
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^ index.php [L]
 
-       # Fix storage asset links
+    # Fix storage asset links
     RewriteCond %{REQUEST_URI} ^/storage/(.*)$
     RewriteRule ^storage/(.*)$ /public/storage/$1 [L]
 </IfModule>
