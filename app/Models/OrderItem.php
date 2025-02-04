@@ -12,11 +12,29 @@ class OrderItem extends Model
 
     protected $fillable = ['order_id', 'product_id', 'quantity', 'price'];
 
-    public function order() {
+    public function order()
+    {
         return $this->belongsTo(Order::class);
     }
 
-    public function product() {
+    public function product()
+    {
         return $this->belongsTo(Product::class);
+    }
+
+    public function getTotalPriceAttribute()
+    {
+        return $this->stock_quantity * $this->price;
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::saving(function($orderItem) {
+            if ($orderItem->stock_quantity <= 0) {
+                throw new \Exception("Quantity must be a positive number.");
+            }
+        });
     }
 }

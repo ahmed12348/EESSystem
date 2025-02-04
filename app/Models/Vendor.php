@@ -25,5 +25,14 @@ class Vendor extends Model
         return $this->belongsTo(Location::class, 'location_id');
     }
 
+    public function isActiveVendor()
+    {
+        return $this->user->isApproved() && $this->user->isVendor();
+    }
+
+    public function products() 
+    {
+        return $this->hasMany(Product::class, 'vendor_id');
+    }
   
 }

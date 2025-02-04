@@ -11,6 +11,7 @@ class Role extends Model
     use HasFactory,HasRoles;
     protected $guard_name = 'web';  
     protected $fillable = ['name'];
+    
     public function user()
     {
         return $this->hasMany(User::class);

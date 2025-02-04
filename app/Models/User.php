@@ -52,7 +52,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function isApproved()
     {
-        return $this->status === 'Active';
+        return $this->status === 'active';
     }
 
     public function orders()
@@ -74,5 +74,14 @@ class User extends Authenticatable implements JWTSubject
     public function getAuthIdentifierName()
     {
         return 'id';
+    }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
+    }
+
+    public function cart() {
+        return $this->hasMany(Cart::class);
     }
 }

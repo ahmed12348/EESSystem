@@ -15,11 +15,13 @@ class Location extends Model
         return $this->belongsTo(City::class, 'city_id');
     }
 
+   
     public function region() {
         return $this->belongsTo(Region::class, 'region_id');
     }
 
+  
     public function vendors() {
-        return $this->hasMany(Vendor::class, 'vendor_id');
+        return $this->hasMany(Vendor::class, 'location_id');
     }
 }
