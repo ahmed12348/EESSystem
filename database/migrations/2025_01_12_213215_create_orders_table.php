@@ -18,9 +18,12 @@ class CreateOrdersTable extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('vendor_id')->constrained('users')->onDelete('cascade');
             $table->decimal('total_price', 10, 2);
-            $table->enum('status', ['pending', 'completed', 'cancelled'])->default('pending');
+            $table->string('status')->default('pending'); // pending, completed, cancelled
+            // $table->enum('status', ['pending', 'completed', 'cancelled'])->default('pending');
+            $table->timestamp('placed_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
+            
         });
     }
 

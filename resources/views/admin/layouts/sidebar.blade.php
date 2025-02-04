@@ -62,13 +62,14 @@
       </a>
     </li>
 
-    <li class="#">
-      <a href="#">
+    <li class="{{ request()->routeIs('admin.settings.cart') ? 'mm-active' : '' }}">
+      <a href="{{route('admin.settings.cart')}}">
         <div class="parent-icon"><i class="bi bi-gear"></i>
         </div>
         <div class="menu-title">Cart Settings</div>
       </a>
     </li>
+
 
     <li class="{{ request()->routeIs('admin.ads.index') ? 'mm-active' : '' }}">
       <a href="{{route('admin.ads.index')}}">

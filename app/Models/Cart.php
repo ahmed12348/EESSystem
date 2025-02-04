@@ -1,0 +1,32 @@
+<?php
+
+namespace App\Models;
+
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Cart extends Model
+{
+    use HasFactory;
+    protected $fillable = ['user_id', 'expires_at'];
+    protected $dates = ['expires_at'];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
+    public function items() {
+        return $this->hasMany(CartItem::class);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($cart) {
+            $expirationHours = Setting::getValue('cart_expiration_hours', 2);
+            $cart->expires_at = Carbon::now()->addHours($expirationHours);
+        });
+    }
+}
