@@ -4,11 +4,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\LocationController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Middleware\JwtMiddleware;
 
 
 Route::group(['prefix' => 'auth'], function () {
     // Register route
+    Route::post('/send-notification', [NotificationController::class, 'sendNotification']);
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
     // OTP Verification Route (for step 3 of registration process)
@@ -26,4 +28,3 @@ Route::group(['prefix' => 'auth'], function () {
 
     });
 });
-

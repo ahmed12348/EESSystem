@@ -7,14 +7,15 @@
     "require": {
         "php": "^7.3|^8.0",
         "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.0.1",
-        "kreait/firebase-php": "^7.10",
+        "google/apiclient": "^2.18",
+        "guzzlehttp/guzzle": "^7.4",
+        "kreait/laravel-firebase": "^4.2",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.15",
         "laravel/tinker": "^2.5",
         "maatwebsite/excel": "^3.1",
         "spatie/laravel-permission": "^5.11",
-        "tymon/jwt-auth": "^1.0@dev"
+        "tymon/jwt-auth": "*"
     },
     "require-dev": {
         "beyondcode/laravel-er-diagram-generator": "^4.0",
@@ -24,6 +25,7 @@
         "laravel/ui": "^3.4",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^5.10",
+       
         "phpunit/phpunit": "^9.5.10"
     },
     "autoload": {

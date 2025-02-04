@@ -1,0 +1,64 @@
+[04-Feb-2025 13:20:51 UTC] PHP Fatal error:  Uncaught Error: Interface "StellaMaris\Clock\ClockInterface" not found in /home/usieaasz/public_html/Elbatal/EES/vendor/beste/clock/src/Clock.php:9
+Stack trace:
+#0 /home/usieaasz/public_html/Elbatal/EES/vendor/composer/autoload_real.php(41): require()
+#1 /home/usieaasz/public_html/Elbatal/EES/vendor/composer/autoload_real.php(45): {closure}()
+#2 /home/usieaasz/public_html/Elbatal/EES/vendor/autoload.php(25): ComposerAutoloaderInitf596a0f7a5eee4bdffb7ffa4117fbf2a::getLoader()
+#3 /home/usieaasz/public_html/Elbatal/EES/public/index.php(34): require('/home/usieaasz/...')
+#4 {main}
+  thrown in /home/usieaasz/public_html/Elbatal/EES/vendor/beste/clock/src/Clock.php on line 9
+[04-Feb-2025 13:20:55 UTC] PHP Fatal error:  Uncaught Error: Interface "StellaMaris\Clock\ClockInterface" not found in /home/usieaasz/public_html/Elbatal/EES/vendor/beste/clock/src/Clock.php:9
+Stack trace:
+#0 /home/usieaasz/public_html/Elbatal/EES/vendor/composer/autoload_real.php(41): require()
+#1 /home/usieaasz/public_html/Elbatal/EES/vendor/composer/autoload_real.php(45): {closure}()
+#2 /home/usieaasz/public_html/Elbatal/EES/vendor/autoload.php(25): ComposerAutoloaderInitf596a0f7a5eee4bdffb7ffa4117fbf2a::getLoader()
+#3 /home/usieaasz/public_html/Elbatal/EES/public/index.php(34): require('/home/usieaasz/...')
+#4 {main}
+  thrown in /home/usieaasz/public_html/Elbatal/EES/vendor/beste/clock/src/Clock.php on line 9
+[04-Feb-2025 13:20:57 UTC] PHP Fatal error:  Uncaught Error: Interface "StellaMaris\Clock\ClockInterface" not found in /home/usieaasz/public_html/Elbatal/EES/vendor/beste/clock/src/Clock.php:9
+Stack trace:
+#0 /home/usieaasz/public_html/Elbatal/EES/vendor/composer/autoload_real.php(41): require()
+#1 /home/usieaasz/public_html/Elbatal/EES/vendor/composer/autoload_real.php(45): {closure}()
+#2 /home/usieaasz/public_html/Elbatal/EES/vendor/autoload.php(25): ComposerAutoloaderInitf596a0f7a5eee4bdffb7ffa4117fbf2a::getLoader()
+#3 /home/usieaasz/public_html/Elbatal/EES/public/index.php(34): require('/home/usieaasz/...')
+#4 {main}
+  thrown in /home/usieaasz/public_html/Elbatal/EES/vendor/beste/clock/src/Clock.php on line 9
+[04-Feb-2025 13:20:58 UTC] PHP Fatal error:  Uncaught Error: Interface "StellaMaris\Clock\ClockInterface" not found in /home/usieaasz/public_html/Elbatal/EES/vendor/beste/clock/src/Clock.php:9
+Stack trace:
+#0 /home/usieaasz/public_html/Elbatal/EES/vendor/composer/autoload_real.php(41): require()
+#1 /home/usieaasz/public_html/Elbatal/EES/vendor/composer/autoload_real.php(45): {closure}()
+#2 /home/usieaasz/public_html/Elbatal/EES/vendor/autoload.php(25): ComposerAutoloaderInitf596a0f7a5eee4bdffb7ffa4117fbf2a::getLoader()
+#3 /home/usieaasz/public_html/Elbatal/EES/public/index.php(34): require('/home/usieaasz/...')
+#4 {main}
+  thrown in /home/usieaasz/public_html/Elbatal/EES/vendor/beste/clock/src/Clock.php on line 9
+[04-Feb-2025 13:20:58 UTC] PHP Fatal error:  Uncaught Error: Interface "StellaMaris\Clock\ClockInterface" not found in /home/usieaasz/public_html/Elbatal/EES/vendor/beste/clock/src/Clock.php:9
+Stack trace:
+#0 /home/usieaasz/public_html/Elbatal/EES/vendor/composer/autoload_real.php(41): require()
+#1 /home/usieaasz/public_html/Elbatal/EES/vendor/composer/autoload_real.php(45): {closure}()
+#2 /home/usieaasz/public_html/Elbatal/EES/vendor/autoload.php(25): ComposerAutoloaderInitf596a0f7a5eee4bdffb7ffa4117fbf2a::getLoader()
+#3 /home/usieaasz/public_html/Elbatal/EES/public/index.php(34): require('/home/usieaasz/...')
+#4 {main}
+  thrown in /home/usieaasz/public_html/Elbatal/EES/vendor/beste/clock/src/Clock.php on line 9
+[04-Feb-2025 13:21:01 UTC] PHP Fatal error:  Uncaught Error: Interface "StellaMaris\Clock\ClockInterface" not found in /home/usieaasz/public_html/Elbatal/EES/vendor/beste/clock/src/Clock.php:9
+Stack trace:
+#0 /home/usieaasz/public_html/Elbatal/EES/vendor/composer/autoload_real.php(41): require()
+#1 /home/usieaasz/public_html/Elbatal/EES/vendor/composer/autoload_real.php(45): {closure}()
+#2 /home/usieaasz/public_html/Elbatal/EES/vendor/autoload.php(25): ComposerAutoloaderInitf596a0f7a5eee4bdffb7ffa4117fbf2a::getLoader()
+#3 /home/usieaasz/public_html/Elbatal/EES/public/index.php(34): require('/home/usieaasz/...')
+#4 {main}
+  thrown in /home/usieaasz/public_html/Elbatal/EES/vendor/beste/clock/src/Clock.php on line 9
+[04-Feb-2025 13:21:01 UTC] PHP Fatal error:  Uncaught Error: Interface "StellaMaris\Clock\ClockInterface" not found in /home/usieaasz/public_html/Elbatal/EES/vendor/beste/clock/src/Clock.php:9
+Stack trace:
+#0 /home/usieaasz/public_html/Elbatal/EES/vendor/composer/autoload_real.php(41): require()
+#1 /home/usieaasz/public_html/Elbatal/EES/vendor/composer/autoload_real.php(45): {closure}()
+#2 /home/usieaasz/public_html/Elbatal/EES/vendor/autoload.php(25): ComposerAutoloaderInitf596a0f7a5eee4bdffb7ffa4117fbf2a::getLoader()
+#3 /home/usieaasz/public_html/Elbatal/EES/public/index.php(34): require('/home/usieaasz/...')
+#4 {main}
+  thrown in /home/usieaasz/public_html/Elbatal/EES/vendor/beste/clock/src/Clock.php on line 9
+[04-Feb-2025 13:21:07 UTC] PHP Fatal error:  Uncaught Error: Interface "StellaMaris\Clock\ClockInterface" not found in /home/usieaasz/public_html/Elbatal/EES/vendor/beste/clock/src/Clock.php:9
+Stack trace:
+#0 /home/usieaasz/public_html/Elbatal/EES/vendor/composer/autoload_real.php(41): require()
+#1 /home/usieaasz/public_html/Elbatal/EES/vendor/composer/autoload_real.php(45): {closure}()
+#2 /home/usieaasz/public_html/Elbatal/EES/vendor/autoload.php(25): ComposerAutoloaderInitf596a0f7a5eee4bdffb7ffa4117fbf2a::getLoader()
+#3 /home/usieaasz/public_html/Elbatal/EES/public/index.php(34): require('/home/usieaasz/...')
+#4 {main}
+  thrown in /home/usieaasz/public_html/Elbatal/EES/vendor/beste/clock/src/Clock.php on line 9
