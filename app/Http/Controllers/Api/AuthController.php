@@ -163,6 +163,7 @@ class AuthController extends Controller
         }
     }
 
+    
     public function refresh()
     {
         try {
