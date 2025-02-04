@@ -10,7 +10,7 @@ class Product extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable = ['name', 'description', 'price', 'image', 'category_id', 'vendor_id'];
+    protected $fillable = ['name', 'description','stock_quantity', 'price', 'image', 'category_id', 'vendor_id'];
 
     public function category()
     {
@@ -19,6 +19,11 @@ class Product extends Model
 
     public function vendor()
     {
-        return $this->belongsTo(User::class, 'vendor_id');
+        return $this->belongsTo(Vendor::class, 'vendor_id');
+    }
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
     }
 }

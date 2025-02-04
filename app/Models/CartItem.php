@@ -14,7 +14,16 @@ class CartItem extends Model
         return $this->belongsTo(Cart::class);
     }
 
+    // Relationship with Product model
     public function product() {
         return $this->belongsTo(Product::class);
+    }
+
+    public function getTotalPriceAttribute() {
+        return $this->quantity * $this->price;
+    }
+
+    public static function validateQuantity($quantity) {
+        return $quantity > 0;
     }
 }

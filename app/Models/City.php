@@ -9,4 +9,8 @@ class City extends Model
 {
     protected $fillable = ['name'];
     use HasFactory;
+
+    public function locations() {
+        return $this->hasMany(Location::class, 'city_id');
+    }
 }

@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model
 {
-    use HasFactory,SoftDeletes;
- 
+    use HasFactory, SoftDeletes;
+
     protected $fillable = ['name', 'parent_id'];
 
     // Relation to parent category
@@ -28,5 +28,17 @@ class Category extends Model
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+
+    // Helper function to get all products including subcategories (if needed)
+    public function getAllProductsIncludingSubcategories()
+    {
+        $products = $this->products;
+
+        foreach ($this->subcategories as $subcategory) {
+            $products = $products->merge($subcategory->products);
+        }
+
+        return $products;
     }
 }
