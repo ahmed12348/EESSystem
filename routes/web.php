@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\HomeController;
 
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\CartController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Vendor\ProductController as VendorProductController;
 use App\Http\Controllers\Vendor\AuthController;
 use Illuminate\Http\Request;
@@ -61,6 +63,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
 
         Route::resource('ads', ADSController::class);
+        Route::resource('carts', CartController::class);
+        Route::get('cart-settings', [SettingController::class, 'index'])->name('settings.cart');
+        Route::post('cart-settings/update', [SettingController::class, 'update'])->name('settings.cart.update');
         // Route::get('ads/getReferences', [ADSController::class, 'getReferences'])->name('ads.getReferences');
 
     });

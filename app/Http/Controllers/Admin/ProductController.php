@@ -74,6 +74,17 @@ class ProductController extends Controller
         return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');
     }
 
+
+    public function show($id)
+    {
+        // $product = Product::with('category')->findOrFail($id);
+        $product = Product::findOrFail($id);  
+        $categories = Category::all();  
+    
+        return view('vendor.products.show', compact('product', 'categories'));
+      
+    }
+
     public function destroy(Product $product)
     {
         if (Auth::id() !== $product->vendor_id && !Auth::user()->hasRole('admin')) {

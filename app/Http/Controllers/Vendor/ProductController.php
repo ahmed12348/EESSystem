@@ -52,6 +52,13 @@ class ProductController extends Controller
 
         return redirect()->route('vendor.products.index')->with('success', 'Product created successfully.');
     }
+    public function show($id)
+    {
+        $product = Product::findOrFail($id);  
+        $categories = Category::all();  
+    
+        return view('vendor.products.show', compact('product', 'categories'));
+    }
 
     public function edit(Product $product)
     {
