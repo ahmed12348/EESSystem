@@ -1,3 +1,20 @@
+# <IfModule mod_rewrite.c>
+#     Options +FollowSymLinks
+#     RewriteEngine On
+
+#     # Redirect /admin/* to /public/admin/* (Only /admin and its sub-paths)
+#     RewriteCond %{REQUEST_URI} ^/Elbatal/EES/admin/(.*)$ [NC]
+#     RewriteRule ^admin/(.*)$ /Elbatal/EES/public/admin/$1 [L,R=301]
+
+#     # Fix storage asset links (for handling public storage access)
+#     RewriteCond %{REQUEST_URI} ^/Elbatal/EES/storage/(.*)$
+#     RewriteRule ^storage/(.*)$ /Elbatal/EES/public/storage/$1 [L]
+
+#     # Handle any other request and forward to index.php
+#     RewriteCond %{REQUEST_FILENAME} !-f
+#     RewriteCond %{REQUEST_FILENAME} !-d
+#     RewriteRule ^ index.php [L]
+# </IfModule>
 <IfModule mod_rewrite.c>
     Options +FollowSymLinks
     RewriteEngine On
