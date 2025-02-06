@@ -10,7 +10,7 @@ class OrderItem extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable = ['order_id', 'product_id', 'quantity', 'price'];
+    protected $fillable = ['order_id', 'product_id', 'quantity', 'price','total_price'];
 
     public function order()
     {
@@ -24,7 +24,7 @@ class OrderItem extends Model
 
     public function getTotalPriceAttribute()
     {
-        return $this->stock_quantity * $this->price;
+        return $this->quantity * $this->price;
     }
 
     public static function boot()
@@ -32,7 +32,7 @@ class OrderItem extends Model
         parent::boot();
 
         static::saving(function($orderItem) {
-            if ($orderItem->stock_quantity <= 0) {
+            if ($orderItem->quantity <= 0) {
                 throw new \Exception("Quantity must be a positive number.");
             }
         });

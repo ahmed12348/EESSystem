@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Order;
@@ -14,52 +15,56 @@ class OrderController extends Controller
     // Create an order from the cart
 
 
-    public function createOrder(Request $request)
+    
+    public function createOrder()
     {
-        $user = Auth::user(); // Get authenticated user
+        try {
+            $user = auth()->user();
+            $cart = $user->cart()->first();
     
-        if (!$user) {
-            return response()->json([
-                'statusCode' => 401,
-                'message' => 'فشل التحقق من البيانات.', 
+            // Check if cart exists and is not expired
+            if (!$cart || $cart->checkExpiration()) {
+                return ApiResponse::error('سلتك منتهية الصلاحية، الرجاء إنشاء سلة جديدة.', 400);
+            }
+    
+            // Ensure the cart has items
+            if ($cart->items->isEmpty()) {
+                return ApiResponse::error('لا يمكنك تقديم طلب بسلة فارغة.', 400);
+            }
+    
+            // Create the order and calculate the total price using the model method
+            $order = Order::create([
+                'user_id' => $user->id,
+                'status' => 'pending',
+                'placed_at' => now(),
             ]);
+    
             
+    
+            // Move items from cart to order
+            foreach ($cart->items as $cartItem) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $cartItem->product_id,
+                    'quantity' => $cartItem->quantity,
+                    'price' => $cartItem->price,
+                ]);
+                // Calculate total price and update the order
+            $order->total_price = $order->calculateTotalPrice();
+            $order->save();
+            }
+    
+            // Expire the cart after order creation
+            $cart->update(['status' => 0]);
+    
+            return ApiResponse::success('تم إنشاء الطلب بنجاح', $order, 201);
+    
+        } catch (\Exception $e) {
+            return ApiResponse::error('حدث خطأ أثناء معالجة الطلب: ' . $e->getMessage(), 500);
         }
-    
-        // Retrieve the user's cart items
-        $cartItems = $user->cart()->get(); 
-    
-        if ($cartItems->isEmpty()) {
-            return response()->json([
-                'statusCode' => 400,
-                'message' => 'سلتك فارغة.', 
-            ]);
-         
-        }
-    
-        // Process order creation using cart items
-        $orderData = [
-            'user_id' => $user->id,
-            'total_price' => $cartItems->sum('price'), // Assuming cart has a 'price' field
-            'status' => 'pending',
-        ];
-    
-        $order = Order::create($orderData); // Save order
-    
-        // Attach cart items to the order
-        foreach ($cartItems as $item) {
-            $order->items()->create([
-                'product_id' => $item->product_id,
-                'quantity' => $item->quantity,
-                'price' => $item->price,
-            ]);
-        }
-    
-        // Optionally, clear the cart after order creation
-        $user->cart()->delete();
-    
-        return response()->json(['message' => 'Order created successfully', 'order' => $order], 201);
     }
+    
+    
     
 
     // Get all orders for the user

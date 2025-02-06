@@ -10,7 +10,7 @@ class Order extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable = ['user_id', 'status', 'total_price', 'placed_at'];
+    protected $fillable = ['user_id', 'status', 'price','total_price', 'placed_at'];
 
     public function user()
     {
@@ -53,5 +53,14 @@ class Order extends Model
     public function getPlacedAtAttribute()
     {
         return $this->created_at;
+    }
+
+  
+
+    public function calculateTotalPrice()
+    {
+        return $this->items->sum(function ($item) {
+            return $item->quantity * $item->price;
+        });
     }
 }
