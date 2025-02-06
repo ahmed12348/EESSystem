@@ -8,7 +8,7 @@ use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Middleware\JwtMiddleware;
 
 
@@ -29,12 +29,14 @@ Route::group(['prefix' => 'auth'], function () {
         Route::get('/me', [AuthController::class, 'getUser']);
         Route::post('/refresh', [AuthController::class, 'refresh']);
         Route::get('/getUser', [AuthController::class, 'getUser']);
-        Route::post('/profile', [AuthController::class, 'profile']);
+        Route::get('/profile', [AuthController::class, 'profile']);
         // orders 
         Route::post('/cart', [CartController::class, 'createCart']);
         Route::post('/cart/add/item', [CartController::class, 'addItemToCart']);
         Route::get('/cart', [CartController::class, 'viewCart']);
-        Route::post('/order', [OrderController::class, 'createOrder']);
+        Route::post('/order', [OrderController::class, 'createOrder']); 
+        Route::get('/order/{id}', [OrderController::class, 'viewOrder']); 
+ 
     });
 });
 

@@ -17,7 +17,7 @@ class CartController extends Controller
     {
         $user = auth()->user();
 
-        $cart = $user->cart()->first();
+        $cart = $user->cart()->orderBy('id', 'desc')->first();
 
         if (!$cart || $cart->checkExpiration()) {
             // Create a new cart with updated expiration time
@@ -44,7 +44,7 @@ class CartController extends Controller
     public function addItemToCart(Request $request)
     {
         $user = auth()->user();
-        $cart = $user->cart()->first();
+        $cart = $user->cart()->orderBy('id', 'desc')->first();
 
         // Check if cart is expired
         if (!$cart || $cart->checkExpiration()) {
@@ -78,7 +78,7 @@ class CartController extends Controller
     public function viewCart(Request $request)
     {
         $user = auth()->user();
-        $cart = $user->cart()->first();
+        $cart = $user->cart()->orderBy('id', 'desc')->first();
     
         if (!$cart || $cart->checkExpiration()) {
             return response()->json([
@@ -98,7 +98,7 @@ class CartController extends Controller
             'data' => [
                 'cart' => $cart,
                 'items' => $cart->items,
-                'total' => $total, // Include the total price
+                'total' => $total, 
             ]
         ]);
     }

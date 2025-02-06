@@ -14,7 +14,10 @@ class JwtMiddleware
         try {
             return   $user = JWTAuth::parseToken()->authenticate();
         } catch (JWTException $e) {
-            return response()->json(['error' => 'Token not valid'], 401);
+            return response()->json([
+                'statusCode' => 401,
+                'error' => 'انتهت صلاحية الرمز المميز، الرجاء تسجيل الدخول مرة أخرى.'
+            ], 401);
         }
 
         return $next($request);

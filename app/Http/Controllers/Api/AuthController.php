@@ -85,12 +85,16 @@ class AuthController extends Controller
                 return response()->json(['StatusCode' => 400, 'message' => 'رقم الهاتف أو رمز التحقق غير صحيح'], 400);
             }
 
-            if ($user->status !== 'active') {
-                return response()->json(['StatusCode' => 400, 'message' => 'حسابك غير نشط'], 400);
+            if ($user->status !== 'active' || $user->is_verified != 1) {
+                return response()->json(['StatusCode' => 200, 'message' => 'حسابك غير نشط أو لم يتم التحقق منه'], 200);
+            }
+              
+            if ($user->roles->first()->name !== 'customer') {
+                return response()->json(['StatusCode' => 400, 'message' => 'حسابك غير صحيح'], 400);
             }
 
             $token = JWTAuth::fromUser($user);
-
+ 
             return response()->json([
                 'StatusCode' => 200,
                 'message' => 'تم تسجيل الدخول بنجاح',
@@ -146,7 +150,8 @@ class AuthController extends Controller
                 return response()->json(['StatusCode' => 400, 'message' => 'رقم الهاتف أو رمز التحقق غير صحيح'], 400);
             }
 
-            $user->update(['is_verified' => 1]);
+            $user->is_verified = 1;
+            $user->save();
 
             return response()->json([
                 'StatusCode' => 200,
@@ -163,7 +168,7 @@ class AuthController extends Controller
         }
     }
 
-    
+
     public function refresh()
     {
         try {

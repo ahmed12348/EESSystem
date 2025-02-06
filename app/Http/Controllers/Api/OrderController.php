@@ -1,58 +1,126 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
+use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\Cart;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 class OrderController extends Controller
 {
-    // Place an order
+    // Create an order from the cart
+
+
     public function createOrder(Request $request)
     {
-        $user = auth()->user();
-        $cart = $user->cart()->first();
-
-        if (!$cart || $cart->items->isEmpty()) {
+        $user = Auth::user(); // Get authenticated user
+    
+        if (!$user) {
+            return response()->json([
+                'statusCode' => 401,
+                'message' => 'فشل التحقق من البيانات.', 
+            ]);
+            
+        }
+    
+        // Retrieve the user's cart items
+        $cartItems = $user->cart()->get(); 
+    
+        if ($cartItems->isEmpty()) {
             return response()->json([
                 'statusCode' => 400,
-                'message' => 'Cart is empty or not found.',
+                'message' => 'سلتك فارغة.', 
             ]);
+         
         }
-
-        // Create the order
-        $order = Order::create([
+    
+        // Process order creation using cart items
+        $orderData = [
             'user_id' => $user->id,
-            'vendor_id' => $cart->items->first()->product->vendor_id,
-            'status' => 'pending', // Default status
-            'total_price' => $cart->items->sum('price'),
-            'placed_at' => now(),
-        ]);
-
-        // Create order items
-        foreach ($cart->items as $cartItem) {
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $cartItem->product_id,
-                'quantity' => $cartItem->quantity,
-                'price' => $cartItem->price,
+            'total_price' => $cartItems->sum('price'), // Assuming cart has a 'price' field
+            'status' => 'pending',
+        ];
+    
+        $order = Order::create($orderData); // Save order
+    
+        // Attach cart items to the order
+        foreach ($cartItems as $item) {
+            $order->items()->create([
+                'product_id' => $item->product_id,
+                'quantity' => $item->quantity,
+                'price' => $item->price,
             ]);
         }
+    
+        // Optionally, clear the cart after order creation
+        $user->cart()->delete();
+    
+        return response()->json(['message' => 'Order created successfully', 'order' => $order], 201);
+    }
+    
 
-        // Mark cart as completed
-        $cart->delete(); // Or you can add a status like 'completed'
+    // Get all orders for the user
+    public function getOrders()
+    {
+        $user = auth()->user();
+        $orders = $user->orders()->with('items')->get();
 
         return response()->json([
             'statusCode' => 200,
-            'message' => 'Order created successfully.',
-            'data' => [
-                'order' => $order,
-                'order_items' => $order->items,
-            ]
+            'message' => 'تم استرجاع الطلبات بنجاح.',
+            'data' => $orders
         ]);
     }
 
-  
+    // Get order details by ID
+    public function getOrderDetails($id)
+    {
+        $user = auth()->user();
+        $order = $user->orders()->with('items')->find($id);
+
+        if (!$order) {
+            return response()->json([
+                'statusCode' => 404,
+                'message' => 'الطلب غير موجود.',
+            ]);
+        }
+
+        return response()->json([
+            'statusCode' => 200,
+            'message' => 'تم استرجاع تفاصيل الطلب بنجاح.',
+            'data' => $order
+        ]);
+    }
+
+    // Cancel an order
+    public function cancelOrder($id)
+    {
+        $user = auth()->user();
+        $order = $user->orders()->find($id);
+
+        if (!$order) {
+            return response()->json([
+                'statusCode' => 404,
+                'message' => 'الطلب غير موجود.',
+            ]);
+        }
+
+        if ($order->status !== 'pending') {
+            return response()->json([
+                'statusCode' => 400,
+                'message' => 'لا يمكن إلغاء هذا الطلب في الوقت الحالي.',
+            ]);
+        }
+
+        $order->setStatus('cancelled');
+
+        return response()->json([
+            'statusCode' => 200,
+            'message' => 'تم إلغاء الطلب بنجاح.',
+            'data' => $order
+        ]);
+    }
 }
