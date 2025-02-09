@@ -52,4 +52,13 @@ class Order extends Model
     {
         return $this->created_at;
     }
+
+  
+
+    public function calculateTotalPrice()
+    {
+        return $this->items->sum(function ($item) {
+            return $item->quantity * $item->price;
+        });
+    }
 }
