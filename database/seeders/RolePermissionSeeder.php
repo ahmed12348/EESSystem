@@ -29,7 +29,7 @@ class RolePermissionSeeder extends Seeder
         // Create roles
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
         $vendorRole = Role::firstOrCreate(['name' => 'vendor']);
-        $customerRole = Role::firstOrCreate(['name' => 'customer']);
+
         // Assign permissions to roles
         $adminRole->syncPermissions($permissions);
 
@@ -64,28 +64,11 @@ class RolePermissionSeeder extends Seeder
         $vendor = Vendor::firstOrCreate([
             'user_id' => $vendorUser->id, // Link the user to vendor
             'business_name' => 'Vendor Business',
-            
             'zone' => 'Zone Name',
-        
         ]);
         $customerPermissions = [
             'view products', 'view orders', 'view dashboard',
         ];
-        $customerRole->syncPermissions($customerPermissions);
-        $customerUser = User::firstOrCreate([
-            'email' => 'customer@ees.com',
-        ], [
-            'name' => 'customer User 1',
-            'phone' => '3333',
-            'password' => Hash::make('password'), // Use Hash::make for security
-        ]);
-        $customerUser->assignRole('customer');
-        // Optionally, you can assign additional roles or permissions to the vendor if needed
-        // $vendor->assignRole('vendor'); // This line is redundant since the user already has the 'vendor' role
-
-        // If you want to update vendor info later, you can use this:
-        // $vendor->update([
-        //     'status' => 'active', // For example, after admin approval
-        // ]);
+        
     }
 }

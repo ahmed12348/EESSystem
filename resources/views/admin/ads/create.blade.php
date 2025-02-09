@@ -49,7 +49,7 @@
                                 @enderror
                             </div>
 
-                            <!-- Ad Type -->
+                            {{-- <!-- Ad Type -->
                             <div class="mb-1">
                                 <label for="type" class="form-label">Ad Type</label>
                                 <select class="form-select select2" id="type" name="type">
@@ -71,9 +71,9 @@
                                 @error('reference_id')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div> --}}
 
-                            <div class="mb-1" id="zone-container" style="display: none;">
+                            {{-- <div class="mb-1" id="zone-container" style="display: none;">
                                 <label for="zone" class="form-label">Ad Zone</label>
                                 <select class="form-select" id="zone" name="zone">
                                     <option value="zone1">Zone 1</option>
@@ -82,7 +82,7 @@
                                 @error('zone')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div> --}}
 
                             <!-- Image Upload -->
                             <div class="mb-3">

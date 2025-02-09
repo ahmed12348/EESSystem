@@ -2,28 +2,45 @@
 
 namespace App\Models;
 
+use App\Jobs\ExpireCartItems;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class CartItem extends Model
 {
     use HasFactory;
-    protected $fillable = ['cart_id', 'product_id', 'quantity', 'price'];
 
-    public function cart() {
+    protected $fillable = [
+        'cart_id', 'product_id', 'quantity', 'status', 
+        'expires_at', 'price', 'discount', 'final_price'
+    ];
+
+    public function cart()
+    {
         return $this->belongsTo(Cart::class);
     }
 
-    // Relationship with Product model
-    public function product() {
-        return $this->belongsTo(Product::class);
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id')->where('status', 1);
     }
 
-    public function getTotalPriceAttribute() {
-        return $this->quantity * $this->price;
+    // public function getFinalPriceAttribute()
+    // {
+    //     return ($this->price * $this->quantity ) - $this->discount; 
+    // }
+    
+    public function isExpired()
+    {
+        return $this->expires_at && Carbon::parse($this->expires_at)->isPast();
     }
 
-    public static function validateQuantity($quantity) {
-        return $quantity > 0;
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active')->where(function ($q) {
+            $q->whereNull('expires_at')->orWhere('expires_at', '>', Carbon::now());
+        });
     }
+
 }

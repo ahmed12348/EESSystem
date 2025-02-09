@@ -49,7 +49,7 @@
                             </div>
 
                             <!-- Ad Type -->
-                            <div class="mb-1">
+                            {{-- <div class="mb-1">
                                 <label for="type" class="form-label">Ad Type</label>
                                 <select class="form-select select2" id="type" name="type">
                                     <option value="product" {{ old('type', $ad->type) == 'product' ? 'selected' : '' }}>Product</option>
@@ -59,10 +59,10 @@
                                 @error('type')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div> --}}
 
                             <!-- Reference Selection (Dynamic) -->
-                            <div class="mb-1" id="reference-container" style="{{ $ad->type == 'product' || $ad->type == 'category' ? '' : 'display: none;' }}">
+                            {{-- <div class="mb-1" id="reference-container" style="{{ $ad->type == 'product' || $ad->type == 'category' ? '' : 'display: none;' }}">
                                 <label for="reference_id" class="form-label">Select Reference</label>
                                 <select class="form-select select2" id="reference_id" name="reference_id">
                                     <option value="">Select Reference</option>
@@ -75,10 +75,10 @@
                                 @error('reference_id')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div> --}}
 
                             <!-- Ad Zone (Visible if type is 'custom') -->
-                            <div class="mb-1" id="zone-container" style="{{ $ad->type == 'zone' ? '' : 'display: none;' }}">
+                            {{-- <div class="mb-1" id="zone-container" style="{{ $ad->type == 'zone' ? '' : 'display: none;' }}">
                                 <label for="zone" class="form-label">Ad Zone</label>
                                 <select class="form-select" id="zone" name="zone">
                                     <option value="zone1" {{ old('zone', $ad->zone) == 'zone1' ? 'selected' : '' }}>Zone 1</option>
@@ -87,7 +87,7 @@
                                 @error('zone')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div> --}}
 
                             <!-- Image Upload (if needed) -->
                             <div class="mb-3">

@@ -26,7 +26,7 @@ class ProductController extends Controller
     {
         // Get the authenticated vendor's products
         $products = Product::where('vendor_id', Auth::id())->paginate(10);
-        $requestedProducts = Product::where('vendor_id', Auth::id())->where('approved', false)->paginate(10); 
+        $requestedProducts = Product::where('vendor_id', Auth::id())->where('status', false)->paginate(10); 
         
         return view('vendor.products.index', compact('products', 'requestedProducts'));
     }

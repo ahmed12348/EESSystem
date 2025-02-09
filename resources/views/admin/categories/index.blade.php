@@ -25,8 +25,6 @@
     </div>
     <!-- End Breadcrumb -->
 
-    @include('admin.layouts.alerts')
-
     <div class="card">
         <div class="card-body">
             <div class="d-flex align-items-center">

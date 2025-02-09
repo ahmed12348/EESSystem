@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\ExpireCartItems;
 use App\Models\Cart;
 use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
@@ -24,10 +25,13 @@ class Kernel extends ConsoleKernel
     }
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(function () {
-            Cart::where('expires_at', '<=', Carbon::now())
-                ->where('status', 1) // Only update active carts
-                ->update(['status' => 0]);
-        })->everyFiveMinutes();
+        // $schedule->call(function () {
+        //     Cart::where('expires_at', '<=', Carbon::now())
+        //         ->where('status', 1) // Only update active carts
+        //         ->update(['status' => 0]);
+        // })->everyFiveMinutes();
+
+        $schedule->job(new ExpireCartItems)->everyMinute();
+        
     }
 }

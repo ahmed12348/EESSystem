@@ -50,7 +50,7 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasRole('vendor');
     }
 
-    public function isApproved()
+    public function isActive()
     {
         return $this->status === 'active';
     }

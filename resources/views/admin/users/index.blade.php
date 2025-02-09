@@ -24,7 +24,7 @@
         </div>
     </div>
     <!-- End Breadcrumb -->
-    @include('admin.layouts.alerts')
+
     
     <div class="card">
         <div class="card-body">
@@ -59,7 +59,7 @@
                                 <td>{{ $user->phone ?? 'N/A' }}</td>
                                 {{-- <td>{{ $user->roles->first()->name ?? 'No Role' }}</td> --}}
                                 <td>{{ $user->orders->count() }}</td>
-                                <td>{{ $user->zone ?? 'Not Assigned' }}</td> 
+                                <td>{{ $user->vendor?->zone ?? 'Not Assigned' }}</td> 
                                 <td>
                                     @if ($user->status == 'inactive')
                                         <span class="badge bg-danger">Inactive</span>

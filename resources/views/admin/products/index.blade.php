@@ -25,8 +25,6 @@
     </div>
     <!-- End Breadcrumb -->
 
-    @include('admin.layouts.alerts')
-
     <div class="card">
         <div class="card-body">
             <div class="d-flex align-items-center justify-content-between">
@@ -87,9 +85,9 @@
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->vendor->business_name ?? 'N/A' }}</td>
                                 <td>
-                                    @if ($product->approved)
+                                    @if ($product->status)
                                         <span class="badge bg-success">Approved</span>
-                                    @elseif(!$product->approved)
+                                    @elseif(!$product->status)
                                         <span class="badge bg-danger">Not Approved</span>
                                     @endif
                                 </td>
@@ -115,7 +113,7 @@
                                             <i class="bi bi-eye-fill"></i>
                                         </a> --}}
 
-                                        @if (!$product->approved)
+                                        @if (!$product->status)
                                         <form action="{{ route('admin.products.approve', $product->id) }}" method="POST" style="display:inline;">
                                             @csrf
                                             @method('PATCH')
@@ -125,7 +123,7 @@
                                                 <i class="bi bi-check-circle-fill"></i> 
                                             </button>
                                         </form>
-                                        @elseif ($product->approved)
+                                        @elseif ($product->status)
                                             <form action="{{ route('admin.products.reject', $product->id) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('PATCH')

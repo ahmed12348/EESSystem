@@ -17,12 +17,13 @@ class CreateOrderItemsTable extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
-            $table->integer('quantity');
-            $table->decimal('price', 10, 2);
+            $table->integer('quantity')->nullable();
+            $table->decimal('price', 10, 2)->nullable();
             $table->decimal('discount', 10, 2)->nullable();
-            $table->softDeletes();
+            $table->decimal('final_price', 10, 2)->nullable(); //Ensure final price is stored
+           
             $table->timestamps();
-            
+            $table->softDeletes();
         });
     }
 

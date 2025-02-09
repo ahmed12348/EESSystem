@@ -33,8 +33,8 @@
 
 
     
-    <li>
-      <a href="#">
+    <li class="{{ request()->routeIs('admin.orders.index') ? 'mm-active' : '' }}">
+      <a href="{{route('admin.orders.index')}}">
         <div class="parent-icon"><i class="bi-list"></i>
         </div>
         <div class="menu-title">Order List</div>
@@ -71,17 +71,17 @@
     </li>
 
 
-    <li class="{{ request()->routeIs('admin.ads.index') ? 'mm-active' : '' }}">
+    {{-- <li class="{{ request()->routeIs('admin.ads.index') ? 'mm-active' : '' }}">
       <a href="{{route('admin.ads.index')}}">
         <div class="parent-icon"><i class="bi bi-badge-ad"></i>
         </div>
         <div class="menu-title">ADS</div>
       </a>
-    </li>
+    </li> --}}
 
     
-    <li class="#">
-      <a href="#">
+    <li class="{{ request()->routeIs('admin.ads.index') ? 'mm-active' : '' }}">
+      <a href="{{route('admin.discounts.index')}}">
         <div class="parent-icon"><i class="bi bi-disc"></i>
         </div>
         <div class="menu-title">Offers</div>

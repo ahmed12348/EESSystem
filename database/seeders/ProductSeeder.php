@@ -10,8 +10,8 @@ class ProductSeeder extends Seeder
 {
     public function run()
     {
-        // Fetch random vendor users (assuming vendors have role 'vendor')
-        $vendors = User::whereHas('roles', function($query) {
+        // Fetch vendor users
+        $vendors = User::whereHas('roles', function ($query) {
             $query->where('name', 'vendor');
         })->pluck('id')->toArray();
 
@@ -20,10 +20,12 @@ class ProductSeeder extends Seeder
             return;
         }
 
-        // Create sample products
-        Product::factory()->count(10)->create([
-            'vendor_id' => $vendors[array_rand($vendors)] // Assign products to random vendors
-        ]);
+        // Create sample products and distribute among vendors
+        Product::factory(10)->create()->each(function ($product) use ($vendors) {
+            $product->update([
+                'vendor_id' => $vendors[array_rand($vendors)], // Random vendor assignment
+            ]);
+        });
     }
 }
 

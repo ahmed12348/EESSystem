@@ -11,18 +11,18 @@ class CreateADSTable extends Migration
     {
         Schema::create('ads', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->string('image')->nullable();
-            $table->unsignedBigInteger('vendor_id')->index();
-            $table->enum('type', ['product', 'category', 'zone']);
+            // $table->unsignedBigInteger('vendor_id')->index();
+            $table->enum('type', ['product', 'category', 'zone'])->nullable();
             $table->unsignedBigInteger('reference_id')->nullable(); 
             $table->string('zone')->nullable(); 
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->softDeletes();
              // Foreign key constraints
-             $table->foreign('vendor_id')->references('id')->on('users')->onDelete('cascade');
+            //  $table->foreign('vendor_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

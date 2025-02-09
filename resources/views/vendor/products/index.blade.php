@@ -25,8 +25,6 @@
     </div>
     <!-- End Breadcrumb -->
 
-    @include('admin.layouts.alerts')
-
     <div class="card">
         <div class="card-body">
             <div class="d-flex align-items-center justify-content-between">
@@ -87,9 +85,9 @@
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->vendor?->business_name  }}</td>
                                 <td>
-                                    @if ($product->approved)
+                                    @if ($product->status)
                                         <span class="badge bg-success">Approved</span>
-                                    @elseif(!$product->approved)
+                                    @elseif(!$product->status)
                                         <span class="badge bg-danger">Not Approved</span>
                                     @endif
                                 </td>

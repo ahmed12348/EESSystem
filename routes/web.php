@@ -10,9 +10,12 @@ use App\Http\Controllers\HomeController;
 
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CartController;
+use App\Http\Controllers\Admin\DiscountController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Vendor\ProductController as VendorProductController;
 use App\Http\Controllers\Vendor\AuthController;
+use App\Http\Controllers\Vendor\OrderController as VendorOrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -54,7 +57,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('cart-settings', [SettingController::class, 'index'])->name('settings.cart');
         Route::post('cart-settings/update', [SettingController::class, 'update'])->name('settings.cart.update');
         // Route::get('ads/getReferences', [ADSController::class, 'getReferences'])->name('ads.getReferences');
+        Route::resource('orders', OrderController::class);
+        Route::resource('discounts', DiscountController::class);
 
+        
     });
 
 });
@@ -84,6 +90,8 @@ Route::prefix('vendor')->name('vendor.')->group(function () {
         Route::resource('products', VendorProductController::class);
         Route::post('/import-products', [VendorProductController::class, 'import'])->name('products.import');
         Route::get('products/export/sample', [VendorProductController::class, 'exportSample'])->name('products.export.sample');
+        Route::resource('orders', VendorOrderController::class)->only(['index', 'show', 'destroy']);
+        Route::resource('discounts', VendorOrderController::class)->only(['index', 'show', 'destroy']);
 
     });
 });

@@ -36,7 +36,7 @@
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="text" class="form-control" id="email" name="email" 
-                                    value="{{ old('email', $vendor->email ?? '') }}" disabled>
+                                    value="{{ old('email', $vendor->email ?? '') }}" readonly>
                                 @error('email')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -45,7 +45,7 @@
                             <div class="mb-3">
                                 <label for="business_name" class="form-label">Business Name</label>
                                 <input type="text" class="form-control" id="business_name" name="business_name" 
-                                    value="{{ old('business_name', $vendor->vendor->business_name ?? '') }}" disabled>
+                                    value="{{ old('business_name', $vendor->vendor->business_name ?? '') }}" readonly>
                                 @error('business_name')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -54,7 +54,7 @@
                             <div class="mb-3">
                                 <label for="tax_id" class="form-label">Tax Number</label>
                                 <input type="text" class="form-control" id="tax_id" name="tax_id" 
-                                    value="{{ old('tax_id', $vendor->vendor?->tax_id) }}" disabled>
+                                    value="{{ old('tax_id', $vendor->vendor?->tax_id) }}" readonly>
                                 @error('tax_id')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror

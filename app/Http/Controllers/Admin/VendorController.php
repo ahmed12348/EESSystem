@@ -48,8 +48,8 @@ class VendorController extends Controller
         
       
         $request->validate([
-            'business_name' => 'required|string|max:255',
-            'tax_id' => 'required|max:255',
+            'business_name' => 'nullable|string|max:255',
+            'tax_id' => 'nullable|max:255',
             // 'phone' => 'required|regex:/^[0-9]{10,15}$/',
             'zone' => 'nullable|string|max:255',
         ]);

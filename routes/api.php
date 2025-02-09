@@ -31,11 +31,12 @@ Route::group(['prefix' => 'auth'], function () {
         Route::get('/getUser', [AuthController::class, 'getUser']);
         Route::get('/profile', [AuthController::class, 'profile']);
         // orders 
-        Route::post('/cart', [CartController::class, 'createCart']);
-        Route::post('/cart/add/item', [CartController::class, 'addItemToCart']);
-        Route::get('/cart', [CartController::class, 'viewCart']);
+        // Route::post('/cart', [CartController::class, 'createCart']);
+        Route::post('/cart/add/item', [CartController::class, 'addToCart']);
+        Route::get('/cart', [CartController::class, 'getCart']);
         Route::post('/order', [OrderController::class, 'createOrder']); 
-        Route::get('/order/{id}', [OrderController::class, 'viewOrder']); 
+        Route::get('/getOrderDetails/{id}', [OrderController::class, 'getOrderDetails']); 
+        Route::post('/cancelOrder/{id}', [OrderController::class, 'cancelOrder']); 
  
     });
 });

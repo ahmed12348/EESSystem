@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Location;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
@@ -45,7 +46,13 @@ class AuthController extends Controller
                 'user_id' => $user->id,
             ]);
 
-            $user->assignRole('customer');
+            if (Role::where('name', 'customer')->exists()) {
+                $user->assignRole('customer');
+            } else {
+                // Optionally, create the role if it doesn't exist
+                Role::create(['name' => 'customer']);
+                $user->assignRole('customer');
+            }
 
             return response()->json([
                 'StatusCode' => 200,

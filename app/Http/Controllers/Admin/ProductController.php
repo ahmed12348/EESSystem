@@ -18,7 +18,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::paginate(10); 
-        $requestedProducts = Product::where('approved', false)->paginate(10); 
+        $requestedProducts = Product::where('status', false)->paginate(10); 
         
         return view('admin.products.index', compact('products', 'requestedProducts'));
     }
@@ -100,7 +100,7 @@ class ProductController extends Controller
     public function approve($id)
     {
         $product = Product::findOrFail($id);
-        $product->approved = true;
+        $product->status = true;
         $saved = $product->save();
         if ($saved) {
             return redirect()->back()->with('success', 'Product approved successfully!');
@@ -113,7 +113,7 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         
-        $product->approved = false;
+        $product->status = false;
         $saved = $product->save();
         if ($saved) {
             return redirect()->back()->with('success', 'Product rejected successfully!');

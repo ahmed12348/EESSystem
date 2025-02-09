@@ -41,16 +41,16 @@
                     </div>
 
                     <!-- Ad Type -->
-                    <div class="mb-4 d-flex align-items-center">
+                    {{-- <div class="mb-4 d-flex align-items-center">
                         <i class="bx bx-info-circle text-success fs-4 me-3"></i>
                         <div>
                             <label for="type" class="form-label font-weight-bold">Ad Type</label>
                             <p class="badge bg-info text-white">{{ ucfirst($ad->type) }}</p>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <!-- Reference or Zone Section -->
-                    @if($ad->type == 'product' || $ad->type == 'category')
+                    {{-- @if($ad->type == 'product' || $ad->type == 'category')
                         <div class="mb-4 d-flex align-items-center">
                             <i class="bx bx-link-alt text-warning fs-4 me-3"></i>
                             <div>
@@ -63,8 +63,8 @@
                                     @endif
                                 </p>
                             </div>
-                        </div>
-                    @elseif($ad->type == 'zone')
+                        </div> --}}
+                    {{-- @elseif($ad->type == 'zone')
                         <div class="mb-4 d-flex align-items-center">
                             <i class="bx bx-location-plus text-info fs-4 me-3"></i>
                             <div>
@@ -72,7 +72,7 @@
                                 <p class="badge bg-secondary text-white">{{ ucfirst($ad->zone) }}</p>
                             </div>
                         </div>
-                    @endif
+                    @endif --}}
 
                     <!-- Image Display -->
                     @if($ad->image)

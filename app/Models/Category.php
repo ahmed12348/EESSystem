@@ -24,21 +24,29 @@ class Category extends Model
         return $this->hasMany(Category::class, 'parent_id');
     }
 
-    // Relation to products
+    // A category has many products
     public function products()
     {
         return $this->hasMany(Product::class);
     }
 
-    // Helper function to get all products including subcategories (if needed)
-    public function getAllProductsIncludingSubcategories()
+    // A category may have one active discount
+    public function activeDiscount()
     {
-        $products = $this->products;
-
-        foreach ($this->subcategories as $subcategory) {
-            $products = $products->merge($subcategory->products);
-        }
-
-        return $products;
+        return $this->hasOne(Discount::class)
+            ->whereNull('product_id')
+            ->where('start_at', '<=', now())
+            ->where('end_at', '>=', now());
     }
+    // // Helper function to get all products including subcategories (if needed)
+    // public function getAllProductsIncludingSubcategories()
+    // {
+    //     $products = $this->products;
+
+    //     foreach ($this->subcategories as $subcategory) {
+    //         $products = $products->merge($subcategory->products);
+    //     }
+
+    //     return $products;
+    // }
 }

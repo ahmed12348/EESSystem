@@ -10,13 +10,24 @@ class CategoryController extends Controller
 {
     public function getCategoriesWithProducts()
     {
-        // Fetch all categories with their products
-        $categories = Category::with('products')->get();
-
-        return response()->json([
-            'statusCode' => 200,
-            'message' => 'تم استرجاع الفئات والمنتجات بنجاح.',
-            'data' => $categories
-        ]);
+        try {
+            // Fetch all categories with only active products
+            $categories = Category::with(['products' => function ($query) {
+                $query->where('status', 1); // Fetch only active products
+            }])->get();
+    
+            return response()->json([
+                'statusCode' => 200,
+                'message' => 'تم استرجاع الفئات والمنتجات بنجاح.',
+                'data' => $categories
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'statusCode' => 500,
+                'message' => 'حدث خطأ أثناء استرجاع البيانات.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
+    
 }

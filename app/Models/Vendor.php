@@ -27,7 +27,7 @@ class Vendor extends Model
 
     public function isActiveVendor()
     {
-        return $this->user->isApproved() && $this->user->isVendor();
+        return $this->user->isActive() && $this->user->isVendor();
     }
 
     public function products() 

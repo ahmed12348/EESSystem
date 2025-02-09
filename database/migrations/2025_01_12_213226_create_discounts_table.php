@@ -15,14 +15,14 @@ class CreateDiscountsTable extends Migration
     {
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
-            $table->decimal('discount_percentage', 5, 2);
-            $table->enum('target', ['user', 'vendor', 'product']);
-            $table->string('target_value')->nullable();
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->softDeletes();
+            $table->decimal('discount_value', 5, 2); // Example: 20% = 0.2
+            $table->enum('discount_type', ['percentage', 'fixed'])->default('percentage');
+            $table->dateTime('start_date')->nullable();
+            $table->dateTime('end_date')->nullable();
+            $table->foreignId('category_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('product_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

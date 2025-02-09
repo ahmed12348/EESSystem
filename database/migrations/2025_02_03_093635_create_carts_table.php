@@ -16,9 +16,10 @@ class CreateCartsTable extends Migration
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->timestamp('expires_at')->nullable();
             $table->integer('status')->default(1);
+            $table->dateTime('expires_at')->nullable(); 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

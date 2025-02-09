@@ -26,7 +26,7 @@
         </div>
     </div>
     <!-- End Breadcrumb -->
-    @include('admin.layouts.alerts')
+
     
     <div class="card">
         <div class="card-body">
@@ -68,7 +68,7 @@
                                 </td>
                                 {{-- <td>{{ $vendor->vendor->business_name }}</td> --}}
                                 <td>{{ $vendor->phone }}</td>
-                                <td>{{ $vendor->zone ?? 'N/A' }}</td>
+                                <td>{{ $vendor->vendor?->zone ?? 'N/A' }}</td>
                                 <td>
                                     @if ($vendor->status == 'active')
                                         <span class="badge bg-success">Active</span>

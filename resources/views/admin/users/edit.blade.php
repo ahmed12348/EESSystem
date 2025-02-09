@@ -44,7 +44,7 @@
                         <!-- Phone Input -->
                         <div class="mb-1">
                             <label for="phone" class="form-label">Phone</label>
-                            <input class="form-control" type="text" id="phone" name="phone" value="{{ old('phone', $user->phone) }}" placeholder="Enter phone" disabled>
+                            <input class="form-control" type="text" id="phone" name="phone" value="{{ old('phone', $user->phone) }}" placeholder="Enter phone" readonly>
                             @error('phone')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -55,7 +55,7 @@
                         <!-- Business Name Input -->
                         <div class="mb-1">
                             <label for="business_name" class="form-label">Business Name</label>
-                            <input class="form-control" type="text" id="business_name" name="business_name" value="{{ old('business_name', $user->vendor?->business_name) }}" disabled>
+                            <input class="form-control" type="text" id="business_name" name="business_name" value="{{ old('business_name', $user->vendor?->business_name) }}" readonly>
                             @error('business_name')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -66,7 +66,7 @@
                         <!-- Tax ID Input -->
                         <div class="mb-1">
                             <label for="tax_id" class="form-label">Tax ID</label>
-                            <input class="form-control" type="text" id="tax_id" name="tax_id" value="{{ old('tax_id', $user->vendor?->tax_id) }}" disabled>
+                            <input class="form-control" type="text" id="tax_id" name="tax_id" value="{{ old('tax_id', $user->vendor?->tax_id) }}" readonly>
                             @error('tax_id')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -75,13 +75,13 @@
                         <!-- Location Address (Read-only) -->
                         <div class="mb-1">
                             <label for="location_address" class="form-label">Location Address</label>
-                            <input class="form-control" type="text" id="location_address" value="{{ $user->vendor && $user->vendor->location ? $user->vendor->location->address : 'No location found' }}" disabled>
+                            <input class="form-control" type="text" id="location_address" value="{{ $user->vendor && $user->vendor->location ? $user->vendor->location->address : 'No location found' }}" readonly>
                         </div>
 
                         <!-- Business Type Input -->
                         <div class="mb-1">
                             <label for="business_type" class="form-label">Business Type</label>
-                            <input class="form-control" type="text" id="business_type" name="business_type" value="{{ old('business_type', $user->vendor?->business_type) }}" disabled>
+                            <input class="form-control" type="text" id="business_type" name="business_type" value="{{ old('business_type', $user->vendor?->business_type) }}" readonly>
                             @error('business_type')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -90,9 +90,9 @@
                         <div class="mb-1">
                             <label for="zone" class="form-label">Zone</label>
                             <select class="form-select" id="zone" name="zone" required>
-                                <option value="" disabled>Select Zone</option>
-                                <option value="1" {{ old('zone', $user->vendor?->zone) == '1' ? 'selected' : '' }}>Zone 1</option>
-                                <option value="2" {{ old('zone', $user->vendor?->zone) == '2' ? 'selected' : '' }}>Zone 2</option>
+                                <option value="" readonly>Select Zone</option>
+                                <option value="Zone 1" {{ old('zone', $user->vendor?->zone) == 'Zone 1' ? 'selected' : '' }}>Zone 1</option>
+                                <option value="Zone 2" {{ old('zone', $user->vendor?->zone) == 'Zone 2' ? 'selected' : '' }}>Zone 2</option>
                             </select>
                             @error('zone')
                                 <span class="text-danger">{{ $message }}</span>

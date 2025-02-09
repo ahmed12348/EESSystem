@@ -28,7 +28,7 @@
     
     </div>
     <!--end breadcrumb-->
-    @include('admin.layouts.alerts')
+
     {{-- @if ($message = Session::get('success'))
         <div class="alert alert-success">
             <p>{{ $message }}</p>

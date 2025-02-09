@@ -33,7 +33,7 @@ class ADSController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'type' => 'required|in:product,category,zone',
+            'type' => 'nullable|in:product,category,zone',
             'reference_id' => 'nullable|exists:categories,id', // Or use 'products' table if it's a product
             'zone' => 'nullable|string',
             'image' => 'nullable|image|max:1024',
@@ -43,15 +43,15 @@ class ADSController extends Controller
         $ad = new Ads();
         $ad->title = $validatedData['title'];
         $ad->description = $validatedData['description'];
-        $ad->type = $validatedData['type'];
+        // $ad->type = $validatedData['type'];
     
-        if ($ad->type == 'product' || $ad->type == 'category') {
-            // Set the reference_id (Category or Product based on type)
-            $ad->reference_id = $validatedData['reference_id'];
-        } elseif ($ad->type == 'zone') {
-            // Handle zone field if needed
-            $ad->zone = $validatedData['zone'];
-        }
+        // if ($ad->type == 'product' || $ad->type == 'category') {
+        //     // Set the reference_id (Category or Product based on type)
+        //     $ad->reference_id = $validatedData['reference_id'];
+        // } elseif ($ad->type == 'zone') {
+        //     // Handle zone field if needed
+        //     $ad->zone = $validatedData['zone'];
+        // }
     
         // Handle file upload if needed
         if ($request->hasFile('image')) {
@@ -103,7 +103,7 @@ class ADSController extends Controller
             $validatedData = $request->validate([
                 'title' => 'required|string|max:255',
                 'description' => 'nullable|string',
-                'type' => 'required|in:product,category,zone',
+                'type' => 'nullable|in:product,category,zone',
                 'reference_id' => 'nullable|exists:categories,id', // Use 'products' table if it's a product
                 'zone' => 'nullable|string',
                 'image' => 'nullable|image|max:1024',

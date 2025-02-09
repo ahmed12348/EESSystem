@@ -18,8 +18,15 @@ class CreateCartItemsTable extends Migration
             $table->foreignId('cart_id')->constrained()->onDelete('cascade');
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->integer('quantity')->default(1);
+            $table->enum('status', ['active', 'expired', 'ordered'])->default('active'); 
+            // $table->dateTime('expires_at')->nullable();
             $table->decimal('price', 10, 2);
+            $table->decimal('discount', 10, 2)->default(0);
+            $table->decimal('final_price', 10, 2);
+            $table->text('notes')->nullable();
+          
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

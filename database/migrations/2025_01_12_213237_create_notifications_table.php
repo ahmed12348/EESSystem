@@ -19,8 +19,8 @@ class CreateNotificationsTable extends Migration
             $table->string('title');
             $table->text('message');
             $table->boolean('is_read')->default(false);
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

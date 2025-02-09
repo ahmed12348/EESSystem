@@ -25,7 +25,6 @@
     </div>
     <!-- End Breadcrumb -->
 
-    @include('admin.layouts.alerts')
 
     <div class="card">
         <div class="card-body">
@@ -48,8 +47,8 @@
                             <th>ID</th>
                             <th>Image</th>
                             <th>Title</th>
-                            <th>Type</th>
-                            <th>Reference</th>
+                            {{-- <th>Type</th> --}}
+                            {{-- <th>Reference</th> --}}
                             {{-- <th>Zone</th> --}}
                             <th>Status</th>  
                             <th>Actions</th>
@@ -73,8 +72,8 @@
                                     @endif 
                                 </td> 
                                 <td>{{ $ad->title }}</td>
-                                <td>{{ ucfirst($ad->type) }}</td>
-                                <td>
+                                {{-- <td>{{ ucfirst($ad->type) }}</td> --}}
+                                {{-- <td>
                                     @if ($ad->type === 'product' && $ad->reference)
                                         {{ $ad->reference->name }}
                                     @elseif ($ad->type === 'category' && $ad->reference)
@@ -82,7 +81,7 @@
                                     @else
                                     {{ $ad->zone }}
                                     @endif
-                                </td>
+                                </td> --}}
                                 {{-- <td>{{ $ad->zone ?? 'N/A' }}</td> --}}
                                 <td>
                                     @if ($ad->active)
