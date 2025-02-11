@@ -21,6 +21,7 @@ class SearchController extends Controller
 
         $searchResults = $query->latest()->paginate(10);
 
+        
         return view('admin.search.index', compact('searchResults'));
     }
 }
