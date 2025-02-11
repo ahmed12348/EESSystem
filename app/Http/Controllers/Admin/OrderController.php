@@ -59,7 +59,6 @@ class OrderController extends Controller
                 'customer_id' => 'required|exists:users,id',
                 'product_ids' => 'required|array|min:1',
                 'product_ids.*' => 'exists:products,id',
-                'total_price' => 'required|numeric',
                 'status' => 'required|in:pending,completed,cancelled',
             ]);
     
@@ -72,6 +71,7 @@ class OrderController extends Controller
             }
     
             $vendorId = $vendorIds->first();
+            $totalFinalPrice = 0;
     
             // Create Order
             $order = Order::create([
@@ -97,6 +97,7 @@ class OrderController extends Controller
                 }
     
                 $finalPrice = max(0, $product->price - $discountValue);
+                $totalFinalPrice += $finalPrice;
     
                 OrderItem::create([
                     'order_id' => $order->id,
@@ -108,20 +109,20 @@ class OrderController extends Controller
                 ]);
             }
     
-            // Automatically apply discounts using the Order model
-            // $order->applyDiscounts();
+            // ✅ Update the order's total_price correctly
+            $order->update(['total_price' => $totalFinalPrice]);
     
             DB::commit(); // Commit transaction
     
             return redirect()->route('admin.orders.index')->with('success', 'Order created successfully!');
         } catch (\Exception $e) {
-            dd($e->getMessage());
             DB::rollBack(); // Rollback changes on error
             Log::error('Order creation failed: ' . $e->getMessage());
     
             return back()->withErrors(['error' => 'Failed to create order. Please try again.'])->withInput();
         }
     }
+    
     
     
     
