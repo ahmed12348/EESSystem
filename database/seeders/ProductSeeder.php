@@ -21,7 +21,7 @@ class ProductSeeder extends Seeder
         }
 
         // Create sample products and distribute among vendors
-        Product::factory(10)->create()->each(function ($product) use ($vendors) {
+        Product::factory(5)->create()->each(function ($product) use ($vendors) {
             $product->update([
                 'vendor_id' => $vendors[array_rand($vendors)], // Random vendor assignment
             ]);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
+use App\Models\CartItem;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -30,5 +31,32 @@ class CartController extends Controller
             return redirect()->route('admin.carts.index')->with('success', 'Cart expiration time updated.');
         }
     
+        public function index()
+        {
+            // Fetch all expired order items
+            $expiredItems = CartItem::where('status', 'expired')->with('product', 'order.vendor')->get();
+    
+            return view('admin.carts.index', compact('expiredItems'));
+        }
+    
+        /**
+         * Re-add expired cart items by updating status back to pending.
+         */
+        public function readdExpiredItems(Request $request)
+        {
+            // Fetch all expired items
+            $expiredItems = CartItem::where('status', 'expired')->get();
+    
+            if ($expiredItems->isEmpty()) {
+                return redirect()->route('admin.cart.index')->with('warning', 'No expired items to re-add.');
+            }
+    
+            // Update the status of expired items to 'pending'
+            foreach ($expiredItems as $item) {
+                $item->update(['status' => 'pending']);
+            }
+    
+            return redirect()->route('admin.cart.index')->with('success', 'Expired items have been re-added.');
+        }
     
 }

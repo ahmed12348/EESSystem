@@ -95,5 +95,21 @@
         <div class="menu-title">Categories</div>
       </a>
     </li>
+    <li class="{{ request()->routeIs('admin.cart.index') ? 'mm-active' : '' }}">
+      <a href="{{route('admin.cart.index')}}">
+        <div class="parent-icon"><i class="bi bi-0-circle"></i>
+        </div>
+        <div class="menu-title">Re Addition Item</div>
+      </a>
+    </li>
+
+    <li class="{{ request()->routeIs('admin.search.index') ? 'mm-active' : '' }}">
+      <a href="{{route('admin.search.index')}}">
+        <div class="parent-icon"><i class="bi bi-0-circle"></i>
+        </div>
+        <div class="menu-title">Search & Sales</div>
+      </a>
+    </li>
+    
   </ul>
   <!--end navigation-->

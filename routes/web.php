@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CartController;
 use App\Http\Controllers\Admin\DiscountController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\admin\SearchController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Vendor\ProductController as VendorProductController;
 use App\Http\Controllers\Vendor\AuthController;
@@ -61,9 +62,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('orders', OrderController::class);
         Route::resource('discounts', DiscountController::class);
 
-        Route::get('/vendor/cart-items', [CartController::class, 'index'])->name('cart.index');
-        Route::post('/vendor/cart-items/read', [CartController::class, 'readdExpiredItems'])->name('cart.readd');
+        Route::get('/cart-items', [CartController::class, 'index'])->name('cart.index');
+        Route::post('/cart-items/read', [CartController::class, 'readdExpiredItems'])->name('cart.readd');
 
+        Route::get('/admin/searches', [SearchController::class, 'index'])->name('search.index');
 
         Route::get('/getCategoryProducts', [DiscountController::class, 'getCategoryProducts'])->name('getCategoryProducts');
         Route::get('/getVendorProducts', [DiscountController::class, 'getVendorProducts'])->name('getVendorProducts');
