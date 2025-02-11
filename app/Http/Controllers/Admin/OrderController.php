@@ -25,13 +25,15 @@ class OrderController extends Controller
         // Search functionality
         if ($request->has('search')) {
             $query->where('id', 'like', '%' . $request->search . '%')
-                  ->orWhereHas('customer', function ($q) use ($request) {
-                      $q->where('name', 'like', '%' . $request->search . '%');
-                  })
-                  ->orWhereHas('vendor.vendorProfile', function ($q) use ($request) {
+                  ->orWhereHas('customer.vendor', function ($q) use ($request) {
                       $q->where('business_name', 'like', '%' . $request->search . '%');
-                  });
+                  })
+                  ->orWhereHas('vendor', function ($q) use ($request) {
+                      $q->where('business_name', 'like', '%' . $request->search . '%');
+                  })
+                  ->orWhere('status', 'like', '%' . $request->search . '%'); // Added status filter
         }
+        
 
         $orders = $query->latest()->paginate(10);
 

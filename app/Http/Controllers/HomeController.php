@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AdminDashboardExport;
 use App\Exports\VendorDashboardExport;
 use App\Models\Order;
 use App\Models\Product;
@@ -87,6 +88,10 @@ class HomeController extends Controller
         return Excel::download(new VendorDashboardExport, 'vendor_dashboard.xlsx');
     }
     
+    public function export_admin()
+    {
+        return Excel::download(new AdminDashboardExport, 'admin_dashboard.xlsx');
+    }
     public function showProfile()
     {
         $user = Auth::user();

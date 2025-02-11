@@ -66,10 +66,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/cart-items/read', [CartController::class, 'readdExpiredItems'])->name('cart.readd');
         
         Route::get('/admin/searches', [SearchController::class, 'index'])->name('search.index');
+        
+        Route::get('/admin/export', [HomeController::class, 'export_admin'])->name('export_admin');
 
-        Route::get('/getCategoryProducts', [DiscountController::class, 'getCategoryProducts'])->name('getCategoryProducts');
-        Route::get('/getVendorProducts', [DiscountController::class, 'getVendorProducts'])->name('getVendorProducts');
-        Route::get('/getZoneProducts', [DiscountController::class, 'getZoneProducts'])->name('getZoneProducts');
     });
 
 });

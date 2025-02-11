@@ -10,11 +10,19 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
    
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::with('parent')->paginate(5); // Fetch categories with parent info
+        $search = $request->query('search');
+    
+        $categories = Category::with('parent')
+            ->when($search, function ($query) use ($search) {
+                return $query->where('name', 'like', "%{$search}%");
+            })
+            ->paginate(5);
+    
         return view('admin.categories.index', compact('categories'));
     }
+    
 
     public function create()
     {

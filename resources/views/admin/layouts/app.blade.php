@@ -12,6 +12,9 @@
   <link href="{{ asset('assets/plugins/simplebar/css/simplebar.css') }}" rel="stylesheet" />
   <link href="{{ asset('assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}" rel="stylesheet" />
   <link href="{{ asset('assets/plugins/metismenu/css/metisMenu.min.css') }}" rel="stylesheet" />
+  <!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
   <!-- Bootstrap CSS -->
   <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" />
   <link href="{{ asset('assets/css/bootstrap-extended.css') }}" rel="stylesheet" />
@@ -25,6 +28,7 @@
   {{-- {{ asset('{{ asset('assets/css/bootstrap.min.css') }}') }} --}}
 
 	<link href="{{ asset('assets/css/pace.min.css') }}" rel="stylesheet" />
+
 
 
 
@@ -91,6 +95,23 @@
   <script>
     new PerfectScrollbar(".best-product")
  </script>
+
+<!-- DataTables Core -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+<script>
+  $(document).ready(function () {
+      $('#ordersTable').DataTable({
+          "paging": true,       // Enables pagination
+          "searching": true,    // Enables search box
+          "ordering": true,     // Enables sorting
+          "info": true,         // Shows info text
+          "lengthMenu": [10, 25, 50, 100], // Control number of entries per page
+      });
+  });
+</script>
 
 @stack('scripts')
 </body>

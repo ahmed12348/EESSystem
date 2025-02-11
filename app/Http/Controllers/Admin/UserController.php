@@ -24,23 +24,30 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $users = User::whereHas('roles', function ($query) {
-            $query->where('name', 'customer');
-        })
-        ->with(['vendor.location'])
-        ->withCount('orders') 
-        ->when($request->search, function ($query, $search) {
-            $query->where(function ($q) use ($search) { 
-                $q->where('name', 'LIKE', "%{$search}%")
-                  ->orWhere('email', 'LIKE', "%{$search}%")
-                  ->orWhere('phone', 'LIKE', "%{$search}%");
-            });
-        })
-        ->paginate(10); // Paginate results
+        $search = $request->query('search');
     
-        // Return view with users
+        $users = User::whereHas('roles', function ($query) {
+                $query->where('name', 'customer');
+            })
+            ->with(['vendor.location'])
+            ->withCount('orders')
+            ->when($search, function ($query) use ($search) {
+                return $query->where(function ($q) use ($search) {
+                    $q->where('name', 'LIKE', "%{$search}%")
+                      ->orWhere('email', 'LIKE', "%{$search}%")
+                      ->orWhere('phone', 'LIKE', "%{$search}%")
+                      ->orWhereHas('vendor', function ($vendorQuery) use ($search) {
+                          $vendorQuery->where('business_name', 'LIKE', "%{$search}%");
+                      });
+                });
+            })
+            ->paginate(10);
+    
         return view('admin.users.index', compact('users'));
     }
+    
+
+    
 
 
 

@@ -15,13 +15,24 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::paginate(10); 
-        $requestedProducts = Product::where('status', false)->paginate(10); 
-        
+        $search = $request->query('search');
+    
+        $products = Product::when($search, function ($query) use ($search) {
+                return $query->where('name', 'like', "%{$search}%");
+            })
+            ->paginate(10);
+    
+        $requestedProducts = Product::where('status', false)
+            ->when($search, function ($query) use ($search) {
+                return $query->where('name', 'like', "%{$search}%");
+            })
+            ->paginate(10);
+    
         return view('admin.products.index', compact('products', 'requestedProducts'));
     }
+    
 
     public function create()
     {

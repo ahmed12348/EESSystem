@@ -121,8 +121,13 @@ class Handler extends ExceptionHandler
                 'error' => $exception->getMessage(), // Remove in production
             ], 500);
         }
+        if ($exception instanceof NotFoundHttpException) {
+            return response()->view('errors.404', [], 404);
+        }
     
+        // Handle other exceptions normally
         return parent::render($request, $exception);
+
         // if ($request->expectsJson()) {
         //     return response()->json(['error' => 'Unauthorized'], 401);
         // }

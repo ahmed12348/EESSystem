@@ -3,22 +3,31 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Role;
+// use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission as ModelsPermission;
+use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
     public function index(Request $request)
     {
-        $roles = Role::orderBy('id', 'DESC')->paginate(10);
+        $search = $request->input('search'); // Use input() instead of query() for robustness
+
+        $roles = Role::orderBy('id', 'DESC')
+            ->when($search, function ($query) use ($search) {
+                return $query->where('name', 'LIKE', "%{$search}%");
+            })
+            ->paginate(10);
+
         return view('admin.roles.index', compact('roles'));
     }
 
+    
+
     public function create()
     {
-        // Fetch all permissions
         $permissions = ModelsPermission::all();
         return view('admin.roles.create', compact('permissions'));
     }
@@ -47,7 +56,7 @@ class RoleController extends Controller
     public function edit($id)
     {
         $role = Role::findOrFail($id);
-        $permissions = ModelsPermission::all();
+         $permissions = ModelsPermission::all();
         $rolePermissions = $role->permissions->pluck('id')->toArray();
 
         return view('admin.roles.edit', compact('role', 'permissions', 'rolePermissions'));
@@ -55,6 +64,7 @@ class RoleController extends Controller
 
     public function update(Request $request, $id)
     {
+       
         $this->validate($request, [
             'name' => 'required',
             'permissions' => 'required|array',

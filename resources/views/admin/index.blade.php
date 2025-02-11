@@ -3,7 +3,7 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="fw-bold">Admin Dashboard</h4>
-    <a href="{{ route('admin.export_admin') }}" class="btn btn-success btn-sm px-2" disabled>
+    <a href="{{ route('admin.export_admin') }}" class="btn btn-success btn-sm px-2" >
         <i class="bi bi-download"></i> Export Data
     </a>
 </div>
@@ -32,6 +32,7 @@
     </div>
     @endforeach
 </div>
+
 
 <div class="row mt-4">
     <div class="col-12 col-lg-12 d-flex">
@@ -71,26 +72,7 @@
 @endsection
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#ordersTable').DataTable({
-            "paging": true,
-            "ordering": true,
-            "info": true,
-            "searching": true,
-            "dom": 'Bfrtip',
-            "buttons": [
-                {
-                    extend: 'excelHtml5',
-                    text: '<i class="bi bi-file-earmark-excel"></i> Export Orders',
-                    className: 'btn btn-sm btn-primary'
-                }
-            ]
-        });
-    });
-</script>
+
+
+
 @endpush

@@ -39,10 +39,16 @@
         <div class="card-body">
             <div class="d-flex align-items-center">
                 <h5 class="mb-0">Roles</h5>
-                <form class="ms-auto position-relative">
-                    <div class="position-absolute top-50 translate-middle-y search-icon px-3"><i class="bi bi-search"></i></div>
-                    <input class="form-control ps-5" type="text" placeholder="Search">
+        
+
+                <form class="ms-auto position-relative" method="GET" action="{{ route('admin.roles.index') }}">
+                    <div class="position-absolute top-50 translate-middle-y search-icon px-3">
+                        <i class="bi bi-search"></i>
+                    </div>
+                    <input class="form-control ps-5" type="text" name="search" placeholder="Search"
+                        value="{{ request()->query('search') }}">
                 </form>
+             
             </div>
             <div class="table-responsive mt-3">
                 <table class="table align-middle">
@@ -60,13 +66,12 @@
                                 <td>{{ $role->name }}</td>
                                 <td>
                                     <div class="table-actions d-flex align-items-center gap-3 fs-6">
-                                        <!-- <a href="{{ route('admin.roles.show', $role->id) }}" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View">
+                                         {{-- <a href="{{ route('admin.roles.show', $role->id) }}" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View">
                                             <i class="bi bi-eye-fill"></i>
-                                        </a> -->
+                                        </a>  --}}
                                        
                                             <a href="{{ route('admin.roles.edit', $role->id) }}" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
                                                 <i class="bi bi-pencil-fill"></i>
-                                                
                                             </a>
                                             @can('role-edit')
                                             @endcan

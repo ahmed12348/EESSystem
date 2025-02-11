@@ -13,21 +13,25 @@ class VendorController extends Controller
     {
         $search = $request->query('search');
     
-        // Fetch users who have the "vendor" role and apply the search filter
         $vendors = User::whereHas('roles', function ($query) {
-            $query->where('name', 'vendor');
-        })
-        ->when($search, function ($query) use ($search) {
-            return $query->where(function($q) use ($search) {
-                $q->where('name', 'like', '%' . $search . '%')
-                  ->orWhere('phone', 'like', '%' . $search . '%');
-            });
-        })
-       
-        ->paginate(10);
+                $query->where('name', 'vendor');
+            })
+            ->with('vendor')
+            ->when($search, function ($query) use ($search) {
+                return $query->where(function ($q) use ($search) {
+                    $q->where('name', 'LIKE', "%{$search}%")
+                      ->orWhere('phone', 'LIKE', "%{$search}%")
+                      ->orWhereHas('vendor', function ($vendorQuery) use ($search) {
+                          $vendorQuery->where('business_name', 'LIKE', "%{$search}%");
+                      });
+                });
+            })
+            ->paginate(10);
     
         return view('admin.vendors.index', compact('vendors'));
     }
+    
+    
 
 
 

@@ -6,69 +6,93 @@ use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Models\User;
-use App\Models\Vendor;
 use Illuminate\Support\Facades\Hash;
 
 class RolePermissionSeeder extends Seeder
 {
     public function run()
     {
-        // Create permissions
+        // Define permissions dynamically for each module
         $permissions = [
-            'view users', 'edit users', 'delete users', 'create users',
-            'view roles', 'edit roles', 'create roles', 'delete roles',
-            'view products', 'view dashboard', 'view orders',
-            'view vendors', 'view customers',
+            'ads' => ['view', 'create', 'edit', 'delete'],
+            'carts' => ['view', 'delete', 'create', 'edit'],
+            'categories' => ['view', 'create', 'edit', 'delete'],
+            'cities' => ['view'],
+            'discounts' => ['view', 'create', 'edit', 'delete'],
+            'orders' => ['view', 'create', 'edit', 'delete'],
+            'products' => ['view', 'create', 'edit', 'delete', 'approve', 'reject'],
+            'regions' => ['view'],
+            'roles' => ['view', 'create', 'edit', 'delete'],
+            'searches' => ['view'],
+            'settings' => ['view', 'edit'],
+            'users' => ['view', 'create', 'edit', 'delete'],
+            'vendors' => ['view', 'create', 'edit', 'delete', 'approve', 'reject'],
         ];
 
-        // Create permissions in the database
-        foreach ($permissions as $permission) {
-            Permission::firstOrCreate(['name' => $permission]);
+        // Create permissions dynamically
+        foreach ($permissions as $table => $actions) {
+            foreach ($actions as $action) {
+                Permission::firstOrCreate(['name' => "{$action}_{$table}"]);
+            }
         }
+
+        // Fetch all permissions
+        $allPermissions = Permission::all();
 
         // Create roles
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
         $vendorRole = Role::firstOrCreate(['name' => 'vendor']);
+        $customerRole = Role::firstOrCreate(['name' => 'customer']);
 
-        // Assign permissions to roles
-        $adminRole->syncPermissions($permissions);
+        // Assign permissions correctly
+        $adminRole->syncPermissions($allPermissions);
 
-        $vendorPermissions = [
-            'view products', 'view orders', 'view dashboard',
-        ];
+        $vendorPermissions = Permission::whereIn('name', [
+            'view_products', 'create_products', 'edit_products', 'delete_products',
+            'view_orders', 'create_orders', 'edit_orders', 'delete_orders',
+            'view_discounts', 'create_discounts', 'edit_discounts', 'delete_discounts'
+        ])->get();
         $vendorRole->syncPermissions($vendorPermissions);
 
-        // Create an admin user
-        $adminUser = User::firstOrCreate([
-            'email' => 'admin@ees.com',
-        ], [
-            'name' => 'Admin User',
-            'phone' => '1111',
-         
-            'status' => 'active',
-            'password' => Hash::make('password'), // Use Hash::make for security
-        ]);
+        $customerPermissions = Permission::whereIn('name', [
+            'view_products',
+            'view_orders',
+            'view_carts'
+        ])->get();
+        $customerRole->syncPermissions($customerPermissions);
+
+        // Create default users and assign roles
+        $adminUser = User::firstOrCreate(
+            ['email' => 'admin@ees.com'],
+            [
+                'name' => 'Admin User',
+                'phone' => '1111',
+                'status' => 'active',
+                'password' => bcrypt('password')
+            ]
+        );
         $adminUser->assignRole('admin');
 
-        // Create a vendor user
-        $vendorUser = User::firstOrCreate([
-            'email' => 'vendor@ees.com',
-        ], [
-            'name' => 'Vendor User 1',
-            'phone' => '2222',
-            'password' => Hash::make('password'), // Use Hash::make for security
-        ]);
+        $vendorUser = User::firstOrCreate(
+            ['email' => 'vendor@ees.com'],
+            [
+                'name' => 'Vendor User',
+                'phone' => '2222',
+                'password' => bcrypt('password')
+            ]
+        );
         $vendorUser->assignRole('vendor');
 
-        // Link the vendor user to the Vendor table
-        $vendor = Vendor::firstOrCreate([
-            'user_id' => $vendorUser->id, // Link the user to vendor
-            'business_name' => 'Vendor Business',
-            'zone' => 'Zone Name',
-        ]);
-        $customerPermissions = [
-            'view products', 'view orders', 'view dashboard',
-        ];
-        
+        $customerUser = User::firstOrCreate(
+            ['email' => 'customer@ees.com'],
+            [
+                'name' => 'Customer User',
+                'phone' => '3333',
+                'password' => bcrypt('password')
+            ]
+        );
+        $customerUser->assignRole('customer');
+
+        echo "Permissions and Roles Seeded Successfully!";
     }
 }

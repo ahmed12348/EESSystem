@@ -40,6 +40,7 @@
                         <div class="mb-3">
                             <label class="form-label">Permissions</label>
                             <br />
+                            
                             @foreach ($permissions as $permission)
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="permission_{{ $permission->id }}" name="permissions[]" value="{{ $permission->id }}" 

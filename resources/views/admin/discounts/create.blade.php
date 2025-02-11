@@ -33,18 +33,27 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="discount_value" class="form-label"><i class="bi bi-percent"></i> Discount Percentage (%)</label>
                                     <input type="number" name="discount_value" class="form-control" min="1" max="100" required placeholder="Enter discount value">
+                                    @error('discount_value')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
-
+                               
                                 <!-- Start Date -->
                                 <div class="col-md-3 mb-3">
                                     <label for="start_date" class="form-label"><i class="bi bi-calendar"></i> Start Date</label>
                                     <input type="date" name="start_date" class="form-control" required>
+                                    @error('start_date')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <!-- End Date -->
                                 <div class="col-md-3 mb-3">
                                     <label for="end_date" class="form-label"><i class="bi bi-calendar"></i> End Date</label>
                                     <input type="date" name="end_date" class="form-control" required>
+                                    @error('end_date')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -58,6 +67,9 @@
                                     <option value="vendor">Entire Vendor</option>
                                     <option value="zone">Entire Zone</option>
                                 </select>
+                                @error('discount_type')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
 
@@ -70,6 +82,9 @@
                                          <option value="{{ $product->id }}"> {{ $product->name }} </option>
                                     @endforeach
                                 </select>
+                                @error('product_id')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <!-- Categories List -->
@@ -81,6 +96,9 @@
                                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
                                 </select>
+                                @error('category_id')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <!-- Vendors List -->
@@ -89,9 +107,12 @@
                                 <select name="vendor_id" class="form-select select2">
                                     <option value="">-- Select Vendor --</option>
                                     @foreach ($vendors as $vendor)
-                                        <option value="{{ $vendor->id }}">{{ $vendor->name }}</option>
+                                        <option value="{{ $vendor->id }}">{{ $vendor->business_name ?? $vendor->name }}</option>
                                     @endforeach
                                 </select>
+                                @error('vendor_id')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="mb-3 d-none" id="zone_section">
@@ -102,6 +123,9 @@
                                     <option value="zone_2">Zone 2</option>
                                     <option value="zone_3">Zone 3</option>
                                 </select>
+                                @error('zone_id')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="d-flex justify-content-end">

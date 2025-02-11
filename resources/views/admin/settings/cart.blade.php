@@ -11,10 +11,10 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="mb-3">Set Cart Expiration Time</h5>
-
+{{-- 
                         @if(session('success'))
                             <div class="alert alert-success">{{ session('success') }}</div>
-                        @endif
+                        @endif --}}
 
                         <form method="POST" action="{{ route('admin.settings.cart.update') }}">
                             @csrf
