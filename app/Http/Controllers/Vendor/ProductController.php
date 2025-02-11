@@ -22,14 +22,28 @@ class ProductController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        // Get the authenticated vendor's products
-        $products = Product::where('vendor_id', Auth::id())->paginate(10);
-        $requestedProducts = Product::where('vendor_id', Auth::id())->where('status', false)->paginate(10); 
-        
+        $vendorId = Auth::id(); // Get vendor ID
+    
+        // Base query for all products
+        $productsQuery = Product::where('vendor_id', $vendorId);
+        $requestedProductsQuery = Product::where('vendor_id', $vendorId)->where('status', false);
+    
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+    
+            // Apply search filter to both queries
+            $productsQuery->where('name', 'like', '%' . $searchTerm . '%');
+            $requestedProductsQuery->where('name', 'like', '%' . $searchTerm . '%');
+        }
+    
+        $products = $productsQuery->paginate(10);
+        $requestedProducts = $requestedProductsQuery->paginate(10);
+    
         return view('vendor.products.index', compact('products', 'requestedProducts'));
     }
+    
 
     public function create()
     {

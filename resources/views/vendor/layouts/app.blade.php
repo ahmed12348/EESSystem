@@ -47,7 +47,7 @@
         <aside class="sidebar-wrapper" data-simplebar="true">
           @include('vendor.layouts.sidebar')
        </aside>
-                @if (session('success'))
+                {{-- @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     {{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -59,9 +59,10 @@
                         {{ session('error') }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                @endif
+                @endif --}}
 
           <main class="page-content">
+            @include('admin.layouts.alerts')
             @yield('content')
           </main>
 

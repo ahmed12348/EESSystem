@@ -15,26 +15,28 @@ use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the orders specific to the vendor.
-     */
+
     public function index(Request $request)
     {
-        $vendorId = Auth::id(); // Get current vendor ID
-
+        $vendorId = Auth::id(); 
+    
         $query = Order::where('vendor_id', $vendorId)->with(['customer']);
-
-        if ($request->has('search')) {
-            $query->where('id', 'like', '%' . $request->search . '%')
-                  ->orWhereHas('customer', function ($q) use ($request) {
-                      $q->where('name', 'like', '%' . $request->search . '%');
+    
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('id', 'like', '%' . $searchTerm . '%')
+                  ->orWhereHas('customer', function ($subQuery) use ($searchTerm) {
+                      $subQuery->where('name', 'like', '%' . $searchTerm . '%');
                   });
+            });
         }
-
+    
         $orders = $query->latest()->paginate(10);
-
+    
         return view('vendor.orders.index', compact('orders'));
     }
+    
 
     public function show(Order $order)
     {
