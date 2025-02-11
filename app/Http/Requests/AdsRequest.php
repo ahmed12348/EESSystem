@@ -19,7 +19,7 @@ class AdsRequest extends FormRequest
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'type' => 'required|in:product,category,zone',
             'reference_id' => 'nullable|integer',
-            'zone' => 'nullable|in:Zone 1,Zone 2',
+            'zone' => 'nullable|in:zone_1,zone_2,zone_3',
             'active' => 'boolean',
         ];
     }

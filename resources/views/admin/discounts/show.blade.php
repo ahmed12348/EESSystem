@@ -3,67 +3,73 @@
 @section('title', 'Discount Details')
 
 @section('content')
-    <!-- Breadcrumb -->
-    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Discount Details</div>
-        <div class="ps-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.index') }}"><i class="bx bx-home-alt"></i></a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('admin.discounts.index') }}">Discounts</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Discount #{{ $discount->id }}</li>
-                </ol>
-            </nav>
+    <div class="container">
+        <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+            <div class="breadcrumb-title pe-3">Discount Details</div>
+            <div class="ps-3">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0 p-0">
+                        <li class="breadcrumb-item"><a href="{{ url('/') }}"><i class="bx bx-home-alt"></i></a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Discount Details</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="ms-auto">
+                <a href="{{ route('admin.discounts.index') }}" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back</a>
+            </div>
         </div>
-    </div>
-    <!-- End Breadcrumb -->
 
-    <div class="card">
-        <div class="card-body">
-            <h5 class="mb-3">Discount Information</h5>
+        <div class="row">
+            <div class="col-xl-8 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="bi bi-tags"></i> Discount Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Discount Value -->
+                            <div class="col-md-4">
+                                <div class="p-3 border rounded bg-light">
+                                    <strong>Discount Value:</strong>
+                                    <p class="mb-0">{{ $discount->discount_value }}%</p>
+                                </div>
+                            </div>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>Discount ID:</strong> #{{ $discount->id }}</p>
-                    <p><strong>Discount Percentage:</strong> {{ $discount->discount_value }}%</p>
-                    <p><strong>Start Date:</strong> {{ $discount->start_date }}</p>
-                    <p><strong>End Date:</strong> {{ $discount->end_date }}</p>
+                            <!-- Start Date -->
+                            <div class="col-md-4">
+                                <div class="p-3 border rounded bg-light">
+                                    <strong>Start Date:</strong>
+                                    <p class="mb-0">{{ $discount->start_date }}</p>
+                                </div>
+                            </div>
+
+                            <!-- End Date -->
+                            <div class="col-md-4">
+                                <div class="p-3 border rounded bg-light">
+                                    <strong>End Date:</strong>
+                                    <p class="mb-0">{{ $discount->end_date }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+              
+
+                        <!-- Applied Products -->
+          
+                        <div class="p-3 border rounded bg-light mb-3">
+                            <strong>Applied Products:</strong>
+                            <div class="mt-2">
+                                @foreach ($products as $product)
+                                    <span class="badge bg-success p-2 m-1">{{ $product }}</span>
+                                @endforeach
+                            </div>
+                        </div>
+                    
+                    </div>
                 </div>
             </div>
-
-            <hr>
-
-            <h5 class="mb-3">Products with This Discount</h5>
-
-            <div class="table-responsive">
-                <table class="table align-middle table-hover">
-                    <thead class="table-secondary">
-                        <tr>
-                            <th>ID</th>
-                            <th>Product Name</th>
-                            <th>Original Price</th>
-                            <th>Discount</th>
-                            <th>Final Price</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{dd($discount->product)}}
-                        @foreach ($discount as $pro)
-                            <tr>
-                                <td>#{{ $pro->id }}</td>
-                                <td>{{ $pro->name }}</td>
-                                <td>${{ number_format($pro->price, 2) }}</td>
-                                <td>{{ $discount->discount_value }}%</td>
-                                <td>
-                                    ${{ number_format($pro->price - ($pro->price * ($discount->discount_value / 100)), 2) }}
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-
-            <a href="{{ route('admin.discounts.index') }}" class="btn btn-secondary mt-3">Back to Discounts</a>
         </div>
     </div>
 @endsection

@@ -28,8 +28,8 @@
       </a>
     </li>
     
-    <li>
-      <a href="#">
+    <li class="{{ request()->routeIs('vendor.orders.index') ? 'mm-active' : '' }}">
+      <a href="{{route('vendor.orders.index')}}">
         <div class="parent-icon"><i class="bi-list"></i>
         </div>
         <div class="menu-title">Order List</div>

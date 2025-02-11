@@ -22,7 +22,7 @@ class ADSController extends Controller
     {
         $products = Product::all();
         $categories = Category::all();
-        $zones = ['Zone 1', 'Zone 2','Zone 3']; // Static Zones
+        $zones = ['zone_1', 'zone_2','zone_3']; // Static Zones
 
         return view('admin.ads.create', compact('products', 'categories', 'zones'));
     }

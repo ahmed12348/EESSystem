@@ -15,16 +15,17 @@ class CreateDiscountsTable extends Migration
     {
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
-            $table->decimal('discount_value', 5, 2); // Example: 20% = 0.2
-            $table->enum('discount_type', ['percentage', 'fixed'])->default('percentage');
-            $table->dateTime('start_date')->nullable();
-            $table->dateTime('end_date')->nullable();
-            $table->foreignId('category_id')->nullable()->constrained()->onDelete('cascade');
-            $table->foreignId('product_id')->nullable()->constrained()->onDelete('cascade');
+            $table->integer('discount_value'); // Percentage (e.g., 10, 20, 30)
+            $table->string('type'); // product, category, vendor, zone
+            $table->unsignedBigInteger('type_id')->nullable(); // ID of selected type (category_id, vendor_id, zone_id)
+            $table->text('product_ids')->nullable(); // Store product IDs as comma-separated values (e.g., "1,3,5,7,9")
+            $table->date('start_date');
+            $table->date('end_date');
             $table->timestamps();
             $table->softDeletes();
         });
-    }
+    }   
+
 
     /**
      * Reverse the migrations.

@@ -60,7 +60,7 @@
                             <th>ID</th>
                             <th>Image</th>
                             <th>Product Name</th>
-                            <th>Vendor</th>
+                            {{-- <th>Vendor</th> --}}
                             <th>Status</th>  
                             <th>Action</th>  
                         </tr>
@@ -83,7 +83,7 @@
                                     @endif 
                                 </td> 
                                 <td>{{ $product->name }}</td>
-                                <td>{{ $product->vendor?->business_name  }}</td>
+                                {{-- <td>{{ $product->vendor?->business_name  }}</td> --}}
                                 <td>
                                     @if ($product->status)
                                         <span class="badge bg-success">Approved</span>

@@ -7,28 +7,37 @@ use Illuminate\Database\Eloquent\Model;
 
 class Discount extends Model
 {
-    use HasFactory;
-    protected $fillable = ['category_id', 'product_id', 'discount_value', 'start_at', 'end_at','type','vendor_id'];
+    protected $fillable = [
+        'discount_value', 'start_date', 'end_date', 'type', 'category_id', 'vendor_id', 'zone_id', 'product_ids'
+    ];
 
-    public function product()
+    // Convert product_ids from string to array
+    public function getProductIdsAttribute($value)
     {
-        return $this->belongsTo(Product::class);
+        return $value ? explode(',', $value) : [];
     }
 
-    // A discount may apply to a category
+    // Convert array to string when saving
+    public function setProductIdsAttribute($value)
+    {
+        $this->attributes['product_ids'] = is_array($value) ? implode(',', $value) : $value;
+    }
+
+    // Get product models
+    public function products()
+    {
+        return Product::whereIn('id', $this->product_ids)->get();
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
-    public static function boot()
+    public function vendor()
     {
-        parent::boot();
-
-        static::created(function ($discount) {
-            if ($discount->category_id && !$discount->product_id) {
-                Product::where('category_id', $discount->category_id)->update(['updated_at' => now()]);
-            }
-        });
+        return $this->belongsTo(Vendor::class);
     }
+
+
 }

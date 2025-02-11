@@ -4,14 +4,6 @@
 <div class="container">
     <h3>Vendor Profile</h3>
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
-    @if(session('error'))
-        <div class="alert alert-danger">{{ session('error') }}</div>
-    @endif
-
     <div class="row">
         <!-- Vendor Profile Card -->
         <div class="col-md-4">
@@ -32,7 +24,7 @@
                     <hr>
 
                     <h6>Business Name: <strong>{{ $vendor->business_name ?? 'N/A' }}</strong></h6>
-                    <h6>Business Number: <strong>{{ $vendor->business_number ?? 'N/A' }}</strong></h6>
+                    <h6>Business Number: <strong>{{ $vendor->tax_id ?? 'N/A' }}</strong></h6>
                     <h6>Zone: <strong>{{ $vendor->zone ?? 'N/A' }}</strong></h6>
                 </div>
             </div>
@@ -51,9 +43,9 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="business_number" class="form-label">Business Number</label>
-                    <input type="text" name="business_number" class="form-control" 
-                           value="{{ old('business_number', $vendor->business_number) }}" required>
+                    <label for="tax_id" class="form-label">Tax ID</label>
+                    <input type="text" name="tax_id" class="form-control" 
+                           value="{{ old('tax_id', $vendor->tax_id) }}" required>
                 </div>
 
             

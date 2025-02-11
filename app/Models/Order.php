@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 use function PHPSTORM_META\type;
 
@@ -61,4 +62,49 @@ class Order extends Model
             return $item->quantity * $item->price;
         });
     }
+
+    public function getDiscountedPrice()
+    {
+        $discount = Discount::whereRaw("FIND_IN_SET(?, product_ids)", [$this->product_id])
+            ->where('start_date', '<=', now())
+            ->where('end_date', '>=', now())
+            ->orderByDesc('discount_value') // Get the highest discount
+            ->first();
+
+        if ($discount) {
+            return $this->price * ((100 - $discount->discount_value) / 100);
+        }
+        return $this->price;
+    }
+
+    // public function applyDiscounts()
+    // {
+    //     $totalFinalPrice = 0;
+
+    //     foreach ($this->items as $item) {
+    //         $finalPrice = $item->applyDiscount();
+    //         $totalFinalPrice += $finalPrice;
+    //     }
+
+    //     // Update order's total price
+    //     DB::table('orders')->where('id', $this->id)->update([
+    //         'total_price' => $totalFinalPrice,
+    //     ]);
+    // }
+
+    /**
+     * Automatically apply discounts when an order is saved.
+     */
+    // protected static function boot()
+    // {
+    //     parent::boot();
+
+    //     static::saved(function ($order) {
+    //         if ($order->wasRecentlyCreated || $order->isDirty(['status'])) {
+    //             $order->applyDiscounts();
+    //         }
+    //     });
+    // }
+    
+    
 }

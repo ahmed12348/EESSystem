@@ -34,6 +34,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::post('logout', [AdminAuthController::class, 'logout'])->name('logout');
         Route::get('/', [HomeController::class, 'index'])->name('index');
+        Route::get('/admin/dashboard', [HomeController::class, 'index'])->name('export_admin');
         Route::resource('users', UserController::class);
         Route::resource('roles', RoleController::class);
         Route::resource('vendors', VendorController::class);
@@ -60,7 +61,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('orders', OrderController::class);
         Route::resource('discounts', DiscountController::class);
 
-        
+        Route::get('/vendor/cart-items', [CartController::class, 'index'])->name('cart.index');
+        Route::post('/vendor/cart-items/read', [CartController::class, 'readdExpiredItems'])->name('cart.readd');
+
+
+        Route::get('/getCategoryProducts', [DiscountController::class, 'getCategoryProducts'])->name('getCategoryProducts');
+        Route::get('/getVendorProducts', [DiscountController::class, 'getVendorProducts'])->name('getVendorProducts');
+        Route::get('/getZoneProducts', [DiscountController::class, 'getZoneProducts'])->name('getZoneProducts');
     });
 
 });
@@ -90,8 +97,9 @@ Route::prefix('vendor')->name('vendor.')->group(function () {
         Route::resource('products', VendorProductController::class);
         Route::post('/import-products', [VendorProductController::class, 'import'])->name('products.import');
         Route::get('products/export/sample', [VendorProductController::class, 'exportSample'])->name('products.export.sample');
-        Route::resource('orders', VendorOrderController::class)->only(['index', 'show', 'destroy']);
+        Route::resource('orders', VendorOrderController::class)->only(['index', 'show','edit','update']);
         Route::resource('discounts', VendorOrderController::class)->only(['index', 'show', 'destroy']);
+        Route::get('/vendor/export', [HomeController::class, 'export'])->name('export');
 
     });
 });

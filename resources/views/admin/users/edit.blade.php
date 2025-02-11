@@ -91,8 +91,9 @@
                             <label for="zone" class="form-label">Zone</label>
                             <select class="form-select" id="zone" name="zone" required>
                                 <option value="" readonly>Select Zone</option>
-                                <option value="Zone 1" {{ old('zone', $user->vendor?->zone) == 'Zone 1' ? 'selected' : '' }}>Zone 1</option>
-                                <option value="Zone 2" {{ old('zone', $user->vendor?->zone) == 'Zone 2' ? 'selected' : '' }}>Zone 2</option>
+                                <option value="zone_1" {{ old('zone', $user->vendor?->zone) == 'zone_1' ? 'selected' : '' }}>Zone 1</option>
+                                <option value="zone_2" {{ old('zone', $user->vendor?->zone) == 'zone_2' ? 'selected' : '' }}>Zone 2</option>
+                                <option value="zone_3" {{ old('zone', $user->vendor?->zone) == 'zone_3' ? 'selected' : '' }}>Zone 2</option>
                             </select>
                             @error('zone')
                                 <span class="text-danger">{{ $message }}</span>

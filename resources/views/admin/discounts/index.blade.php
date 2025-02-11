@@ -63,14 +63,14 @@
                                         <a href="{{ route('admin.discounts.edit', $discount->id) }}" class="text-warning" data-bs-toggle="tooltip" title="Edit">
                                             <i class="bi bi-pencil-fill"></i>
                                         </a>
-                                        <form action="{{ route('admin.discounts.destroy', $discount->id) }}" method="POST" style="display:inline;">
+                                        {{-- <form action="{{ route('admin.discounts.destroy', $discount->id) }}" method="POST" style="display:inline;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-link p-0 text-danger" data-bs-toggle="tooltip" title="Delete"
                                                 onclick="return confirm('Are you sure you want to delete this discount?')">
                                                 <i class="bi bi-trash-fill"></i>
                                             </button>
-                                        </form>
+                                        </form> --}}
                                         <a href="{{ route('admin.discounts.show', $discount->id) }}" class="text-primary" data-bs-toggle="tooltip" title="View Details">
                                             <i class="bi bi-eye-fill"></i>
                                         </a>

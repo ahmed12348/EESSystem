@@ -50,70 +50,80 @@ class OrderController extends Controller
     }
 
      
-     public function store(Request $request)
-     {
-         try {
-             DB::beginTransaction(); // Start transaction
-     
-             $request->validate([
-                 'customer_id' => 'required|exists:users,id',
-                 'product_ids' => 'required|array|min:1',
-                 'product_ids.*' => 'exists:products,id',
-                 'total_price' => 'required|numeric',
-                 'status' => 'required|in:pending,completed,cancelled',
-             ]);
-     
-             // Ensure all products belong to the same vendor
-             $products = Product::whereIn('id', $request->product_ids)->get();
-             $vendorIds = $products->pluck('vendor_id')->unique();
-     
-             if ($vendorIds->count() > 1) {
-                 return back()->withErrors(['product_ids' => 'All selected products must belong to the same vendor.'])->withInput();
-             }
-     
-             $vendorId = $vendorIds->first();
-             $totalFinalPrice = 0;
-     
-             // Create Order
-             $order = Order::create([
-                 'user_id' => $request->customer_id,
-                 'vendor_id' => $vendorId,
-                 'total_price' => 0, // Will be updated after calculation
-                 'status' => $request->status,
-                 'placed_at' => now(),
-             ]);
-     
-             // Add Order Items
-             foreach ($products as $product) {
-                 $discount = $product->productDiscount ?? null;
-                 $discountValue = $discount ? $discount->discount_value : 0;
-                 $finalPrice = $product->price - ($product->price * ($discountValue / 100));
-     
-                 OrderItem::create([
-                     'order_id' => $order->id,
-                     'product_id' => $product->id,
-                     'quantity' => 1,
-                     'price' => $product->price,
-                     'discount' => ($product->price * ($discountValue / 100)),
-                     'final_price' => $finalPrice,
-                 ]);
-     
-                 $totalFinalPrice += $finalPrice;
-             }
-     
-             // Update order with the correct total price
-             $order->update(['total_price' => $totalFinalPrice]);
-     
-             DB::commit(); // Commit transaction
-     
-             return redirect()->route('admin.orders.index')->with('success', 'Order created successfully!');
-         } catch (\Exception $e) {
-             DB::rollBack(); // Rollback changes on error
-             Log::error('Order creation failed: ' . $e->getMessage());
-     
-             return back()->withErrors(['error' => 'Failed to create order. Please try again.'])->withInput();
-         }
-     }
+    public function store(Request $request)
+    {
+        try {
+            DB::beginTransaction(); // Start transaction
+    
+            $request->validate([
+                'customer_id' => 'required|exists:users,id',
+                'product_ids' => 'required|array|min:1',
+                'product_ids.*' => 'exists:products,id',
+                'total_price' => 'required|numeric',
+                'status' => 'required|in:pending,completed,cancelled',
+            ]);
+    
+            // Fetch products
+            $products = Product::whereIn('id', $request->product_ids)->get();
+            $vendorIds = $products->pluck('vendor_id')->unique();
+    
+            if ($vendorIds->count() > 1) {
+                return back()->withErrors(['product_ids' => 'All selected products must belong to the same vendor.'])->withInput();
+            }
+    
+            $vendorId = $vendorIds->first();
+    
+            // Create Order
+            $order = Order::create([
+                'user_id' => $request->customer_id,
+                'vendor_id' => $vendorId,
+                'total_price' => 0, // Will be updated after calculation
+                'status' => $request->status,
+                'placed_at' => now(),
+            ]);
+    
+            // Apply Discounts and Create Order Items
+            foreach ($products as $product) {
+                $discount = Discount::whereRaw("FIND_IN_SET(?, product_ids)", [$product->id])
+                                    ->where(function ($query) {
+                                        $query->whereNull('end_date') // No expiration date
+                                              ->orWhere('end_date', '>', now()); // Not expired
+                                    })->first();
+    
+                $discountValue = 0;
+    
+                if ($discount) {
+                    $discountValue = ($product->price * $discount->discount_value) / 100;  
+                }
+    
+                $finalPrice = max(0, $product->price - $discountValue);
+    
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $product->id,
+                    'quantity' => 1,
+                    'price' => $product->price,
+                    'discount' => $discountValue,
+                    'final_price' => $finalPrice,
+                ]);
+            }
+    
+            // Automatically apply discounts using the Order model
+            $order->applyDiscounts();
+    
+            DB::commit(); // Commit transaction
+    
+            return redirect()->route('admin.orders.index')->with('success', 'Order created successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack(); // Rollback changes on error
+            Log::error('Order creation failed: ' . $e->getMessage());
+    
+            return back()->withErrors(['error' => 'Failed to create order. Please try again.'])->withInput();
+        }
+    }
+    
+    
+    
      
      
 
@@ -148,7 +158,8 @@ class OrderController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            // Validate Request
+            DB::beginTransaction();
+    
             $request->validate([
                 'customer_id' => 'required|exists:users,id',
                 'vendor_id' => 'required|exists:users,id',
@@ -165,35 +176,33 @@ class OrderController extends Controller
                 'status' => $request->status,
             ]);
     
-            // Get existing order item product IDs
-            $existingItems = $order->items->keyBy('product_id'); // Key by product_id for easy lookup
+            // Get existing order items
+            $existingItems = $order->items->keyBy('product_id');
             $newProductIds = array_map('intval', $request->product_ids);
     
             $totalFinalPrice = 0;
     
             foreach ($newProductIds as $productId) {
                 $product = Product::findOrFail($productId);
-    
-                // Get discount
-                $discount = $product->discount; 
-                $price = $product->price;
+                // Get discount using FIND_IN_SET for comma-separated values
+                $discount = Discount::whereRaw("FIND_IN_SET(?, product_ids)", [$productId])
+                ->where(function ($query) {
+                    $query->whereNull('end_date') // No expiration date
+                          ->orWhere('end_date', '>', now()); // Not expired
+                })->first();
                 $discountValue = 0;
     
                 if ($discount) {
-                    if ($discount->discount_type === 'percentage') {
-                        $discountValue = ($price * $discount->discount_value) / 100;
-                    } else {
-                        $discountValue = $discount->discount_value;
-                    }
+                     $discountValue = ($product->price * $discount->discount_value) / 100;
                 }
     
-                $finalPrice = $price - $discountValue;
+                $finalPrice = max(0, $product->price - $discountValue);
     
                 if (isset($existingItems[$productId])) {
                     // Update existing order item
                     $existingItems[$productId]->update([
-                        'quantity' => 1, 
-                        'price' => $price,
+                        'quantity' => 1,
+                        'price' => $product->price,
                         'discount' => $discountValue,
                         'final_price' => $finalPrice,
                     ]);
@@ -201,9 +210,9 @@ class OrderController extends Controller
                     // Add new order item if not exists
                     OrderItem::create([
                         'order_id' => $order->id,
-                        'product_id' => $product->id,
-                        'quantity' => 1, 
-                        'price' => $price,
+                        'product_id' => $productId,
+                        'quantity' => 1,
+                        'price' => $product->price,
                         'discount' => $discountValue,
                         'final_price' => $finalPrice,
                     ]);
@@ -212,18 +221,21 @@ class OrderController extends Controller
                 $totalFinalPrice += $finalPrice;
             }
     
-            // Remove order items that were not selected in the update
+            // Remove order items that were not selected
             $order->items()->whereNotIn('product_id', $newProductIds)->delete();
     
             // Update order total price
             $order->update(['total_price' => $totalFinalPrice]);
     
-            return redirect()->route('admin.orders.index')->with('success', 'Order updated successfully!');
+            DB::commit();
     
+            return redirect()->route('admin.orders.index')->with('success', 'Order updated successfully!');
         } catch (\Exception $e) {
+            DB::rollBack();
             return back()->with('error', 'Error updating order: ' . $e->getMessage());
         }
     }
+    
     
     
     public function destroy(Order $order)
