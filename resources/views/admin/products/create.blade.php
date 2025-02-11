@@ -53,7 +53,7 @@
                             <!-- Price -->
                             <div class="mb-1">
                                 <label for="price" class="form-label">Price</label>
-                                <input class="form-control" type="number" id="price" name="price"
+                                <input class="form-control" type="text" id="price" name="price"
                                     placeholder="Enter product price" required>
                                 @error('price')
                                     <div class="text-danger">{{ $message }}</div>
