@@ -109,12 +109,13 @@ class OrderController extends Controller
             }
     
             // Automatically apply discounts using the Order model
-            $order->applyDiscounts();
+            // $order->applyDiscounts();
     
             DB::commit(); // Commit transaction
     
             return redirect()->route('admin.orders.index')->with('success', 'Order created successfully!');
         } catch (\Exception $e) {
+            dd($e->getMessage());
             DB::rollBack(); // Rollback changes on error
             Log::error('Order creation failed: ' . $e->getMessage());
     
