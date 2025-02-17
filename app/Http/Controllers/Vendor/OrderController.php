@@ -40,7 +40,7 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        $this->authorizeVendorOrder($order);
+        // $this->authorizeVendorOrder($order);
         return view('vendor.orders.show', compact('order'));
     }
 
@@ -84,7 +84,7 @@ class OrderController extends Controller
 
     public function destroy(Order $order)
     {
-        $this->authorizeVendorOrder($order);
+        // $this->authorizeVendorOrder($order);
         try {
             $order->items()->delete();
             $order->delete();
