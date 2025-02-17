@@ -1,16 +1,16 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Role Dashboard')
+@section('title', __('messages.roles_dashboard'))
 
 @section('content')
     <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Roles</div>
+        <div class="breadcrumb-title pe-3">{{ __('messages.roles') }}</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Role Management</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ __('messages.role_management') }}</li>
                 </ol>
             </nav>
         </div>
@@ -18,69 +18,55 @@
         <div class="ms-auto">
             <div class="btn-group">
                     <a class="btn btn-info text-white" href="{{ route('admin.roles.create') }}">
-                        <i class="bi bi-plus-circle"></i> Create New Role
+                        <i class="bi bi-plus-circle"></i> {{ __('messages.create_new_role') }}
                     </a>
-                 
-                    @can('role-create')
-                    @endcan
             </div>
-             </div>
-    
+        </div>
     </div>
     <!--end breadcrumb-->
-
-    {{-- @if ($message = Session::get('success'))
-        <div class="alert alert-success">
-            <p>{{ $message }}</p>
-        </div>
-    @endif --}}
 
     <div class="card">
         <div class="card-body">
             <div class="d-flex align-items-center">
-                <h5 class="mb-0">Roles</h5>
-        
+                <h5 class="mb-0">{{ __('messages.roles') }}</h5>
 
                 <form class="ms-auto position-relative" method="GET" action="{{ route('admin.roles.index') }}">
                     <div class="position-absolute top-50 translate-middle-y search-icon px-3">
                         <i class="bi bi-search"></i>
                     </div>
-                    <input class="form-control ps-5" type="text" name="search" placeholder="Search"
+                    <input class="form-control ps-5" type="text" name="search" placeholder="{{ __('messages.search') }}"
                         value="{{ request()->query('search') }}">
                 </form>
-             
             </div>
+
             <div class="table-responsive mt-3">
                 <table class="table align-middle">
                     <thead class="table-secondary">
                         <tr>
-                            <th>#</th> <!-- Counter column -->
-                            <th>Name</th>
-                            <th width="280px">Action</th>
+                            <th>#</th>
+                            <th>{{ __('messages.name') }}</th>
+                            <th width="280px">{{ __('messages.action') }}</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($roles as $key => $role)
+                        @forelse ($roles as $key => $role)
                             <tr>
-                                <td>{{ $loop->iteration }}</td> <!-- Counter -->
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $role->name }}</td>
                                 <td>
                                     <div class="table-actions d-flex align-items-center gap-3 fs-6">
-                                         {{-- <a href="{{ route('admin.roles.show', $role->id) }}" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View">
-                                            <i class="bi bi-eye-fill"></i>
-                                        </a>  --}}
-                                       
-                                            <a href="{{ route('admin.roles.edit', $role->id) }}" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
-                                                <i class="bi bi-pencil-fill"></i>
-                                            </a>
-                                            @can('role-edit')
-                                            @endcan
-                                      
-                                       
+                                        <a href="{{ route('admin.roles.edit', $role->id) }}" class="text-primary"
+                                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ __('messages.edit') }}">
+                                            <i class="bi bi-pencil-fill"></i>
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="3" class="text-center text-muted">{{ __('messages.no_roles_found') }}</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

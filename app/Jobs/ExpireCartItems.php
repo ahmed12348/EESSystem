@@ -29,6 +29,7 @@ class ExpireCartItems implements ShouldQueue
         // Check if the cart is expired
         if ($this->cart->expires_at <= Carbon::now()) {
             // $this->cart->items()->delete();
+           
             $this->cart->items()->update(['status' => 'expired']);
 
         }

@@ -17,7 +17,26 @@
               </div>
             </a>
         </li>
-        <li class="nav-item dropdown dropdown-large">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+              <img src="{{ asset('assets/images/' . app()->getLocale() . '.png') }}" alt="Lang Icon" width="20" height="20" class="rounded-circle me-1">
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                  <a class="dropdown-item d-flex align-items-center" href="{{ url('lang/en') }}">
+                      <img src="{{ asset('assets/images/en.png') }}" alt="English" width="16" height="16" class="me-2"> English
+                  </a>
+              </li>
+              <li>
+                  <a class="dropdown-item d-flex align-items-center" href="{{ url('lang/ar') }}">
+                      <img src="{{ asset('assets/images/ar.png') }}" alt="Arabic" width="16" height="16" class="me-2"> العربية
+                  </a>
+              </li>
+          </ul>
+       </li>
+      
+
+        {{-- <li class="nav-item dropdown dropdown-large">
           <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
             <!-- <div class="projects">
               <i class="bi bi-grid-3x3-gap-fill"></i>
@@ -117,7 +136,7 @@
               </div>
              </div><!--end row-->
           </div>
-        </li>
+        </li> --}}
         <!-- <li class="nav-item dropdown dropdown-large">
           <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
             <div class="messages">
@@ -362,10 +381,10 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
              <li>
-                <a class="dropdown-item" href="{{ route('admin.profile.show') }}">
+                <a class="dropdown-item" href="{{route('admin.profile.show')}}">
                    <div class="d-flex align-items-center">
                      <div class=""><i class="bi bi-person-fill"></i></div>
-                     <div class="ms-3"><span>Profile</span></div>
+                     <div class="ms-3"><span>{{ __('messages.profile') }}</span></div>
                    </div>
                  </a>
               </li>
@@ -410,7 +429,7 @@
               <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                   <div class="d-flex align-items-center">
                       <div class=""><i class="bi bi-lock-fill"></i></div>
-                      <div class="ms-3"><span>Logout</span></div>
+                      <div class="ms-3"><span>{{ __('messages.logout') }}</span></div>
                   </div>
               </a>
               </li>

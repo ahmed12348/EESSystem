@@ -16,6 +16,23 @@
               </div>
             </a>
         </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+              <img src="{{ asset('assets/images/' . app()->getLocale() . '.png') }}" alt="Lang Icon" width="20" height="20" class="rounded-circle me-1">
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                  <a class="dropdown-item d-flex align-items-center" href="{{ url('lang/en') }}">
+                      <img src="{{ asset('assets/images/en.png') }}" alt="English" width="16" height="16" class="me-2"> English
+                  </a>
+              </li>
+              <li>
+                  <a class="dropdown-item d-flex align-items-center" href="{{ url('lang/ar') }}">
+                      <img src="{{ asset('assets/images/ar.png') }}" alt="Arabic" width="16" height="16" class="me-2"> العربية
+                  </a>
+              </li>
+          </ul>
+       </li>
         {{-- <li class="nav-item dropdown dropdown-large">
           <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
             <div class="projects">
@@ -219,7 +236,7 @@
           </div>
          </div>
         </li> --}}
-        <li class="nav-item dropdown dropdown-large">
+        {{-- <li class="nav-item dropdown dropdown-large">
           <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
             <div class="notifications">
               <span class="notify-badge">8</span>
@@ -338,7 +355,9 @@
                </a>
            </div>
           </div>
-        </li>
+        </li> --}}
+
+
         </ul>
         </div>
         

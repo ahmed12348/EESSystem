@@ -4,18 +4,18 @@
 <div class="container">
     <!-- Breadcrumb Navigation -->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Roles</div>
+        <div class="breadcrumb-title pe-3">{{ __('messages.roles') }}</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="{{ url('/') }}"><i class="bx bx-home-alt"></i></a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('admin.roles.index') }}">Roles</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Edit Role</li>
+                    <li class="breadcrumb-item"><a href="{{ route('admin.roles.index') }}">{{ __('messages.roles') }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ __('messages.edit_role') }}</li>
                 </ol>
             </nav>
         </div>
         <div class="ms-auto">
-            <a href="{{ route('admin.roles.index') }}" class="btn btn-secondary">Back</a>
+            <a href="{{ route('admin.roles.index') }}" class="btn btn-secondary">{{ __('messages.back') }}</a>
         </div>
     </div>
     <!-- End Breadcrumb -->
@@ -23,7 +23,7 @@
     <!-- Role Edit Form -->
     <div class="row">
         <div class="col-xl-9 mx-auto">
-            <h6 class="mb-0 text-uppercase">Edit Role</h6>
+            <h6 class="mb-0 text-uppercase">{{ __('messages.edit') }}</h6>
             <hr/>
             <div class="card">
                 <div class="card-body">
@@ -32,13 +32,13 @@
                         @method('PUT')
                         
                         <div class="mb-3">
-                            <label for="name" class="form-label">Role Name</label>
-                            <input class="form-control" type="text" id="name" name="name" value="{{ $role->name }}" placeholder="Enter role name" required>
+                            <label for="name" class="form-label">{{ __('messages.role_name') }}</label>
+                            <input class="form-control" type="text" id="name" name="name" value="{{ $role->name }}" placeholder="{{ __('messages.enter_role_name') }}" required>
                         </div>
 
                         <!-- Permissions Input -->
                         <div class="mb-3">
-                            <label class="form-label">Permissions</label>
+                            <label class="form-label">{{ __('messages.permissions') }}</label>
                             <br />
                             
                             @foreach ($permissions as $permission)
@@ -50,7 +50,7 @@
                             @endforeach
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Update Role</button>
+                        <button type="submit" class="btn btn-primary">{{ __('messages.update') }}</button>
                     </form>
                 </div>
             </div>
@@ -58,4 +58,4 @@
     </div>
 </div>
 
-@endsection
+@endsection  

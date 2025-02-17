@@ -26,11 +26,6 @@ class CartItem extends Model
         return $this->belongsTo(Product::class, 'product_id', 'id')->where('status', 1);
     }
 
-    // public function getFinalPriceAttribute()
-    // {
-    //     return ($this->price * $this->quantity ) - $this->discount; 
-    // }
-    
     public function isExpired()
     {
         return $this->expires_at && Carbon::parse($this->expires_at)->isPast();

@@ -34,7 +34,7 @@ class CartController extends Controller
         public function index()
         {
             // Fetch all expired order items
-            $expiredItems = CartItem::where('status', 'expired')->with('product', 'order.vendor')->get();
+            $expiredItems = CartItem::where('status', 'expired')->with('product')->get();
     
             return view('admin.carts.index', compact('expiredItems'));
         }
@@ -44,7 +44,7 @@ class CartController extends Controller
          */
         public function readdExpiredItems(Request $request)
         {
-            // Fetch all expired items
+            
             $expiredItems = CartItem::where('status', 'expired')->get();
     
             if ($expiredItems->isEmpty()) {
@@ -53,7 +53,7 @@ class CartController extends Controller
     
             // Update the status of expired items to 'pending'
             foreach ($expiredItems as $item) {
-                $item->update(['status' => 'pending']);
+                $item->update(['status' => 'active']);
             }
     
             return redirect()->route('admin.cart.index')->with('success', 'Expired items have been re-added.');

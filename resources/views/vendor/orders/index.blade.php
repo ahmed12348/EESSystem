@@ -1,26 +1,21 @@
 @extends('vendor.layouts.app')
 
-@section('title', 'Orders Dashboard')
+@section('title', __('messages.orders_dashboard'))
 
 @section('content')
     <!-- Breadcrumb -->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Orders</div>
+        <div class="breadcrumb-title pe-3">{{ __('messages.orders') }}</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="{{ route('vendor.vendor_index') }}"><i class="bx bx-home-alt"></i></a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Order List</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ __('messages.order_list') }}</li>
                 </ol>
             </nav>
         </div>
-
-     
-       
     </div>
     <!-- End Breadcrumb -->
-
-
 
     <div class="card">
         <div class="card-body">
@@ -31,7 +26,7 @@
                         <div class="position-absolute top-50 translate-middle-y search-icon px-3">
                             <i class="bi bi-search"></i>
                         </div>
-                        <input class="form-control form-control-sm ps-5" type="text" name="search" placeholder="Search Orders" value="{{ request()->query('search') }}">
+                        <input class="form-control form-control-sm ps-5" type="text" name="search" placeholder="{{ __('messages.search') }}" value="{{ request()->query('search') }}">
                     </form>
                 </div>
             </div>
@@ -40,45 +35,40 @@
                 <table id='example2' class="table align-middle table-hover">
                     <thead class="table-secondary">
                         <tr>
-                            <th>ID</th>
-                            <th>Customer Name</th>
-                            <th>Vendor Name</th>
-                            <th>Address</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                            <th>{{ __('messages.order_id') }}</th>
+                            <th>{{ __('messages.customer') }}</th>
+                            <th>{{ __('messages.vendor_name') }}</th>
+                            <th>{{ __('messages.address') }}</th>
+                            <th>{{ __('messages.date') }}</th>
+                            <th>{{ __('messages.status') }}</th>
+                            <th>{{ __('messages.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($orders as $order)
                             <tr>
                                 <td>#{{ $order->id }}</td>
-                                <td>{{ $order->customer?->vendor?->business_name ?? 'N/A' }}</td>
-                                <td>{{ $order->vendor?->business_name ?? 'N/A' }}</td>
-                                <td>{{ $order->customer?->vendor?->location?->address ?? 'No Address' }}</td>
+                                <td>{{ $order->customer?->vendor?->business_name ?? __('messages.na') }}</td>
+                                <td>{{ $order->vendor?->business_name ?? __('messages.na') }}</td>
+                                <td>{{ $order->customer?->vendor?->location?->address ?? __('messages.no_address') }}</td>
                                 <td>{{ $order->created_at->format('d M Y') }}</td>
                                 <td>
                                     @if ($order->status == 'pending')
-                                        <span class="badge bg-warning">Pending</span>
+                                        <span class="badge bg-warning">{{ __('messages.pending') }}</span>
                                     @elseif ($order->status == 'completed')
-                                        <span class="badge bg-success">Completed</span>
+                                        <span class="badge bg-success">{{ __('messages.completed') }}</span>
                                     @elseif ($order->status == 'cancelled')
-                                        <span class="badge bg-danger">Cancelled</span>
+                                        <span class="badge bg-danger">{{ __('messages.cancelled') }}</span>
                                     @endif
                                 </td>
                                 <td>
                                     <div class="table-actions d-flex align-items-center gap-2 fs-6">
-                                           
                                         <a href="{{ route('vendor.orders.edit', $order->id) }}" class="text-primary"
-                                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
+                                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ __('messages.edit') }}">
                                             <i class="bi bi-pencil-fill"></i>
                                         </a>
-                                       
-                                     
-    
-
-                                        <a href="{{ route('vendor.orders.show', $order->id) }}" class="text-warning "
-                                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="View">
+                                        <a href="{{ route('vendor.orders.show', $order->id) }}" class="text-warning"
+                                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ __('messages.view') }}">
                                             <i class="bi bi-eye-fill"></i>
                                         </a>
                                     </div>

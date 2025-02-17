@@ -22,6 +22,11 @@ class ProductRequest extends FormRequest
         $rules = [
             'name' => 'required|string|max:255',  
             'description' => 'nullable|string|max:1000', 
+            'items' => 'nullable|numeric',
+            'color' => 'nullable|string',
+            'shape' => 'nullable|string',
+            'min_order_quantity' => 'nullable|numeric',
+            'max_order_quantity' => 'nullable|numeric',
             'price' => 'required|numeric|min:0', 
             'category_id' => 'required|exists:categories,id', 
             'image' => 'nullable|image|max:2048',  

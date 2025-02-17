@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -39,5 +40,12 @@ class Discount extends Model
         return $this->belongsTo(Vendor::class);
     }
 
-
+    public static function getApplicableDiscount(Product $product)
+    {
+        return self::whereRaw("FIND_IN_SET(?, product_ids)", [$product->id])
+            ->where('start_date', '<=', Carbon::now())
+            ->where('end_date', '>=', Carbon::now())
+            ->orderBy('discount_value', 'desc')
+            ->first();
+    }
 }

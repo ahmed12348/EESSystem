@@ -1,124 +1,84 @@
 @extends('admin.layouts.app')
 
+@section('title', __('messages.show_vendor'))
+
 @section('content')
-<div class="container">
-    <!-- Breadcrumb Navigation -->
-    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Users</div>
-        <div class="ps-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="{{ url('/') }}"><i class="bx bx-home-alt"></i></a></li>
-                    <li class="breadcrumb-item active" aria-current="page">View User</li>
-                </ol>
-            </nav>
-        </div>
-        <div class="ms-auto">
-            <!-- Back Button -->
-            <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Back</a>
-        </div>
-    </div>
-    <!-- End Breadcrumb -->
+    <div class="container">
 
-    <div class="row">
-        <!-- Section 1: User Overview Card -->
-        <div class="col-lg-4">
-            <div class="card">
-                <div class="card-body text-center">
-                    <!-- User Profile Picture -->
-                    @if($user->profile_picture)
-                    
-                    <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile Picture" width="150" height="150" class="img-thumbnail">
-                    @else
-                        <img src="{{ asset('assets/images/default-avatar.png') }}" alt="Default Profile" class="rounded-circle mb-3" width="100">
-                    @endif
-                   
-                    <h5>{{ $user->name }}</h5>
-                    <p class="text-muted">{{ $user->email }}</p>
-                    <span class="badge bg-primary">{{ $user->roles->first()->name ?? 'No Role' }}</span>
-
-                    <hr>
-
-                    <h6>Total Orders: <strong>{{ $orders->count() }}</strong></h6>
-                    <h6>Joined: <strong>{{ $user->created_at->format('d M Y') }}</strong></h6>
-                </div>
+        <!-- Breadcrumb Navigation -->
+        <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+            <div class="breadcrumb-title pe-3">{{ __('messages.vendors') }}</div>
+            <div class="ps-3">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0 p-0">
+                        <li class="breadcrumb-item"><a href="{{ url('/') }}"><i class="bx bx-home-alt"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.vendors.index') }}">{{ __('messages.vendors') }}</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ __('messages.show_vendor') }}</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="ms-auto">
+                <a href="{{ route('admin.vendors.index') }}" class="btn btn-secondary">{{ __('messages.back') }}</a>
             </div>
         </div>
 
-        <!-- Section 2: Filter Search -->
-        <div class="col-lg-8">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="mb-3">Filter Orders</h5>
-                    <form method="GET" action="{{ route('admin.users.show', $user->id) }}">
-                        <div class="row">
-                            <!-- Filter by Name -->
-                            <div class="col-md-5">
-                                <input type="text" name="search_name" class="form-control" placeholder="Search by Name" value="{{ request('search_name') }}">
-                            </div>
+        <div class="row">
+            <!-- Vendor Details Card -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ __('messages.vendor') }}</h5>
+                        <hr>
 
-                            <!-- Filter by Category -->
-                            <div class="col-md-5">
-                                <select name="category" class="form-control">
-                                    <option value="">Select Category</option>
-                                    @foreach($categories as $category)
-                                        <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
-                                            {{ $category->name }}
-                                        </option>
+                        <p><strong>{{ __('messages.business_name') }}:</strong> {{ $vendor->vendor->business_name ?? 'N/A' }}</p>
+                        <p><strong>{{ __('messages.email') }}:</strong> {{ $vendor->email ?? 'N/A' }}</p>
+                        <p><strong>{{ __('messages.tax_id') }}:</strong> {{ $vendor->vendor->tax_id ?? 'N/A' }}</p>
+                        <p><strong>{{ __('messages.zone') }}:</strong> {{ $vendor->vendor->zone ?? 'N/A' }}</p>
+                        <p><strong>{{ __('messages.status') }}:</strong> 
+                            @if ($vendor->status == 'active')
+                                <span class="badge bg-success">{{ __('messages.status') }}: Active</span>
+                            @else
+                                <span class="badge bg-danger">{{ __('messages.status') }}: Inactive</span>
+                            @endif
+                        </p>
+                        <p><strong>{{ __('messages.created_at') }}:</strong> {{ $vendor->created_at->format('d M Y') }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vendor Orders -->
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="mb-3">{{ __('messages.orders') }}</h5>
+
+                        @if ($vendor->orders->count() > 0)
+                            <table class="table table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>{{ __('messages.order_id') }}</th>
+                                        <th>{{ __('messages.customer') }}</th>
+                                        <th>{{ __('messages.total_price') }}</th>
+                                        <th>{{ __('messages.date') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($vendor->orders as $order)
+                                        <tr>
+                                            <td>{{ $order->id }}</td>
+                                            <td>{{ $order->customer->name ?? 'N/A' }}</td>
+                                            <td>${{ number_format($order->total_price, 2) }}</td>
+                                            <td>{{ $order->created_at->format('d M Y') }}</td>
+                                        </tr>
                                     @endforeach
-                                </select>
-                            </div>
-
-                            <!-- Submit Button -->
-                            <div class="col-md-2">
-                                <button type="submit" class="btn btn-primary w-100">Search</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Section 3: Orders Table -->
-            <div class="card mt-3">
-                <div class="card-body">
-                    <h5 class="mb-3">User Orders</h5>
-
-                    <table class="table table-bordered">
-                        <thead class="table-light">
-                            <tr>
-                                <th>#</th>
-                                <th>Order ID</th>
-                                <th>Product Name</th>
-                                <th>Category</th>
-                                <th>Amount</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($orders as $order)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $order->id }}</td>
-                                    <td>{{ $order->product_name }}</td>
-                                    <td>{{ $order->category->name ?? 'N/A' }}</td>
-                                    <td>${{ number_format($order->amount, 2) }}</td>
-                                    <td><span class="badge bg-success">{{ $order->status }}</span></td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="6" class="text-center text-muted">No orders found.</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-
-                    <!-- Pagination -->
-                    <div class="mt-3">
-                        {{ $orders->links() }}
+                                </tbody>
+                            </table>
+                        @else
+                            <p class="text-muted">{{ __('messages.na') }}</p>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-@endsection
+@endsection  

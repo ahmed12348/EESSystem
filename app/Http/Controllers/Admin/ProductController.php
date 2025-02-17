@@ -21,8 +21,7 @@ class ProductController extends Controller
     
         $products = Product::when($search, function ($query) use ($search) {
                 return $query->where('name', 'like', "%{$search}%");
-            })
-            ->paginate(10);
+            })->paginate(10);
     
         $requestedProducts = Product::where('status', false)
             ->when($search, function ($query) use ($search) {
@@ -42,6 +41,7 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)  // Use ProductRequest here
     {
+    
         // No need to validate here; it's done in the ProductRequest
         $data = $request->validated(); // Get the validated data
 
@@ -58,9 +58,9 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        if (Auth::id() !== $product->vendor_id && !Auth::user()->hasRole('admin')) {
-            abort(403);
-        }
+        // if (Auth::id() !== $product->vendor_id && !Auth::user()->hasRole('admin')) {
+        //     abort(403);
+        // }
 
         $categories = Category::all();
         return view('admin.products.edit', compact('product', 'categories'));
@@ -68,13 +68,13 @@ class ProductController extends Controller
 
     public function update(ProductRequest $request, Product $product)  // Use ProductRequest here
     {
-        if (Auth::id() !== $product->vendor_id && !Auth::user()->hasRole('admin')) {
-            abort(403);
-        }
-
+        // if (Auth::id() !== $product->vendor_id && !Auth::user()->hasRole('admin')) {
+        //     abort(403);
+        // }
+    
         // No need to validate here; it's done in the ProductRequest
         $data = $request->validated();  // Get the validated data
-
+       
         if ($request->hasFile('image')) {
             // If a new image is uploaded, store it and update the image path
             $data['image'] = $request->file('image')->store('products', 'public');
@@ -98,9 +98,9 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
-        if (Auth::id() !== $product->vendor_id && !Auth::user()->hasRole('admin')) {
-            abort(403);
-        }
+        // if (Auth::id() !== $product->vendor_id && !Auth::user()->hasRole('admin')) {
+        //     abort(403);
+        // }
 
         $product->delete();
         return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully.');

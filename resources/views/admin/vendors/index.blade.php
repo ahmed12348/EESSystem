@@ -1,18 +1,18 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Vendors Dashboard')
+@section('title', __('messages.vendors_dashboard'))
 
 @section('content')
     <!-- Breadcrumb -->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Vendors</div>
+        <div class="breadcrumb-title pe-3">{{ __('messages.vendors') }}</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item">
                         <a href="{{ route('admin.index') }}"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Vendors List</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ __('messages.vendors_list') }}</li>
                 </ol>
             </nav>
         </div>
@@ -20,7 +20,7 @@
         <div class="ms-auto">
             <div class="btn-group">
                 {{-- <a class="btn btn-info text-white" href="{{ route('admin.vendors.create') }}">
-                    <i class="bi bi-plus-circle"></i> Create New Vendor
+                    <i class="bi bi-plus-circle"></i> {{ __('messages.create_vendor') }}
                 </a> --}}
             </div>
         </div>
@@ -32,12 +32,12 @@
         <div class="card-body">
 
             <div class="d-flex align-items-center">
-                <h5 class="mb-0">Vendors</h5>
+                <h5 class="mb-0">{{ __('messages.vendors') }}</h5>
                 <form class="ms-auto position-relative" method="GET" action="{{ route('admin.vendors.index') }}">
                     <div class="position-absolute top-50 translate-middle-y search-icon px-3">
                         <i class="bi bi-search"></i>
                     </div>
-                    <input class="form-control ps-5" type="text" name="search" placeholder="Search"
+                    <input class="form-control ps-5" type="text" name="search" placeholder="{{ __('messages.search') }}"
                         value="{{ request()->query('search') }}">
                 </form>
             </div>
@@ -47,12 +47,11 @@
                     <thead class="table-secondary">
                         <tr>
                             <th>ID</th>
-                            <th>Business Name</th>
-                            <th>Phone Number</th>
-                            <th>Zone</th>
-                            <th>Status</th>
-        
-                            <th>Actions</th>
+                            <th>{{ __('messages.business_name') }}</th>
+                            <th>{{ __('messages.phone_number') }}</th>
+                            <th>{{ __('messages.zone') }}</th>
+                            <th>{{ __('messages.status') }}</th>
+                            <th>{{ __('messages.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -60,27 +59,26 @@
                             <tr>
                                 <td>{{ $vendor->id }}</td>
                                 <td>
-                                @if ($vendor->hasRole('vendor'))  <!-- Check if user is a vendor -->
-                                {{ $vendor->vendor ? $vendor->vendor->business_name : 'N/A' }} <!-- Safe Access -->
-                                @else
-                                    N/A
-                                @endif
+                                    @if ($vendor->hasRole('vendor'))  
+                                        {{ $vendor->vendor ? $vendor->vendor->business_name : 'N/A' }}
+                                    @else
+                                        N/A
+                                    @endif
                                 </td>
-                                {{-- <td>{{ $vendor->vendor->business_name }}</td> --}}
                                 <td>{{ $vendor->phone }}</td>
                                 <td>{{ $vendor->vendor?->zone ?? 'N/A' }}</td>
                                 <td>
                                     @if ($vendor->status == 'active')
-                                        <span class="badge bg-success">Active</span>
+                                        <span class="badge bg-success">{{ __('messages.active') }}</span>
                                     @else
-                                        <span class="badge bg-danger">Inactive</span>
+                                        <span class="badge bg-danger">{{ __('messages.inactive') }}</span>
                                     @endif
                                 </td>
 
                                 <td>
                                     <div class="table-actions d-flex align-items-center gap-3 fs-6">
                                         <a href="{{ route('admin.vendors.edit', $vendor->id) }}" class="text-primary"
-                                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
+                                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ __('messages.edit') }}">
                                             <i class="bi bi-pencil-fill"></i>
                                         </a>
 
@@ -89,25 +87,19 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-link p-0 text-danger"
-                                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"
-                                                onclick="return confirm('Are you sure you want to delete this vendor?')">
+                                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ __('messages.delete') }}"
+                                                onclick="return confirm('{{ __('messages.confirm_delete_vendor') }}')">
                                                 <i class="bi bi-trash-fill"></i>
                                             </button>
                                         </form>
-{{--                                         
-                                        <a href="{{ route('admin.vendors.show', $vendor->id) }}" class="text-warning"
-                                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="View">
-                                            <i class="bi bi-eye-fill"></i>
-                                        </a> --}}
-
 
                                         @if ($vendor->status == 'inactive')  
                                             <form action="{{ route('admin.vendors.approve', $vendor->id) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('PATCH')
                                                 <button type="submit" class="btn btn-link p-0 text-success"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom" title="Approve Vendor"
-                                                    onclick="return confirm('Are you sure you want to approve this vendor?')">
+                                                    data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ __('messages.approve_vendor') }}"
+                                                    onclick="return confirm('{{ __('messages.confirm_approve_vendor') }}')">
                                                     <i class="bi bi-check-circle-fill"></i> 
                                                 </button>
                                             </form>
@@ -116,15 +108,14 @@
                                                 @csrf
                                                 @method('PATCH')
                                                 <button type="submit" class="btn btn-link p-0 text-danger"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom" title="Reject Vendor"
-                                                    onclick="return confirm('Are you sure you want to reject this vendor?')">
+                                                    data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ __('messages.reject_vendor') }}"
+                                                    onclick="return confirm('{{ __('messages.confirm_reject_vendor') }}')">
                                                     <i class="bi bi-x-circle-fill"></i> 
                                                 </button>
                                             </form>
 
                                         @endif
 
-                                    
                                     </div>
                                 </td>
                             </tr>
@@ -135,4 +126,4 @@
 
         </div>
     </div>
-@endsection
+@endsection  

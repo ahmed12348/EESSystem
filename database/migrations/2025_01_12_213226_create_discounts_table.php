@@ -16,7 +16,7 @@ class CreateDiscountsTable extends Migration
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
             $table->integer('discount_value'); // Percentage (e.g., 10, 20, 30)
-            $table->string('type'); // product, category, vendor, zone
+            $table->string('type')->nullable(); // product, category, vendor, zone
             $table->unsignedBigInteger('type_id')->nullable(); // ID of selected type (category_id, vendor_id, zone_id)
             $table->text('product_ids')->nullable(); // Store product IDs as comma-separated values (e.g., "1,3,5,7,9")
             $table->date('start_date');

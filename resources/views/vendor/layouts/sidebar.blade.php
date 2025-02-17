@@ -16,7 +16,7 @@
       <a href="{{route('vendor.vendor_index')}}">
         <div class="parent-icon"><i class="bi-house-door"></i>
         </div>
-        <div class="menu-title">Dashboard</div>
+        <div class="menu-title">{{ __('messages.dashboard') }}</div>
       </a>
     </li>
     
@@ -24,7 +24,7 @@
       <a href="{{route('vendor.products.index')}}">
         <div class="parent-icon"><i class="bi-box"></i>
         </div>
-        <div class="menu-title">Products</div>
+        <div class="menu-title">{{ __('messages.products') }}</div>
       </a>
     </li>
     
@@ -32,10 +32,18 @@
       <a href="{{route('vendor.orders.index')}}">
         <div class="parent-icon"><i class="bi-list"></i>
         </div>
-        <div class="menu-title">Order List</div>
+        <div class="menu-title">{{ __('messages.orders') }} </div>
       </a>
     </li>
-    
+
+
+    <li class="{{ request()->routeIs('vendor.discounts.index') ? 'mm-active' : '' }}">
+      <a href="{{route('vendor.discounts.index')}}">
+        <div class="parent-icon"><i class="bi bi-disc"></i>
+        </div>
+        <div class="menu-title">{{ __('messages.discounts') }}</div>
+      </a>
+    </li>
     
   </ul>
   <!--end navigation-->

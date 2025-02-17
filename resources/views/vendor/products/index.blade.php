@@ -1,16 +1,16 @@
 @extends('vendor.layouts.app')
 
-@section('title', 'Products Dashboard')
+@section('title', __('messages.products_dashboard'))
 
 @section('content')
     <!-- Breadcrumb -->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Products</div>
+        <div class="breadcrumb-title pe-3">{{ __('messages.products') }}</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="{{ route('vendor.vendor_index') }}"><i class="bx bx-home-alt"></i></a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Product List</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ __('messages.product_list') }}</li>
                 </ol>
             </nav>
         </div>
@@ -18,7 +18,7 @@
         <div class="ms-auto">
             <div class="btn-group">
                 <a class="btn btn-info text-white" href="{{ route('vendor.products.create') }}">
-                    <i class="bi bi-plus-circle"></i> Add New Product
+                    <i class="bi bi-plus-circle"></i> {{ __('messages.add_new_product') }}
                 </a>
             </div>
         </div>
@@ -34,13 +34,12 @@
                     <form action="{{ route('vendor.products.import') }}" method="POST" enctype="multipart/form-data" class="d-flex align-items-center me-2">
                         @csrf
                         <input type="file" name="file" class="form-control form-control-sm" required>
-                        <button type="submit" class="btn btn-secondary btn-sm ms-2">Import</button>
+                        <button type="submit" class="btn btn-secondary btn-sm ms-2">{{ __('messages.import') }}</button>
                     </form>
                 
                     <!-- Export Sample Button (for downloading the header template) -->
-                    <a href="{{ route('vendor.products.export.sample') }}" class="btn btn-light btn-sm ms-2">Sample</a>
+                    <a href="{{ route('vendor.products.export.sample') }}" class="btn btn-light btn-sm ms-2">{{ __('messages.sample') }}</a>
                 </div>
-                
                 
                 <!-- Search Form -->
                 <div class="ms-auto d-flex align-items-center">
@@ -48,7 +47,7 @@
                         <div class="position-absolute top-50 translate-middle-y search-icon px-3">
                             <i class="bi bi-search"></i>
                         </div>
-                        <input class="form-control form-control-sm ps-5" type="text" name="search" placeholder="Search Products" value="{{ request()->query('search') }}">
+                        <input class="form-control form-control-sm ps-5" type="text" name="search" placeholder="{{ __('messages.search_products') }}" value="{{ request()->query('search') }}">
                     </form>
                 </div>
             </div>
@@ -58,11 +57,10 @@
                     <thead class="table-secondary">
                         <tr>
                             <th>ID</th>
-                            <th>Image</th>
-                            <th>Product Name</th>
-                            {{-- <th>Vendor</th> --}}
-                            <th>Status</th>  
-                            <th>Action</th>  
+                            <th>{{ __('messages.image') }}</th>
+                            <th>{{ __('messages.product_name') }}</th>
+                            <th>{{ __('messages.status') }}</th>  
+                            <th>{{ __('messages.actions') }}</th>  
                         </tr>
                     </thead>
                     <tbody>
@@ -74,37 +72,33 @@
                                         <img src="{{ asset('storage/' . $product->image) }}" 
                                              class="img-fluid rounded shadow border p-2" 
                                              style="max-width: 50px;" 
-                                             alt="Product Image">
+                                             alt="{{ __('messages.product_image') }}">
                                     @else 
                                         <img src="{{ asset('assets/images/default-product.png') }}" 
                                              class="img-fluid rounded shadow border p-2" 
                                              style="max-width: 50px;" 
-                                             alt="Default Image">
+                                             alt="{{ __('messages.default_image') }}">
                                     @endif 
                                 </td> 
                                 <td>{{ $product->name }}</td>
-                                {{-- <td>{{ $product->vendor?->business_name  }}</td> --}}
                                 <td>
                                     @if ($product->status)
-                                        <span class="badge bg-success">Approved</span>
-                                    @elseif(!$product->status)
-                                        <span class="badge bg-danger">Not Approved</span>
+                                        <span class="badge bg-success">{{ __('messages.approved') }}</span>
+                                    @else
+                                        <span class="badge bg-danger">{{ __('messages.not_approved') }}</span>
                                     @endif
                                 </td>
                                 <td>
                                     <div class="table-actions d-flex align-items-center gap-2 fs-6">
                                         <a href="{{ route('vendor.products.edit', $product->id) }}" class="text-primary"
-                                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
+                                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ __('messages.edit') }}">
                                             <i class="bi bi-pencil-fill"></i>
                                         </a>
 
-
                                         <a href="{{ route('vendor.products.show', $product->id) }}" class="text-warning"
-                                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="View">
+                                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ __('messages.view') }}">
                                             <i class="bi bi-eye-fill"></i>
                                         </a>
-
-                                      
                                     </div>
                                 </td>
                             </tr>

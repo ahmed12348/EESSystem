@@ -1,7 +1,8 @@
     <!--start footer-->
     <footer class="footer">
         <div class="footer-text">
-           Copyright © 2025. All right reserved.
+            <p class="mb-0">{{ __('messages.copyright') }}</p>
+         
         </div>
         </footer>
         <!--end footer-->

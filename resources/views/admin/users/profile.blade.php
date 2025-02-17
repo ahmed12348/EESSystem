@@ -1,16 +1,10 @@
 @extends('admin.layouts.app')
 
+@section('title', __('messages.user_profile'))
+
 @section('content')
 <div class="container">
-    <h3>User Profile</h3>
-
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
-    @if(session('error'))
-        <div class="alert alert-danger">{{ session('error') }}</div>
-    @endif
+    <h3>{{ __('messages.user_profile') }}</h3>
 
     <div class="row">
         <!-- User Profile Card -->
@@ -28,12 +22,12 @@
                     <h5>{{ Auth::user()->name }}</h5>
                     <p class="text-muted">{{ Auth::user()->email }}</p>
 
-                    <span class="badge bg-success">User</span>
+                    <span class="badge bg-success">{{ __('messages.user') }}</span>
 
                     <hr>
 
                     <!-- Display business details -->
-                    <h6>Name: <strong>{{ $user->name ?? 'N/A' }}</strong></h6>
+                    <h6>{{ __('messages.name') }}: <strong>{{ Auth::user()->name ?? __('messages.na') }}</strong></h6>
                 </div>
             </div>
         </div>
@@ -45,26 +39,27 @@
 
                 <!-- Name Field -->
                 <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" name="name" class="form-control" value="{{ old('name', Auth::user()->name) }}" >
+                    <label for="name" class="form-label">{{ __('messages.name') }}</label>
+                    <input type="text" name="name" class="form-control" value="{{ old('name', Auth::user()->name) }}">
                 </div>
 
                 <!-- Email Field (disabled for display) -->
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
+                    <label for="email" class="form-label">{{ __('messages.email') }}</label>
                     <input type="email" name="email" class="form-control" value="{{ old('email', Auth::user()->email) }}" readonly>
                 </div>
 
                 <!-- Profile Picture -->
                 <div class="mb-3">
-                    <label for="profile_picture" class="form-label">Profile Picture</label>
+                    <label for="profile_picture" class="form-label">{{ __('messages.profile_picture') }}</label>
                     <input type="file" name="profile_picture" class="form-control">
                 </div>
 
                 <!-- Submit Button -->
-                <button type="submit" class="btn btn-primary mb-3">Update Profile</button>
+                <button type="submit" class="btn btn-primary mb-3">{{ __('messages.update_profile') }}</button>
             </form>
         </div>
     </div>
 </div>
 @endsection
+

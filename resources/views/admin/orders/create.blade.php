@@ -6,24 +6,24 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-            <div class="breadcrumb-title pe-3">Orders</div>
+            <div class="breadcrumb-title pe-3">{{ __('messages.orders') }}</div>
             <div class="ps-3">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{ url('/') }}"><i class="bx bx-home-alt"></i></a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Add New Order</li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ __('messages.add_new_order') }}</li>
                     </ol>
                 </nav>
             </div>
             <div class="ms-auto">
-                <a href="{{ route('admin.orders.index') }}" class="btn btn-secondary">Back</a>
+                <a href="{{ route('admin.orders.index') }}" class="btn btn-secondary">{{ __('messages.back') }}</a>
             </div>
         </div>
 
         <!-- Order Creation Form -->
         <div class="row">
             <div class="col-xl-9 mx-auto">
-                <h6 class="mb-0 text-uppercase">Create New Order</h6>
+                <h6 class="mb-0 text-uppercase">{{ __('messages.create_order') }}</h6>
                 <hr />
                 <div class="card">
                     <div class="card-body">
@@ -32,9 +32,9 @@
 
                             <!-- Select Customer -->
                             <div class="mb-1">
-                                <label for="customer_id" class="form-label">Select Customer</label>
+                                <label for="customer_id" class="form-label">{{ __('messages.select_customer') }}</label>
                                 <select class="form-select select2" id="customer_id" name="customer_id" required>
-                                    <option value="">Select Customer</option>
+                                    <option value="">{{ __('messages.select_customer') }}</option>
                                     @foreach ($customers as $customer)
                                         <option value="{{ $customer->id }}">{{ $customer->vendor?->business_name }}</option>
                                     @endforeach
@@ -46,7 +46,7 @@
 
                             <!-- Select Products (Multiple Selection) -->
                             <div class="mb-1">
-                                <label for="product_ids" class="form-label">Select Products</label>
+                                <label for="product_ids" class="form-label">{{ __('messages.select_products') }}</label>
                                 <select class="form-select select2" id="product_ids" name="product_ids[]" multiple required>
                                     @foreach ($products as $product)
                                         <option value="{{ $product->id }}" data-price="{{ $product->price }}" 
@@ -60,39 +60,34 @@
                                 @enderror
                             </div>
 
-                            <!-- Auto-Generated Vendor (Hidden) -->
-                            <input type="hidden" id="vendor_id" name="vendor_id">
-
                             <!-- Order Total Price -->
                             <div class="mb-1">
-                                <label for="total_price" class="form-label">Total Price</label>
+                                <label for="total_price" class="form-label">{{ __('messages.total_price') }}</label>
                                 <input class="form-control" type="text" id="total_price" name="total_price" readonly>
                             </div>
 
                             <!-- Order Status -->
                             <div class="mb-1">
-                                <label for="status" class="form-label">Order Status</label>
+                                <label for="status" class="form-label">{{ __('messages.status') }}</label>
                                 <select class="form-select" id="status" name="status" required>
-                                    <option value="pending">Pending</option>
-                                    <option value="completed">Completed</option>
-                                    <option value="cancelled">Cancelled</option>
+                                    <option value="pending">{{ __('messages.pending') }}</option>
+                                    <option value="completed">{{ __('messages.completed') }}</option>
+                                    <option value="cancelled">{{ __('messages.cancelled') }}</option>
                                 </select>
                                 @error('status')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <!-- Placed At (Auto-filled) -->
-                            <input type="hidden" name="placed_at" value="{{ now() }}">
-
                             <!-- Submit Button -->
-                            <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Create Order</button>
+                            <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> {{ __('messages.create') }}</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 
     @push('scripts')
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />

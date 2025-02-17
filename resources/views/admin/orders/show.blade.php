@@ -1,44 +1,44 @@
 @extends('admin.layouts.app')
 
-@section('title', 'View Order')
+@section('title', __('messages.view_order'))
 
 @section('content')
     <div class="container">
 
         <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-            <div class="breadcrumb-title pe-3">Orders</div>
+            <div class="breadcrumb-title pe-3">{{ __('messages.orders') }}</div>
             <div class="ps-3">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{ route('admin.index') }}"><i class="bx bx-home-alt"></i></a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Order Details</li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ __('messages.order_details') }}</li>
                     </ol>
                 </nav>
             </div>
             <div class="ms-auto">
-                <a href="{{ route('admin.orders.index') }}" class="btn btn-secondary">Back</a>
+                <a href="{{ route('admin.orders.index') }}" class="btn btn-secondary">{{ __('messages.back') }}</a>
             </div>
         </div>
 
         <div class="card">
             <div class="card-body">
-                <h5>Order #{{ $order->id }}</h5>
+                <h5>{{ __('messages.order') }} #{{ $order->id }}</h5>
                 <hr>
 
-                <p><strong>Customer:</strong> {{ $order->customer->name }}</p>
-                <p><strong>Vendor:</strong> {{ $order->vendor->business_name }}</p>
-                <p><strong>Status:</strong> <span class="badge bg-info">{{ ucfirst($order->status) }}</span></p>
-                <p><strong>Placed At:</strong> {{ $order->placed_at->format('d M Y H:i') }}</p>
+                <p><strong>{{ __('messages.customer') }}:</strong> {{ $order->customer->name }}</p>
+                <p><strong>{{ __('messages.vendor') }}:</strong> {{ $order->vendor->business_name }}</p>
+                <p><strong>{{ __('messages.status') }}:</strong> <span class="badge bg-info">{{ ucfirst($order->status) }}</span></p>
+                <p><strong>{{ __('messages.placed_at') }}:</strong> {{ $order->placed_at->format('d M Y H:i') }}</p>
 
-                <h6>Products:</h6>
+                <h6>{{ __('messages.products') }}:</h6>
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Product</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
-                            <th>Discount</th>
-                            <th>Final Price</th>
+                            <th>{{ __('messages.product') }}</th>
+                            <th>{{ __('messages.quantity') }}</th>
+                            <th>{{ __('messages.price') }}</th>
+                            <th>{{ __('messages.discount') }}</th>
+                            <th>{{ __('messages.final_price') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,7 +54,7 @@
                     </tbody>
                 </table>
 
-                <h6>Total Price: ${{ number_format($order->total_price, 2) }}</h6>
+                <h6>{{ __('messages.total_price') }}: ${{ number_format($order->total_price, 2) }}</h6>
             </div>
         </div>
     </div>

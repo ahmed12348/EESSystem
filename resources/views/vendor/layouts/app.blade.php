@@ -1,114 +1,109 @@
-
 <!doctype html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}">
 
 <head>
+  <!-- ✅ Define asset path dynamically based on language -->
+  @php
+      $assetPath = app()->getLocale() === 'ar' ? 'assets-rtl' : 'assets';
+  @endphp
+
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="{{ asset('assets/images/favicon-l.png') }}" type="image/png" />
-  <!--plugins-->
-  <link href="{{ asset('assets/plugins/vectormap/jquery-jvectormap-2.0.2.css') }}') }}" rel="stylesheet"/>
-  <link href="{{ asset('assets/plugins/simplebar/css/simplebar.css') }}" rel="stylesheet" />
-  <link href="{{ asset('assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}" rel="stylesheet" />
-  <link href="{{ asset('assets/plugins/metismenu/css/metisMenu.min.css') }}" rel="stylesheet" />
-  <!-- Bootstrap CSS -->
-  <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" />
-  <link href="{{ asset('assets/css/bootstrap-extended.css') }}" rel="stylesheet" />
-  <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet" />
-  <link href="{{ asset('assets/css/icons.css') }}" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+  <link rel="icon" href="{{ asset("$assetPath/images/favicon-l.png") }}" type="image/png" />
+
+  <!-- Plugins -->
+  <link href="{{ asset("$assetPath/plugins/vectormap/jquery-jvectormap-2.0.2.css") }}" rel="stylesheet"/>
+  <link href="{{ asset("$assetPath/plugins/simplebar/css/simplebar.css") }}" rel="stylesheet" />
+  <link href="{{ asset("$assetPath/plugins/perfect-scrollbar/css/perfect-scrollbar.css") }}" rel="stylesheet" />
+  <link href="{{ asset("$assetPath/plugins/metismenu/css/metisMenu.min.css") }}" rel="stylesheet" />
+
   <!-- DataTables CSS -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
-  
-  {{-- <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet"> --}}
+
+  <!-- ✅ Bootstrap & Custom Styles -->
+  <link href="{{ asset("$assetPath/css/bootstrap.min.css") }}" rel="stylesheet" />
+  <link href="{{ asset("$assetPath/css/bootstrap-extended.css") }}" rel="stylesheet" />
+  <link href="{{ asset("$assetPath/css/style.css") }}" rel="stylesheet" />
+  <link href="{{ asset("$assetPath/css/icons.css") }}" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-  
-  {{-- {{ asset('{{ asset('assets/css/bootstrap.min.css') }}') }} --}}
-
-	<link href="{{ asset('assets/css/pace.min.css') }}" rel="stylesheet" />
-
-
+  <link href="{{ asset("$assetPath/css/pace.min.css") }}" rel="stylesheet" />
 
   <title>EES</title>
 </head>
 
-<body>
-  <!--start wrapper-->
+<!-- ✅ Add RTL direction dynamically -->
+<body @if(app()->getLocale() === 'ar') dir="rtl" @endif>
+
+  <!-- Start Wrapper -->
   <div class="wrapper">
-  
-      <header class="top-header">        
+
+      <!-- Header -->
+      <header class="top-header">
         @include('vendor.layouts.header')
       </header>
-  
 
-    
-        <aside class="sidebar-wrapper" data-simplebar="true">
+      <!-- Sidebar -->
+      <aside class="sidebar-wrapper" data-simplebar="true">
           @include('vendor.layouts.sidebar')
-       </aside>
-                {{-- @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
+      </aside>
 
-                @if (session('error'))
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        {{ session('error') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif --}}
+      <!-- Alerts -->
+      <main class="page-content">
+        @include('admin.layouts.alerts')
+        @yield('content')
+      </main>
 
-          <main class="page-content">
-            @include('admin.layouts.alerts')
-            @yield('content')
-          </main>
+      <!-- Footer -->
+      @include('vendor.layouts.footer')
 
-
-
-          @include('vendor.layouts.footer')
   </div>
-  <!--end wrapper-->
+  <!-- End Wrapper -->
 
+  <!-- ✅ Bootstrap Bundle JS -->
+  <script src="{{ asset("$assetPath/js/bootstrap.bundle.min.js") }}"></script>
 
-  <!-- Bootstrap bundle JS -->
-  <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
-  <!--plugins-->
-  <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
-  <script src="{{ asset('assets/plugins/simplebar/js/simplebar.min.js') }}"></script>
-  <script src="{{ asset('assets/plugins/metismenu/js/metisMenu.min.js') }}"></script>
-  <script src="{{ asset('assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js') }}"></script>
-  <script src="{{ asset('assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js') }}"></script>
-  <script src="{{ asset('assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js') }}"></script>
-  <script src="{{ asset('assets/js/pace.min.js') }}"></script>
-  <script src="{{ asset('assets/plugins/chartjs/js/Chart.min.js') }}"></script>
-  <script src="{{ asset('assets/plugins/chartjs/js/Chart.extension.js') }}"></script>
-  <script src="{{ asset('assets/plugins/apexcharts-bundle/js/apexcharts.min.js') }}"></script>
-  <!--app-->
-  <script src="{{ asset('assets/js/app.js') }}"></script>
-  <script src="{{ asset('assets/js/index.js') }}"></script>
+  <!-- Plugins -->
+  <script src="{{ asset("$assetPath/js/jquery.min.js") }}"></script>
+  <script src="{{ asset("$assetPath/plugins/simplebar/js/simplebar.min.js") }}"></script>
+  <script src="{{ asset("$assetPath/plugins/metismenu/js/metisMenu.min.js") }}"></script>
+  <script src="{{ asset("$assetPath/plugins/perfect-scrollbar/js/perfect-scrollbar.js") }}"></script>
+  <script src="{{ asset("$assetPath/plugins/vectormap/jquery-jvectormap-2.0.2.min.js") }}"></script>
+  <script src="{{ asset("$assetPath/plugins/vectormap/jquery-jvectormap-world-mill-en.js") }}"></script>
+  <script src="{{ asset("$assetPath/js/pace.min.js") }}"></script>
+  <script src="{{ asset("$assetPath/plugins/chartjs/js/Chart.min.js") }}"></script>
+  <script src="{{ asset("$assetPath/plugins/chartjs/js/Chart.extension.js") }}"></script>
+  <script src="{{ asset("$assetPath/plugins/apexcharts-bundle/js/apexcharts.min.js") }}"></script>
+
+  <!-- App JS -->
+  <script src="{{ asset("$assetPath/js/app.js") }}"></script>
+  <script src="{{ asset("$assetPath/js/index.js") }}"></script>
+
   <script>
-    new PerfectScrollbar(".best-product")
- </script>
-<!-- DataTables Core -->
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
-<script>
-  $(document).ready(function () {
-      $('#ordersTable').DataTable({
-          "paging": true,       // Enables pagination
-          "searching": true,    // Enables search box
-          "ordering": true,     // Enables sorting
-          "info": true,         // Shows info text
-          "lengthMenu": [10, 25, 50, 100], // Control number of entries per page
-      });
-  });
-</script>
+    new PerfectScrollbar(".best-product");
+  </script>
+
+  <!-- DataTables Core -->
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+        $('#ordersTable').DataTable({
+            "paging": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "lengthMenu": [10, 25, 50, 100],
+        });
+    });
+  </script>
+
+  @stack('scripts')
 
 </body>
-
 </html>

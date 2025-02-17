@@ -46,7 +46,7 @@
                   <p class="text-muted">The page you are looking for doesn't exist or has been moved.</p>
 
                   <!-- Back Button -->
-                  <a href="{{ route('admin.login') }}" class="btn btn-primary">
+                  <a href="{{ route('admin.index') }}" class="btn btn-primary">
                     <i class="bi bi-house-door"></i> Back to Admin Home
                   </a>
 

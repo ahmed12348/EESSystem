@@ -35,4 +35,15 @@ class Vendor extends Model
         return $this->hasMany(Product::class, 'vendor_id');
     }
   
+    public function orders()
+    {
+        return $this->hasManyThrough(
+            Order::class,       // Final model we want to retrieve (Orders)
+            OrderItem::class,   // Intermediate model (Order Items)
+            'product_id',       // Foreign key in OrderItem referencing Product
+            'id',               // Primary key in Order model
+            'id',               // Primary key in Vendor
+            'order_id'          // Foreign key in OrderItem referencing Order
+        );
+    }
 }

@@ -13,7 +13,7 @@ class Product extends Model
 
     protected $fillable = [
         'vendor_id', 'category_id', 'name', 'description', 'price',
-        'stock_quantity', 'status', 'image', 'min_order_quantity', 'max_order_quantity'
+        'stock_quantity', 'status', 'image', 'min_order_quantity', 'max_order_quantity', 'color', 'shape','items'
     ];
 
     public function category()
@@ -31,6 +31,16 @@ class Product extends Model
         return $this->hasMany(CartItem::class);
     }
 
+    public function orders()
+    {
+        return $this->hasManyThrough(Order::class, OrderItem::class, 'product_id', 'id', 'id', 'order_id');
+    }
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+    
     public function productDiscount()
     {
         return $this->hasOne(Discount::class)
@@ -47,9 +57,28 @@ class Product extends Model
             ->where('end_date', '>=', now());
     }
 
-    public function getFinalPriceAttribute()
+    public function calculateFinalPrice(int $quantity)
     {
-        $discount = $this->productDiscount ?? $this->categoryDiscount;
-        return $discount ? $this->price - ($this->price * ($discount->discount_value / 100)) : $this->price;
+        $discount = Discount::getApplicableDiscount($this);
+        $discountPercentage = $discount ? $discount->discount_value : 0;
+        // Calculate price with discount
+        $totalPrice = $this->price * $quantity;
+        $totalDiscount = ($this->price * ($discountPercentage / 100)) * $quantity;
+        $finalPrice = $totalPrice - $totalDiscount;
+
+        return [
+            'total_price' => $totalPrice,
+            'total_discount' => $totalDiscount,
+            'final_price' => $finalPrice
+        ];
     }
+    public function sales()
+    {
+        return $this->hasMany(OrderItem::class, 'product_id'); 
+    }
+    
+
 }
+
+
+   

@@ -64,7 +64,7 @@
                     <div class="alert alert-danger">{{ session('error') }}</div>
                   @endif
 
-                  <form method="POST" class="form-body" action="{{ route('admin.login') }}">
+                  <form method="POST" class="form-body" action="{{ route('admin.login')}}">
                     @csrf
                     <div class="row g-3">
                       

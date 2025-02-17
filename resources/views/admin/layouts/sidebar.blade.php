@@ -19,7 +19,7 @@
       <a href="{{route('admin.index')}}">
         <div class="parent-icon"><i class="bi-house-door"></i>
         </div>
-        <div class="menu-title">Dashboard</div>
+        <div class="menu-title">{{ __('messages.dashboard') }}</div>
       </a>
     </li>
    
@@ -27,46 +27,46 @@
       <a href="{{route('admin.products.index')}}">
         <div class="parent-icon"><i class="bi-box"></i>
         </div>
-        <div class="menu-title">Products</div>
+        <div class="menu-title">{{ __('messages.products') }}</div>
       </a>
     </li>
 
 
-    
+  
     <li class="{{ request()->routeIs('admin.orders.index') ? 'mm-active' : '' }}">
       <a href="{{route('admin.orders.index')}}">
         <div class="parent-icon"><i class="bi-list"></i>
         </div>
-        <div class="menu-title">Order List</div>
+        <div class="menu-title">{{ __('messages.orders') }}</div>
       </a>
     </li>
     <li class="{{ request()->routeIs('admin.users.index') ? 'mm-active' : '' }}">
       <a href="{{route('admin.users.index')}}">
         <div class="parent-icon"><i class="bi-person"></i>
         </div>
-        <div class="menu-title">Users</div>
+        <div class="menu-title">{{ __('messages.users') }}</div>
       </a>
     </li>
     <li class="{{ request()->routeIs('admin.roles.index') ? 'mm-active' : '' }}">
       <a href="{{route('admin.roles.index')}}">
         <div class="parent-icon"><i class="bi bi-person-lock"></i>
         </div>
-        <div class="menu-title">Roles & permission</div>
+        <div class="menu-title">{{ __('messages.roles') }}</div>
       </a>
     </li>
     <li class="{{ request()->routeIs('admin.vendor.index') ? 'mm-active' : '' }}">
       <a href="{{route('admin.vendors.index')}}">
         <div class="parent-icon"><i class="bi bi-people"></i>
         </div>
-        <div class="menu-title">Vendor</div>
+        <div class="menu-title">{{ __('messages.vendor') }}</div>
       </a>
     </li>
-
+ 
     <li class="{{ request()->routeIs('admin.settings.cart') ? 'mm-active' : '' }}">
       <a href="{{route('admin.settings.cart')}}">
         <div class="parent-icon"><i class="bi bi-gear"></i>
         </div>
-        <div class="menu-title">Cart Settings</div>
+        <div class="menu-title">{{ __('messages.cart_settings') }}</div>
       </a>
     </li>
 
@@ -84,7 +84,7 @@
       <a href="{{route('admin.discounts.index')}}">
         <div class="parent-icon"><i class="bi bi-disc"></i>
         </div>
-        <div class="menu-title">Offers</div>
+        <div class="menu-title">{{ __('messages.offers') }}</div>
       </a>
     </li>
 
@@ -92,14 +92,14 @@
       <a href="{{route('admin.categories.index')}}">
         <div class="parent-icon"><i class="bi bi-bookmarks"></i>
         </div>
-        <div class="menu-title">Categories</div>
+        <div class="menu-title">{{ __('messages.categories') }}</div>
       </a>
     </li>
-    <li class="{{ request()->routeIs('admin.cart.index') ? 'mm-active' : '' }}">
-      <a href="{{route('admin.cart.index')}}">
+    <li class="{{ request()->routeIs('admin.carts.index') ? 'mm-active' : '' }}">
+      <a href="{{route('admin.carts.index')}}">
         <div class="parent-icon"><i class="bi bi-0-circle"></i>
         </div>
-        <div class="menu-title">Re Addition Item</div>
+        <div class="menu-title">{{ __('messages.re_addition_item') }}</div>
       </a>
     </li>
 
@@ -107,7 +107,7 @@
       <a href="{{route('admin.search.index')}}">
         <div class="parent-icon"><i class="bi bi-0-circle"></i>
         </div>
-        <div class="menu-title">Search & Sales</div>
+        <div class="menu-title">{{ __('messages.search_sales') }}</div>
       </a>
     </li>
     

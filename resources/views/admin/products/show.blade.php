@@ -11,15 +11,15 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="{{ url('/') }}"><i class="bx bx-home-alt"></i></a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('admin.products.index') }}">Products</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">View Product</li>
+                    <li class="breadcrumb-item"><a href="{{ route('admin.products.index') }}">{{ __('messages.products') }}Products</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ __('messages.view_product') }}</li>
                 </ol>
             </nav>
         </div>
 
         <div class="ms-auto">
             <!-- Back Button -->
-            <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">Back to Products</a>
+            <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">{{ __('messages.back') }}</a>
         </div>
     </div>
     <!-- End Breadcrumb -->
