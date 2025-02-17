@@ -62,7 +62,7 @@
                                 <strong>Applied Products:</strong>
                                 <div class="mt-2">
                                     @foreach ($products as $product)
-                                        <span class="badge bg-success p-2 m-1">{{ $product }}</span>
+                                        <span class="badge bg-success p-2 m-1">{{ $product->name }}</span>
                                     @endforeach
                                 </div>
                                
