@@ -25,12 +25,25 @@
                     <div class="card-body">
                         <form action="{{ route('admin.categories.store') }}" method="POST">
                             @csrf
-                            <div class="mb-1">
+
+                            <!-- Category Name -->
+                            <div class="mb-3">
                                 <label for="name" class="form-label">{{ __('messages.category_name') }}</label>
                                 <input class="form-control" type="text" id="name" name="name" placeholder="{{ __('messages.category_name') }}" required>
                                 @error('name')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
+                            </div>
+
+                            <!-- Parent Category (For Subcategories) -->
+                            <div class="mb-3">
+                                <label for="parent_id" class="form-label">{{ __('messages.parent_category') }}</label>
+                                <select class="form-select select2" id="parent_id" name="parent_id">
+                                    <option value="">{{ __('messages.na') }}</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
 
                             <button type="submit" class="btn btn-primary mt-2">{{ __('messages.create') }}</button>

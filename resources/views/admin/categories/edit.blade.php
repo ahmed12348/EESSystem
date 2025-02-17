@@ -26,12 +26,29 @@
                         <form action="{{ route('admin.categories.update', $category->id) }}" method="POST">
                             @csrf
                             @method('PUT')
-                            <div class="mb-1">
+
+                            <!-- Category Name -->
+                            <div class="mb-3">
                                 <label for="name" class="form-label">{{ __('messages.category_name') }}</label>
-                                <input class="form-control" type="text" id="name" name="name" value="{{ $category->name }}" required>
+                                <input class="form-control" type="text" id="name" name="name"
+                                       value="{{ $category->name }}" required>
                                 @error('name')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
+                            </div>
+
+                            <!-- Parent Category -->
+                            <div class="mb-3">
+                                <label for="parent_id" class="form-label">{{ __('messages.parent_category') }}</label>
+                                <select class="form-select select2" id="parent_id" name="parent_id">
+                                    <option value="">{{ __('messages.no_parent') }}</option>
+                                    @foreach ($categories as $parentCategory)
+                                        <option value="{{ $parentCategory->id }}" 
+                                            {{ $category->parent_id == $parentCategory->id ? 'selected' : '' }}>
+                                            {{ $parentCategory->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
 
                             <button type="submit" class="btn btn-primary mt-2">{{ __('messages.update_category') }}</button>

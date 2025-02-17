@@ -29,23 +29,24 @@ class DiscountController extends Controller
     public function show($id)
     {
         $discount = Discount::findOrFail($id);
+        $products = collect(); // Initialize to prevent undefined variable error
     
-        // Fetch product names based on discount type
+        // Fetch related products
         if ($discount->type === 'category') {
-            $products = Product::where('category_id', $discount->type_id)->pluck('name');
+            $products = Product::where('category_id', $discount->type_id)->get();
         } elseif ($discount->type === 'vendor') {
-            $products = Product::where('vendor_id', $discount->type_id)->pluck('name');
+            $products = Product::where('vendor_id', $discount->type_id)->get();
         } elseif ($discount->type === 'zone') {
-            $vendorIds = Vendor::where('zone_id', $discount->type_id)->pluck('id');
-            $products = Product::whereIn('vendor_id', $vendorIds)->pluck('name');
+            $vendorIds = Vendor::where('zone', $discount->type_id)->pluck('id');
+            $products = Product::whereIn('vendor_id', $vendorIds)->get();
         } elseif ($discount->type === 'product') {
-            $productIds = is_string($discount->product_ids) ? explode(',', $discount->product_ids) : [(string) $discount->product_ids]; 
-            $products = Product::whereIn('id', $productIds)->pluck('name');
-        } 
-     
+            $productIds = Arr::wrap(is_string($discount->product_ids) ? explode(',', $discount->product_ids) : $discount->product_ids);
+            $products = Product::whereIn('id', $productIds)->get();
+        }
+    
         return view('admin.discounts.show', compact('discount', 'products'));
-   
     }
+    
     
 
     public function create()
@@ -120,21 +121,26 @@ class DiscountController extends Controller
     public function edit($id)
     {
         $discount = Discount::findOrFail($id);
+        $products = collect(); // Initialize empty collection
     
+        // Fetch categories, vendors, and all products for dropdowns
+        $categories = Category::all();
+        $vendors = Vendor::all();
+        
         // Fetch product names based on discount type
         if ($discount->type === 'category') {
-            $products = Product::where('category_id', $discount->type_id)->pluck('name');
+            $products = Product::where('category_id', $discount->type_id)->get();
         } elseif ($discount->type === 'vendor') {
-            $products = Product::where('vendor_id', $discount->type_id)->pluck('name');
+            $products = Product::where('vendor_id', $discount->type_id)->get();
         } elseif ($discount->type === 'zone') {
             $vendorIds = Vendor::where('zone', $discount->type_id)->pluck('id');
-            $products = Product::whereIn('vendor_id', $vendorIds)->pluck('name');
+            $products = Product::whereIn('vendor_id', $vendorIds)->get();
         } elseif ($discount->type === 'product') {
             $productIds = Arr::wrap(is_string($discount->product_ids) ? explode(',', $discount->product_ids) : $discount->product_ids);
-            $products = Product::whereIn('id', $productIds)->pluck('name');
+            $products = Product::whereIn('id', $productIds)->get();
         } 
-     
-        return view('admin.discounts.edit', compact('discount', 'products'));
+    
+        return view('admin.discounts.edit', compact('discount', 'products', 'categories', 'vendors'));
     }
     
 
@@ -171,7 +177,20 @@ class DiscountController extends Controller
     }
     
 
-
+    public function destroy($id)
+    {
+        try {
+            $discount = Discount::findOrFail($id);
+    
+            // Delete the discount record
+            $discount->delete();
+    
+            return redirect()->route('admin.discounts.index')->with('success', 'Discount deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error deleting discount: ' . $e->getMessage());
+        }
+    }
+    
 
     
     

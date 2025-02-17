@@ -69,7 +69,7 @@
                                 <tr>
                                     <td> └ {{ $subcategory->name }}</td>
                                     <td>{{ $category->name }}</td>
-                                    <td>{{ $subcategory->products->count() }}</td>
+                                    <td>--</td>
                                     <td>
                                         <div class="table-actions d-flex align-items-center gap-2 fs-6">
                                             <a href="{{ route('admin.categories.edit', $subcategory->id) }}" class="text-primary"
@@ -81,7 +81,7 @@
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-link p-0 text-danger"
                                                     data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ __('messages.delete') }}"
-                                                    onclick="return confirm('{{ __('messages.delete_confirmation_subcategory') }}')">
+                                                    onclick="return confirm('{{ __('messages.delete') }}')">
                                                     <i class="bi bi-trash-fill"></i>
                                                 </button>
                                             </form>

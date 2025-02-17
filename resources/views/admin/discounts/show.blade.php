@@ -23,7 +23,7 @@
             <div class="col-xl-8 mx-auto">
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0"><i class="bi bi-tags"></i> {{ __('messages.discount_information') }}</h5>
+                        <h5 class="mb-0"><i class="bi bi-tags"></i> {{ __('messages.discounts') }}</h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
