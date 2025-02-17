@@ -78,11 +78,11 @@
                                         <img src="{{ asset('assets/images/default-product.png') }}" 
                                              class="img-fluid rounded shadow border p-2" 
                                              style="max-width: 50px;" 
-                                             alt="{{ __('messages.default_image') }}">
+                                             alt="{{ __('messages.image') }}">
                                     @endif 
                                 </td> 
                                 <td>{{ $product->name }}</td>
-                                <td>{{ $product->vendor->business_name ?? __('messages.na') }}</td>
+                                <td>{{ $product->vendor?->business_name ?? __('messages.na') }}</td>
                                 <td>
                                     @if ($product->status)
                                         <span class="badge bg-success">{{ __('messages.approved') }}</span>

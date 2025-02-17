@@ -9,7 +9,7 @@ use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
-
+use Illuminate\Support\Facades\Auth;
 class DiscountController extends Controller
 {
     public function index(Request $request)
@@ -41,7 +41,7 @@ class DiscountController extends Controller
             $productIds = is_string($discount->product_ids) ? explode(',', $discount->product_ids) : [(string) $discount->product_ids]; 
             $products = Product::whereIn('id', $productIds)->pluck('name');
         } 
-     
+        $products =[];
         return view('vendor.discounts.show', compact('discount', 'products'));
    
     }
@@ -49,7 +49,10 @@ class DiscountController extends Controller
 
     public function create()
     {
-        $products = Product::all();
+        $products = Product::where('vendor_id', Auth::id())
+        ->where('status', 1)
+        ->get();
+
         $categories = Category::all();
         $vendors = Vendor::all();
     
@@ -116,7 +119,7 @@ class DiscountController extends Controller
             $productIds = Arr::wrap(is_string($discount->product_ids) ? explode(',', $discount->product_ids) : $discount->product_ids);
             $products = Product::whereIn('id', $productIds)->pluck('name');
         } 
-     
+        $products =[];
         return view('vendor.discounts.edit', compact('discount', 'products'));
     }
     
