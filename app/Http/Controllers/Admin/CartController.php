@@ -9,6 +9,14 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
+        public function __construct()
+    {
+        $this->middleware('can:carts-view')->only(['index', 'show']);
+        $this->middleware('can:carts-create')->only(['create', 'store']);
+        $this->middleware('can:carts-edit')->only(['edit', 'update']);
+        $this->middleware('can:carts-delete')->only(['destroy']);
+    }
+
 
         // Show the form to edit the cart expiration
         public function edit($id)

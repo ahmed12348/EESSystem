@@ -13,16 +13,17 @@ class CreateADSTable extends Migration
             $table->id();
             $table->string('title')->nullable();
             $table->text('description')->nullable();
+            $table->unsignedBigInteger('vendor_id')->index();
             $table->string('image')->nullable();
-            // $table->unsignedBigInteger('vendor_id')->index();
-            $table->enum('type', ['product', 'category', 'zone'])->nullable();
-            $table->unsignedBigInteger('reference_id')->nullable(); 
-            $table->string('zone')->nullable(); 
+            $table->timestamp('start_date')->nullable();
+            $table->timestamp('end_date')->nullable();
             $table->boolean('active')->default(true);
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending'); // Unified status
+            $table->string('notes')->nullable();
             $table->timestamps();
             $table->softDeletes();
-             // Foreign key constraints
-            //  $table->foreign('vendor_id')->references('id')->on('users')->onDelete('cascade');
+            // Foreign key constraints
+            $table->foreign('vendor_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

@@ -24,7 +24,6 @@ class CreateCartItemsTable extends Migration
             $table->decimal('discount', 10, 2)->default(0);
             $table->decimal('final_price', 10, 2);
             $table->text('notes')->nullable();
-          
             $table->timestamps();
             $table->softDeletes();
         });

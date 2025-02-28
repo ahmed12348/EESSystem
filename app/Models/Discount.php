@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Discount extends Model
 {
     protected $fillable = [
-        'discount_value', 'start_date', 'end_date', 'type', 'category_id', 'vendor_id', 'zone_id', 'product_ids'
+        'discount_value', 'start_date', 'end_date', 'type', 'category_id', 'vendor_id', 'zone', 'product_ids','type_id'
     ];
 
     // Convert product_ids from string to array

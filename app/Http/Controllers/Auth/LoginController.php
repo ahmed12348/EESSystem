@@ -35,7 +35,7 @@ class LoginController extends Controller
             }
 
             $user = Auth::user();
-            $role = $user->roles[0]->name; // Assuming the user has one role
+            $role = $user->type; // Assuming the user has one role
     
             return $this->sendLoginResponse($request);
         }
@@ -46,7 +46,7 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        $role = $user->roles[0]->name; // Assuming each user has one role
+        $role = $user->type; // Assuming each user has one role
     
         if ($role === 'admin') {
             return redirect()->route('admin.index');

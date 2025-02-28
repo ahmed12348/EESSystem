@@ -18,6 +18,7 @@ class Ads extends Model
         'reference_id',
         'zone',
         'active',
+        'status'
     ];
 
     public function vendor()

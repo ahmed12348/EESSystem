@@ -13,7 +13,7 @@ class Product extends Model
 
     protected $fillable = [
         'vendor_id', 'category_id', 'name', 'description', 'price',
-        'stock_quantity', 'status', 'image', 'min_order_quantity', 'max_order_quantity', 'color', 'shape','items'
+        'stock_quantity', 'status', 'image', 'min_order_quantity', 'max_order_quantity', 'color', 'shape','items','notes'
     ];
 
     public function category()
@@ -21,11 +21,21 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+    // public function vendor()
+    // {
+    //     return $this->hasOne(Vendor::class, 'user_id', 'id');
+    // }
+
+    // public function vendor()
+    // {
+    //     return $this->belongsTo(User::class, 'vendor_id', 'id')->where('type', 'vendor');
+    // }
     public function vendor()
     {
-        return $this->belongsTo(Vendor::class, 'vendor_id');
+        return $this->belongsTo(User::class, 'vendor_id', 'id')->where('type', 'vendor');
     }
-
+    
+    
     public function cartItems()
     {
         return $this->hasMany(CartItem::class);

@@ -22,25 +22,23 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        
         // Validate request
         $request->validate([
             'email' => 'required',
             'password' => 'required'
         ]);
 
-        $user = User::where('email', $request->email)->first();
+         $user = User::where('email', $request->email)->first();
         
         if (!$user) {
             return back()->withErrors(['email' => 'User not found.']);
         }
 
-        if ($user->status == 'inactive') {
+        if ($user->status !== 'approved') {
             return back()->withErrors(['email' => 'Admin has not approved your account yet.']);
         }
       
-        // if ($user->roles->first()->name == 'vendor' || 'customer') {
-        //     return back()->withErrors(['email' => 'failed Login.']);
-        // }
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             return redirect()->route('admin.index');

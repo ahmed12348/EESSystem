@@ -10,7 +10,7 @@ class VendorApproved
 {
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->role === 'vendor' && Auth::user()->status !== 'Active') {
+        if (Auth::check() && Auth::user()->role === 'vendor' && Auth::user()->status !== 'approved') {
             Auth::logout();
             return redirect()->route('vendor.login')->with('error', 'Your account is not approved yet.');
         }

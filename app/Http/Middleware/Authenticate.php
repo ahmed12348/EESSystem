@@ -17,7 +17,7 @@ class Authenticate extends Middleware
         // if (! $request->expectsJson()) {
         //     return route('admin.login');
         // }
-        
+      
         if (!$request->expectsJson()) {
             // Check if the route belongs to vendor
             if ($request->is('vendor/*')) {

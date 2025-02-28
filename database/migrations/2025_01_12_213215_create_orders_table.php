@@ -21,6 +21,7 @@ class CreateOrdersTable extends Migration
             $table->string('status')->default('pending'); // pending, completed, cancelled
             $table->string('coupon')->nullable(); 
             $table->timestamp('placed_at')->nullable();
+            $table->string('notes')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -18,8 +18,10 @@ class ProductController extends Controller
 {
     public function __construct()
     {
-        // Ensure that vendors are authenticated
-        $this->middleware('auth');
+        $this->middleware('can:products-view')->only(['index', 'show']);
+        $this->middleware('can:products-create')->only(['create', 'store']);
+        $this->middleware('can:products-edit')->only(['edit', 'update']);
+        $this->middleware('can:products-delete')->only(['destroy']);
     }
 
     public function index(Request $request)
@@ -68,7 +70,8 @@ class ProductController extends Controller
     }
     public function show($id)
     {
-        $product = Product::findOrFail($id);  
+     
+       $product = Product::with('vendor')->findOrFail($id);  
         $categories = Category::all();  
     
         return view('vendor.products.show', compact('product', 'categories'));

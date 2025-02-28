@@ -13,22 +13,22 @@ class Order extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable = ['user_id','vendor_id', 'status', 'total_price', 'placed_at','coupon'];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    protected $fillable = ['user_id','vendor_id', 'status', 'total_price', 'placed_at','coupon','notes'];
 
     public function customer()
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class, 'user_id')->where('type', 'customer');
     }
 
-  
+    
     public function vendor()
     {
-        return $this->belongsTo(Vendor::class);
+        return $this->belongsTo(User::class, 'vendor_id')->where('type', 'vendor');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id')->where('type', 'admin');
     }
 
   
@@ -38,16 +38,16 @@ class Order extends Model
     }
 
 
-    public function setStatus($status)
-    {
-        $validStatuses = ['pending', 'completed', 'cancelled'];
-        if (in_array($status, $validStatuses)) {
-            $this->status = $status;
-            $this->save();
-        } else {
-            throw new \Exception("Invalid status.");
-        }
-    }
+    // public function setStatus($status)
+    // {
+    //     $validStatuses = ['pending', 'completed', 'cancelled'];
+    //     if (in_array($status, $validStatuses)) {
+    //         $this->status = $status;
+    //         $this->save();
+    //     } else {
+    //         throw new \Exception("Invalid status.");
+    //     }
+    // }
 
     public function getPlacedAtAttribute()
     {

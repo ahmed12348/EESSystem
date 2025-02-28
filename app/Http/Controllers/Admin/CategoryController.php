@@ -16,9 +16,16 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a list of categories, including subcategories.
-     */
+
+    public function __construct()
+    {
+        $this->middleware('can:categories-view')->only(['index', 'show']);
+        $this->middleware('can:categories-create')->only(['create', 'store']);
+        $this->middleware('can:categories-edit')->only(['edit', 'update']);
+        $this->middleware('can:categories-delete')->only(['destroy']);
+    }
+
+ 
     public function index(Request $request)
     {
         $search = $request->query('search');

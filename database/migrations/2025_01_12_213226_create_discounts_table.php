@@ -17,10 +17,12 @@ class CreateDiscountsTable extends Migration
             $table->id();
             $table->integer('discount_value'); // Percentage (e.g., 10, 20, 30)
             $table->string('type')->nullable(); // product, category, vendor, zone
-            $table->unsignedBigInteger('type_id')->nullable(); // ID of selected type (category_id, vendor_id, zone_id)
+            $table->unsignedBigInteger('type_id')->nullable(); // ID of selected type (category_id, vendor_id, zone)
             $table->text('product_ids')->nullable(); // Store product IDs as comma-separated values (e.g., "1,3,5,7,9")
             $table->date('start_date');
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending'); // Unified status
             $table->date('end_date');
+            $table->string('notes')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

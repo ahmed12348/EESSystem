@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class SearchController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:searches-view')->only(['index']);
+      
+    }
     public function index(Request $request)
     {
         $query = Search::with('product');

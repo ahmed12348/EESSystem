@@ -8,6 +8,8 @@ use App\Http\Requests\ProductRequest;
 use App\Imports\ProductsImport;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\User;
+use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -15,6 +17,14 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:products-view')->only(['index', 'show']);
+        $this->middleware('can:products-create')->only(['create', 'store']);
+        $this->middleware('can:products-edit')->only(['edit', 'update']);
+        $this->middleware('can:products-delete')->only(['destroy']);
+    }
+
     public function index(Request $request)
     {
         $search = $request->query('search');
@@ -36,16 +46,19 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('admin.products.create', compact('categories'));
+        $vendors = User::where('type', 'vendor')
+        ->with(['vendor'])->get();
+      
+        return view('admin.products.create', compact('categories','vendors'));
     }
 
     public function store(ProductRequest $request)  // Use ProductRequest here
     {
     
-        // No need to validate here; it's done in the ProductRequest
+        // dd($request->all());
         $data = $request->validated(); // Get the validated data
 
-        $data['vendor_id'] = Auth::id();
+        $data['vendor_id'] = $request->vendor_id;
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('products', 'public');
@@ -58,32 +71,47 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        // if (Auth::id() !== $product->vendor_id && !Auth::user()->hasRole('admin')) {
-        //     abort(403);
-        // }
-
+ 
+        $users = User::where('type', 'vendor')->with(['vendor'])->get();
         $categories = Category::all();
-        return view('admin.products.edit', compact('product', 'categories'));
+        return view('admin.products.edit', compact('product', 'categories','users'));
     }
-
-    public function update(ProductRequest $request, Product $product)  // Use ProductRequest here
+    public function update(ProductRequest $request, Product $product)
     {
-        // if (Auth::id() !== $product->vendor_id && !Auth::user()->hasRole('admin')) {
-        //     abort(403);
-        // }
-    
-        // No need to validate here; it's done in the ProductRequest
-        $data = $request->validated();  // Get the validated data
        
-        if ($request->hasFile('image')) {
-            // If a new image is uploaded, store it and update the image path
-            $data['image'] = $request->file('image')->store('products', 'public');
+        try {
+            // Validate the request
+            $data = $request->validated();
+    
+            if ($request->has('vendor_id')) {
+                $data['vendor_id'] = $request->vendor_id;
+            }
+    
+            // Handle Image Upload
+            if ($request->hasFile('image')) {
+                $data['image'] = $request->file('image')->store('products', 'public');
+            }
+    
+            // Ensure Product Exists
+            if (!$product) {
+                return redirect()->route('admin.products.index')->with('error', 'Product not found.');
+            }
+    
+            $updated = $product->update($data);
+    
+            if ($updated) {
+                return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');
+            } else {
+                return redirect()->back()->with('error', 'Failed to update product.');
+            }
+    
+        } catch (\Exception $e) {
+            \Log::error('Product update failed: ' . $e->getMessage());
+    
+            return redirect()->back()->with('error', 'An error occurred while updating the product.');
         }
-
-        $product->update($data);
-
-        return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');
     }
+    
 
 
     public function show($id)
@@ -92,7 +120,7 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);  
         $categories = Category::all();  
     
-        return view('vendor.products.show', compact('product', 'categories'));
+        return view('admin.products.show', compact('product', 'categories'));
       
     }
 
@@ -111,7 +139,7 @@ class ProductController extends Controller
     public function approve($id)
     {
         $product = Product::findOrFail($id);
-        $product->status = true;
+        $product->status = 'approved';
         $saved = $product->save();
         if ($saved) {
             return redirect()->back()->with('success', 'Product approved successfully!');
@@ -124,10 +152,10 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         
-        $product->status = false;
+        $product->status = 'rejected';
         $saved = $product->save();
         if ($saved) {
-            return redirect()->back()->with('success', 'Product rejected successfully!');
+            return redirect()->back()->with('error', 'Product rejected successfully!');
         } else {
             return redirect()->back()->with('error', 'Failed to rejected product!');
         }

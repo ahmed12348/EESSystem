@@ -47,7 +47,7 @@ class ProductsImport implements WithMultipleSheets
                     return [
                         'product_name' => 'required|string',  // Product name is required and must be a string
                         'price' => 'required|numeric',        // Price must be numeric
-                        'quantity' => 'required|integer',     // Quantity must be an integer
+                        'quantity' => 'nullable|integer',     // Quantity must be an integer
                         'category_id' => 'nullable|exists:categories,id', // Validate that the category_id exists in the database
                     ];
                 }

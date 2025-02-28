@@ -52,7 +52,7 @@ class OrderController extends Controller
                 $orderItems = [];
   
                 foreach ($items as $item) {
-                    if ($item->status !== 'active' || !$item->product) {
+                    if ($item->status !== 'approved' || !$item->product) {
                         continue;
                     }
     

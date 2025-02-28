@@ -14,16 +14,15 @@ class Vendor extends Model
     
 
 
-    protected $fillable = ['business_name','zone','user_id', 'tax_id', 'location_id','photo','business_type']; 
+    protected $fillable = ['business_name','zone','user_id','is_verified','tax_id', 'location_id','photo','business_type','notes','address','latitude','longitude','city_id','region_id',]; 
  
-
-    public function user() {
-        return $this->belongsTo(User::class, 'user_id');
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
+    
 
-    public function location() {
-        return $this->belongsTo(Location::class, 'location_id');
-    }
+
 
     public function isActiveVendor()
     {
@@ -34,7 +33,15 @@ class Vendor extends Model
     {
         return $this->hasMany(Product::class, 'vendor_id');
     }
-  
+    
+    public function city() {
+        return $this->belongsTo(City::class, 'city_id');
+    }
+
+   
+    public function region() {
+        return $this->belongsTo(Region::class, 'region_id');
+    }
     public function orders()
     {
         return $this->hasManyThrough(

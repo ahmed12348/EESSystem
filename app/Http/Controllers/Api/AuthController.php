@@ -102,15 +102,15 @@ class AuthController extends Controller
     
             $user = User::where('phone', $request->phone)->first();
     
-            if (!$user || $request->otp !== $user->otp) {
+            if (!$user || $request->otp !== $user->vendor->otp) {
                 return ApiResponse::error('رقم الهاتف أو رمز التحقق غير صحيح');
             }
     
-            if ($user->status !== 'active' || $user->is_verified != 1) {
+            if ($user->status !== 'approved' || $user->vendor->is_verified != 1) {
                 return ApiResponse::error('حسابك غير نشط أو لم يتم التحقق منه');
             }
     
-            if ($user->roles->first()->name !== 'customer') {
+            if ($user->type !== 'customer') {
                 return ApiResponse::error('حسابك غير صحيح');
             }
     
@@ -173,7 +173,7 @@ class AuthController extends Controller
         try {
             $user = $request->user();
     
-            if ($user->status !== 'active' || $user->is_verified != 1) {
+            if ($user->status !== 'approved' || $user->is_verified != 1) {
                 return ApiResponse::error('حسابك غير نشط أو لم يتم التحقق منه');
             }
     

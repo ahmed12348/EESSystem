@@ -17,19 +17,18 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('email')->nullable()->unique();
-            $table->string('email_verified_at')->nullable();
-            
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
-            $table->string('type')->nullable();
-            $table->string('photo')->nullable();  
-            $table->string('otp')->default('1234')->nullable();
-            $table->boolean('is_verified')->default(false);
+            $table->enum('type', ['admin', 'vendor', 'customer'])->default('customer'); // User role
+            $table->string('photo')->nullable();
+          
             $table->string('phone')->nullable()->unique();
-            $table->enum('status', ['active', 'inactive'])->default('inactive');
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending'); // Unified status
             $table->rememberToken();
-            $table->timestamps();      
+            $table->timestamps();
             $table->softDeletes();
         });
+        
     }
 
     /**

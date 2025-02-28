@@ -12,6 +12,13 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
 class DiscountController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:discounts-view')->only(['index', 'show']);
+        $this->middleware('can:discounts-create')->only(['create', 'store']);
+        $this->middleware('can:discounts-edit')->only(['edit', 'update']);
+        $this->middleware('can:discounts-delete')->only(['destroy']);
+    }
     public function index(Request $request)
     {
         $search = $request->query('search');
@@ -35,7 +42,7 @@ class DiscountController extends Controller
         } elseif ($discount->type === 'vendor') {
             $products = Product::where('vendor_id', $discount->type_id)->pluck('name');
         } elseif ($discount->type === 'zone') {
-            $vendorIds = Vendor::where('zone_id', $discount->type_id)->pluck('id');
+            $vendorIds = Vendor::where('zone', $discount->type_id)->pluck('id');
             $products = Product::whereIn('vendor_id', $vendorIds)->pluck('name');
         } elseif ($discount->type === 'product') {
             $productIds = is_string($discount->product_ids) ? explode(',', $discount->product_ids) : [(string) $discount->product_ids]; 
@@ -120,6 +127,7 @@ class DiscountController extends Controller
             $products = Product::whereIn('id', $productIds)->pluck('name');
         } 
         $products =[];
+        // dd()
         return view('vendor.discounts.edit', compact('discount', 'products'));
     }
     

@@ -5,14 +5,14 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class ProductRequest extends FormRequest
+class ApiCartRequest extends FormRequest
 {
   
     public function authorize()
     {
         // Check if the user is authorized to create or update a product
         // You can further customize this logic as needed
-        return Auth::check();
+        // return Auth::check();
     }
 
   
@@ -45,6 +45,9 @@ class ProductRequest extends FormRequest
             'price' => 'product price',
             'category_id' => 'category',
             'image' => 'product image',
+            'vendor_id' => 'vendor',
+            
+            
         ];
     }
 }

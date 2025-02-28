@@ -15,9 +15,14 @@ use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the orders.
-     */
+    public function __construct()
+    {
+        $this->middleware('can:orders-view')->only(['index', 'show']);
+        $this->middleware('can:orders-create')->only(['create', 'store']);
+        $this->middleware('can:orders-edit')->only(['edit', 'update']);
+        $this->middleware('can:orders-delete')->only(['destroy']);
+    }
+    
     public function index(Request $request)
     {
         $query = Order::with(['customer', 'vendor']);
@@ -62,6 +67,8 @@ class OrderController extends Controller
                 'product_ids' => 'required|array|min:1',
                 'product_ids.*' => 'exists:products,id',
                 'status' => 'required|in:pending,completed,cancelled',
+                'notes' => 'nullable',
+                
             ]);
     
             // Fetch products
@@ -81,6 +88,8 @@ class OrderController extends Controller
                 'vendor_id' => $vendorId,
                 'total_price' => 0, // Will be updated after calculation
                 'status' => $request->status,
+                'notes' => $request->notes,
+                
                 'placed_at' => now(),
             ]);
     
@@ -143,13 +152,9 @@ class OrderController extends Controller
     {
         $order = Order::with('items.product', 'customer', 'vendor')->findOrFail($id);
     
-        $customers = User::whereHas('roles', function ($query) {
-            $query->where('name', 'customer');
-        })->get();
+        $customers = User::where('type', 'customer')->get();
     
-        $vendors = User::whereHas('roles', function ($query) {
-            $query->where('name', 'vendor');
-        })->get();
+        $vendors = User::where('type', 'vendor')->get();
    
     
         // Get products from the same vendor as the order
@@ -178,6 +183,7 @@ class OrderController extends Controller
                 'user_id' => $request->customer_id,
                 'vendor_id' => $request->vendor_id,
                 'status' => $request->status,
+                'notes' => $request->notes,
             ]);
     
             // Get existing order items

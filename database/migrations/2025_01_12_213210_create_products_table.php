@@ -24,10 +24,12 @@ class CreateProductsTable extends Migration
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);
             $table->integer('stock_quantity')->default(0);
-            $table->boolean('status')->default(false);
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->integer('is_active')->default(1);
             $table->string('image')->nullable();
-            $table->integer('min_order_quantity')->default(1);
-            $table->integer('max_order_quantity')->default(10);
+            $table->integer('min_order_quantity')->default(1000);
+            $table->integer('max_order_quantity')->default(10000);
+            $table->string('notes')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

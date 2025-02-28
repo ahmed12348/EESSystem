@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements JWTSubject
+class Customer extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles,SoftDeletes;
     protected $primaryKey = 'id';
@@ -23,7 +23,6 @@ class User extends Authenticatable implements JWTSubject
         'type',
         'status',
         'photo',
-        
     ];
     
     // protected $hidden = [
@@ -43,10 +42,13 @@ class User extends Authenticatable implements JWTSubject
 
     public function vendor()
     {
-        return $this->hasOne(Vendor::class, 'user_id', 'id');
+        return $this->hasOne(Vendor::class);
     }
-    
 
+    public function isVendor()
+    {
+        return $this->hasRole('vendor');
+    }
 
     public function isActive()
     {
@@ -74,13 +76,12 @@ class User extends Authenticatable implements JWTSubject
         return 'id';
     }
 
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
+    }
 
     public function cart() {
         return $this->hasMany(Cart::class);
-    }
-
-    public function products()
-    {
-        return $this->hasMany(Product::class, 'vendor_id', 'id');
     }
 }

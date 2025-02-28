@@ -27,6 +27,7 @@ class ProductRequest extends FormRequest
             'shape' => 'nullable|string',
             'min_order_quantity' => 'nullable|numeric',
             'max_order_quantity' => 'nullable|numeric',
+            'notes' => 'nullable',
             'price' => 'required|numeric|min:0', 
             'category_id' => 'required|exists:categories,id', 
             'image' => 'nullable|image|max:2048',  

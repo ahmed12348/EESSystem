@@ -15,7 +15,13 @@ use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
-
+    public function __construct()
+    {
+        $this->middleware('can:orders-view')->only(['index', 'show']);
+        $this->middleware('can:orders-create')->only(['create', 'store']);
+        $this->middleware('can:orders-edit')->only(['edit', 'update']);
+        $this->middleware('can:orders-delete')->only(['destroy']);
+    }
     public function index(Request $request)
     {
         $vendorId = Auth::id(); 

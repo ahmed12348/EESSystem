@@ -10,7 +10,12 @@ use App\Models\Setting;
 
 class SettingController extends Controller
 {
-  
+        public function __construct()
+        {
+            $this->middleware('can:settings-view')->only(['index']);
+            $this->middleware('can:settings-edit')->only(['update']);
+        }
+      
         // Show the settings page
         public function index()
         {
