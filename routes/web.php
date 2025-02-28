@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CartController;
+use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DiscountController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\SearchController;
@@ -39,7 +40,7 @@ Route::middleware(['localization'])->group(function () {
         Route::get('ads/getReferences', [ADSController::class, 'getReferences'])->name('ads.getReferences');
 
         //  Protected Admin Routes (Only Authenticated Admins)
-        Route::middleware(['auth', 'role:admin'])->group(function () {
+        Route::middleware(['auth', 'check_type:admin'])->group(function () {
             Route::post('logout', [AdminAuthController::class, 'logout'])->name('logout');
             Route::get('/', [HomeController::class, 'index'])->name('index');
             Route::get('/dashboard', [HomeController::class, 'index'])->name('export_admin');
@@ -48,6 +49,7 @@ Route::middleware(['localization'])->group(function () {
             Route::resource('vendors', VendorController::class);
             Route::resource('categories', CategoryController::class);
             Route::resource('products', ProductController::class);
+            Route::resource('customers', CustomerController::class);
             Route::patch('/products/{id}/approve', [ProductController::class, 'approve'])->name('products.approve');
             Route::patch('/products/{id}/reject', [ProductController::class, 'reject'])->name('products.reject');
             Route::post('/import-products', [ProductController::class, 'import'])->name('products.import');
@@ -62,6 +64,10 @@ Route::middleware(['localization'])->group(function () {
             Route::post('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
 
             Route::resource('ads', ADSController::class);
+            Route::patch('/ads/{id}/approve', [ADSController::class, 'approve'])->name('ads.approve');
+            Route::patch('/ads/{id}/reject', [ADSController::class, 'reject'])->name('ads.reject');
+            
+            
             Route::resource('carts', CartController::class);
             Route::get('cart-settings', [SettingController::class, 'index'])->name('settings.cart');
             Route::post('cart-settings/update', [SettingController::class, 'update'])->name('settings.cart.update');
@@ -73,8 +79,13 @@ Route::middleware(['localization'])->group(function () {
 
             Route::get('/searches', [SearchController::class, 'index'])->name('search.index');
             Route::get('/export', [HomeController::class, 'export_admin'])->name('export_admin');
+
+            Route::get('/vendors/{id}/reviews', [VendorController::class, 'vendorReviews'])->name('vendors.reviews');
+
         });
     });
+    Route::get('/get-regions', [CustomerController::class, 'getRegionsByCity'])->name('getRegionsByCity');
+    // Route::get('/getZonesByRegion', [ZoneController::class, 'getZonesByRegion'])->name('getZonesByRegion');
 
     
 
@@ -93,7 +104,7 @@ Route::middleware(['localization'])->group(function () {
         Route::get('/resend-otp', [AuthController::class, 'resendOtp'])->name('otp.resend');
 
         
-        Route::middleware(['auth', 'role:vendor'])->group(function () {
+        Route::middleware(['auth', 'check_type:vendor'])->group(function () {
             Route::get('/dashboard', [HomeController::class, 'vendor_index'])->name('vendor_index');
             Route::get('/profile', [HomeController::class, 'showProfile'])->name('profile.show');
             Route::put('/profile/update', [HomeController::class, 'updateProfile'])->name('profile.update');

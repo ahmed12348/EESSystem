@@ -89,6 +89,39 @@
                                 </div>
                             </div>
 
+                            <!-- New Fields -->
+                            <div class="row">
+                                <!-- Min Order Quantity -->
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="min_order_quantity" class="form-label">{{ __('messages.min_order_quantity') }}</label>
+                                        <input class="form-control" type="number" id="min_order_quantity" name="min_order_quantity"
+                                            placeholder="{{ __('messages.min_order_quantity') }}">
+                                        @error('min_order_quantity') <div class="text-danger">{{ $message }}</div> @enderror
+                                    </div>
+                                </div>
+
+                                <!-- Max Order Quantity -->
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="max_order_quantity" class="form-label">{{ __('messages.max_order_quantity') }}</label>
+                                        <input class="form-control" type="number" id="max_order_quantity" name="max_order_quantity"
+                                            placeholder="{{ __('messages.max_order_quantity') }}">
+                                        @error('max_order_quantity') <div class="text-danger">{{ $message }}</div> @enderror
+                                    </div>
+                                </div>
+
+                                <!-- Notes -->
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="notes" class="form-label">{{ __('messages.notes') }}</label>
+                                        <textarea class="form-control" id="notes" name="notes"
+                                            placeholder="{{ __('messages.notes') }}" rows="2"></textarea>
+                                        @error('notes') <div class="text-danger">{{ $message }}</div> @enderror
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Category Selection -->
                             <div class="mb-3">
                                 <label for="category_id" class="form-label">{{ __('messages.select_category') }}</label>
@@ -97,6 +130,17 @@
                                         <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                                     @endforeach
                                 </select>
+                                @error('category_id') <div class="text-danger">{{ $message }}</div> @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="vendor_id" class="form-label">{{ __('messages.vendor') }}</label>
+                                <select class="form-select select2" id="vendor_id" name="vendor_id" required>
+                                    @foreach ($vendors as $vendor)
+                                        <option value="{{ $vendor->id }}">{{ $vendor->vendor?->business_name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('vendor_id') <div class="text-danger">{{ $message }}</div> @enderror
                             </div>
 
                             <!-- Image Upload -->

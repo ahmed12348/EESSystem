@@ -79,6 +79,12 @@
                                 @enderror
                             </div>
 
+                            <div class="mb-1">
+                                <label for="notes" class="form-label">{{ __('messages.notes') }}</label>
+                                <textarea class="form-control" id="notes" name="notes" rows="3">{{ old('notes') }}</textarea>
+                                <div class="text-danger error-message" id="notes-error"></div>
+                            </div>
+
                             <!-- Submit Button -->
                             <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> {{ __('messages.create') }}</button>
                         </form>

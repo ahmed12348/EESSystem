@@ -3,7 +3,7 @@
 @section('title', __('messages.orders_dashboard'))
 
 @section('content')
-    <!-- Breadcrumb -->
+<div class="container">
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">{{ __('messages.orders') }}</div>
         <div class="ps-3">
@@ -14,34 +14,30 @@
                 </ol>
             </nav>
         </div>
-
-        <!-- Add Create Order Button -->
         <div class="ms-auto">
-            <div class="btn-group">
-                <a class="btn btn-info text-white" href="{{ route('admin.orders.create') }}">
-                    <i class="bi bi-plus-circle"></i> {{ __('messages.add_new_order') }}
-                </a>
-            </div>
+      
+            @can('orders-create')
+            <a class="btn btn-info text-white" href="{{ route('admin.orders.create') }}">
+                <i class="bi bi-plus-circle"></i> {{ __('messages.add_new_order') }}
+            </a>
+            @endcan
         </div>
     </div>
-    <!-- End Breadcrumb -->
 
     <div class="card">
         <div class="card-body">
-            <div class="d-flex align-items-center justify-content-between">
-                <!-- Search Form -->
-                <div class="ms-auto d-flex align-items-center">
-                    <form class="d-flex position-relative" method="GET" action="{{ route('admin.orders.index') }}">
-                        <div class="position-absolute top-50 translate-middle-y search-icon px-3">
-                            <i class="bi bi-search"></i>
-                        </div>
-                        <input class="form-control form-control-sm ps-5" type="text" name="search" placeholder="{{ __('messages.search') }}" value="{{ request()->query('search') }}">
-                    </form>
-                </div>
+            <div class="d-flex align-items-center">
+                <h5 class="mb-0">{{ __('messages.orders_list') }}</h5>
+                <form class="ms-auto position-relative" method="GET" action="{{ route('admin.orders.index') }}">
+                    <div class="position-absolute top-50 translate-middle-y search-icon px-3">
+                        <i class="bi bi-search"></i>
+                    </div>
+                    <input class="form-control ps-5" type="text" name="search" placeholder="{{ __('messages.search') }}" value="{{ request()->query('search') }}">
+                </form>
             </div>
 
             <div class="table-responsive mt-3">
-                <table id='example2' class="table align-middle table-hover">
+                <table class="table align-middle table-hover">
                     <thead class="table-secondary">
                         <tr>
                             <th>{{ __('messages.id') }}</th>
@@ -72,23 +68,26 @@
                                 </td>
                                 <td>
                                     <div class="table-actions d-flex align-items-center gap-2 fs-6">
-                                        <a href="{{ route('admin.orders.edit', $order->id) }}" class="text-primary"
-                                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ __('messages.edit') }}">
+                                       
+                                        @can('orders-edit')
+                                        <a href="{{ route('admin.orders.edit', $order->id) }}" class="text-primary" data-bs-toggle="tooltip" title="{{ __('messages.edit') }}">
                                             <i class="bi bi-pencil-fill"></i>
                                         </a>
+                                        @endcan
+                                        @can('orders-view')
+                                        <a href="{{ route('admin.orders.show', $order->id) }}" class="text-warning" data-bs-toggle="tooltip" title="{{ __('messages.view') }}">
+                                            <i class="bi bi-eye-fill"></i>
+                                        </a>
+                                        @endcan
+                                        @can('orders-delete')
                                         <form action="{{ route('admin.orders.destroy', $order->id) }}" method="POST" style="display:inline;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-link p-0 text-danger"
-                                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ __('messages.delete') }}"
-                                                onclick="return confirm('{{ __('messages.delete_confirmation') }}')">
+                                            <button type="submit" class="btn btn-link p-0 text-danger" data-bs-toggle="tooltip" title="{{ __('messages.delete') }}" onclick="return confirm('{{ __('messages.delete_confirmation') }}')">
                                                 <i class="bi bi-trash-fill"></i>
                                             </button>
                                         </form>
-                                        <a href="{{ route('admin.orders.show', $order->id) }}" class="text-warning"
-                                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ __('messages.view') }}">
-                                            <i class="bi bi-eye-fill"></i>
-                                        </a>
+                                        @endcan
                                     </div>
                                 </td>
                             </tr>
@@ -98,9 +97,10 @@
             </div>
 
             <!-- Pagination -->
-            <div class="mt-1">
+            <div class="mt-2">
                 {{ $orders->links() }}
             </div>
         </div>
     </div>
+</div>
 @endsection

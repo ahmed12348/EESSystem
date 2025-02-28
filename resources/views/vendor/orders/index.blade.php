@@ -63,14 +63,18 @@
                                 </td>
                                 <td>
                                     <div class="table-actions d-flex align-items-center gap-2 fs-6">
+                                        @can('orders-edit')
                                         <a href="{{ route('vendor.orders.edit', $order->id) }}" class="text-primary"
                                             data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ __('messages.edit') }}">
                                             <i class="bi bi-pencil-fill"></i>
                                         </a>
+                                        @endcan
+                                        @can('orders-view')
                                         <a href="{{ route('vendor.orders.show', $order->id) }}" class="text-warning"
                                             data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ __('messages.view') }}">
                                             <i class="bi bi-eye-fill"></i>
                                         </a>
+                                        @endcan
                                     </div>
                                 </td>
                             </tr>

@@ -3,53 +3,73 @@
 @section('content')
 
 <div class="container">
-
-    <!-- Breadcrumb Navigation -->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">{{ __('messages.roles') }}</div>
-        <div class="ps-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="{{ url('/') }}"><i class="bx bx-home-alt"></i></a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ __('messages.create_role') }}</li>
-                </ol>
-            </nav>
-        </div>
-
         <div class="ms-auto">
-            <a href="{{ route('admin.roles.index') }}" class="btn btn-secondary">{{ __('messages.back') }}</a>
+            <a href="{{ route('admin.roles.index') }}" class="btn btn-outline-secondary">{{ __('messages.back') }}</a>
         </div>
     </div>
-    <!-- End Breadcrumb -->
 
-    <!-- Role Creation Form -->
-    <div class="row">
-        <div class="col-xl-9 mx-auto">
-            <h6 class="mb-0 text-uppercase">{{ __('messages.create_new_role') }}</h6>
-            <hr/>
-            <div class="card">
-                <div class="card-body">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-sm border-0 rounded-lg">
+                <div class="card-header text-center">
+                    <h5 class="mb-0">{{ __('messages.create_new_role') }}</h5>
+                </div>
+                <div class="card-body p-4">
                     <form action="{{ route('admin.roles.store') }}" method="POST">
                         @csrf
-                        <!-- Role Name Input -->
-                        <div class="mb-3">
-                            <label for="name" class="form-label">{{ __('messages.role_name') }}</label>
-                            <input class="form-control" type="text" id="name" name="name" placeholder="{{ __('messages.enter_role_name') }}" required>
+
+                        <div class="mb-4">
+                            <label for="name" class="form-label fw-bold">{{ __('messages.role_name') }}</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="{{ __('messages.enter_role_name') }}" required>
                         </div>
 
-                        <!-- Permissions Input -->
-                        <div class="mb-3">
-                            <label class="form-label">{{ __('messages.permissions') }}</label>
-                            <br />
-                            @foreach ($permissions as $permission)
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="permission_{{ $permission->id }}" name="permissions[]" value="{{ $permission->id }}">
-                                    <label class="form-check-label" for="permission_{{ $permission->id }}">{{ $permission->name }}</label>
-                                </div>
-                            @endforeach
+                        <!-- Permissions Table without Colors -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">{{ __('messages.permissions') }}</label>
+                            <div class="table-responsive">
+                                <table class="table table-bordered text-center">
+                                    <thead>
+                                        <tr class="align-middle">
+                                            <th>{{ __('messages.module') }}</th>
+                                            <th class="text-center">{{ __('messages.view') }}</th>
+                                            <th class="text-center">{{ __('messages.create') }}</th>
+                                            <th class="text-center">{{ __('messages.edit') }}</th>
+                                            <th class="text-center">{{ __('messages.delete') }}</th>
+                                            <th class="text-center">{{ __('messages.approve') }}</th>
+                                            <th class="text-center">{{ __('messages.reject') }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($permissions as $module => $modulePermissions)
+                                            <tr>
+                                                <td class="fw-bold">{{ ucfirst($module) }}</td>
+                                                @php
+                                                    $actions = ['view', 'create', 'edit', 'delete', 'approve', 'reject'];
+                                                @endphp
+                                                @foreach ($actions as $action)
+                                                    <td class="text-center">
+                                                        @php
+                                                            $permission = $modulePermissions->firstWhere('name', "{$module}-{$action}");
+                                                        @endphp
+                                                        @if ($permission)
+                                                            <div class="form-check d-flex justify-content-center">
+                                                                <input class="form-check-input" type="checkbox" id="permission_{{ $permission->id }}" name="permissions[]" value="{{ $permission->id }}">
+                                                            </div>
+                                                        @else
+                                                            <span>-</span>
+                                                        @endif
+                                                    </td>
+                                                @endforeach
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">{{ __('messages.submit') }}</button>
+                        <button type="submit" class="btn btn-success w-100 py-2">{{ __('messages.submit') }}</button>
                     </form>
                 </div>
             </div>
@@ -57,4 +77,4 @@
     </div>
 </div>
 
-@endsection  
+@endsection

@@ -17,9 +17,12 @@
 
         <div class="ms-auto">
             <div class="btn-group">
+            
+                @can('categories-create')
                 <a class="btn btn-info text-white" href="{{ route('admin.categories.create') }}">
                     <i class="bi bi-plus-circle"></i> {{ __('messages.create_new_category') }}
                 </a>
+                @endcan
             </div>
         </div>
     </div>
@@ -52,14 +55,17 @@
                         @foreach ($categories as $category)
                             <tr>
                                 <td>{{ $category->name }}</td>
-                                <td>{{ $category->parent ? $category->parent->name : __('messages.no_parent') }}</td>
+                                <td>{{ $category->parent ? $category->parent->name : __('messages.na') }}</td>
                                 <td>{{ $category->products->count() }}</td>
                                 <td>
                                     <div class="table-actions d-flex align-items-center gap-2 fs-6">
+                                    
+                                        @can('categories-edit')
                                         <a href="{{ route('admin.categories.edit', $category->id) }}" class="text-primary"
                                             data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ __('messages.edit') }}">
                                             <i class="bi bi-pencil-fill"></i>
                                         </a>
+                                        @endcan
                                     </div>
                                 </td>
                             </tr>
@@ -72,10 +78,15 @@
                                     <td>--</td>
                                     <td>
                                         <div class="table-actions d-flex align-items-center gap-2 fs-6">
+                                         
+                                            @can('categories-edit')
                                             <a href="{{ route('admin.categories.edit', $subcategory->id) }}" class="text-primary"
                                                 data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ __('messages.edit') }}">
                                                 <i class="bi bi-pencil-fill"></i>
                                             </a>
+                                            @endcan
+                                            @can('categories-delete')
+                                          
                                             <form action="{{ route('admin.categories.destroy', $subcategory->id) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
@@ -85,6 +96,7 @@
                                                     <i class="bi bi-trash-fill"></i>
                                                 </button>
                                             </form>
+                                            @endcan
                                         </div>
                                     </td>
                                 </tr>

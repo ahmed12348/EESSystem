@@ -17,14 +17,15 @@
 
         <div class="ms-auto">
             <div class="btn-group">
+                @can('ads-create')
                 <a class="btn btn-info text-white" href="{{ route('admin.ads.create') }}">
                     <i class="bi bi-plus-circle"></i> Add New Ad
                 </a>
+                @endcan
             </div>
         </div>
     </div>
     <!-- End Breadcrumb -->
-
 
     <div class="card">
         <div class="card-body">
@@ -47,10 +48,7 @@
                             <th>ID</th>
                             <th>Image</th>
                             <th>Title</th>
-                            {{-- <th>Type</th> --}}
-                            {{-- <th>Reference</th> --}}
-                            {{-- <th>Zone</th> --}}
-                            <th>Status</th>  
+                            <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -72,31 +70,27 @@
                                     @endif 
                                 </td> 
                                 <td>{{ $ad->title }}</td>
-                                {{-- <td>{{ ucfirst($ad->type) }}</td> --}}
-                                {{-- <td>
-                                    @if ($ad->type === 'product' && $ad->reference)
-                                        {{ $ad->reference->name }}
-                                    @elseif ($ad->type === 'category' && $ad->reference)
-                                        {{ $ad->reference->name }}
-                                    @else
-                                    {{ $ad->zone }}
-                                    @endif
-                                </td> --}}
-                                {{-- <td>{{ $ad->zone ?? 'N/A' }}</td> --}}
                                 <td>
-                                    @if ($ad->active)
-                                        <span class="badge bg-success">Active</span>
-                                    @else
-                                        <span class="badge bg-danger">Inactive</span>
-                                    @endif
+                                    @if ($ad->status === 'approved')
+                                    <span class="badge bg-success">{{ __('messages.approved') }}</span>
+                                @elseif ($ad->status === 'pending')
+                                    <span class="badge bg-warning">{{ __('messages.pending') }}</span>
+                                @elseif ($ad->status === 'rejected')
+                                    <span class="badge bg-danger">{{ __('messages.rejected') }}</span>
+                                @endif
                                 </td>
                                 <td>
                                     <div class="table-actions d-flex align-items-center gap-2 fs-6">
-                                        {{-- <a href="{{ route('admin.ads.edit', $ad->id) }}" class="text-primary"
+                                      
+                                        @can('ads-edit')
+                                        <a href="{{ route('admin.ads.edit', $ad->id) }}" class="text-primary"
                                             data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">
                                             <i class="bi bi-pencil-fill"></i>
-                                        </a> --}}
+                                        </a>
+                                        @endcan
 
+                                       
+                                        @can('ads-delete')
                                         <form action="{{ route('admin.ads.destroy', $ad->id) }}" method="POST" style="display:inline;">
                                             @csrf
                                             @method('DELETE')
@@ -106,33 +100,17 @@
                                                 <i class="bi bi-trash-fill"></i>
                                             </button>
                                         </form>
+                                        @endcan
 
+                                    
+                                        @can('ads-view')
                                         <a href="{{ route('admin.ads.show', $ad->id) }}" class="text-warning"
                                             data-bs-toggle="tooltip" data-bs-placement="bottom" title="View">
                                             <i class="bi bi-eye-fill"></i>
                                         </a>
+                                        @endcan
 
-                                        {{-- @if (!$ad->active)
-                                            <form action="{{ route('admin.ads.activate', $ad->id) }}" method="POST" style="display:inline;">
-                                                @csrf
-                                                @method('PATCH')
-                                                <button type="submit" class="btn btn-link p-0 text-success"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom" title="Activate Ad"
-                                                    onclick="return confirm('Are you sure you want to activate this ad?')">
-                                                    <i class="bi bi-check-circle-fill"></i> 
-                                                </button>
-                                            </form>
-                                        @else
-                                            <form action="{{ route('admin.ads.deactivate', $ad->id) }}" method="POST" style="display:inline;">
-                                                @csrf
-                                                @method('PATCH')
-                                                <button type="submit" class="btn btn-link p-0 text-danger"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom" title="Deactivate Ad"
-                                                    onclick="return confirm('Are you sure you want to deactivate this ad?')">
-                                                    <i class="bi bi-x-circle-fill"></i> 
-                                                </button>
-                                            </form>
-                                        @endif --}}
+                                        
                                     </div>
                                 </td>
                             </tr>
@@ -140,7 +118,6 @@
                     </tbody>
                 </table>
             </div>
-            
             <!-- Pagination -->
             <div class="mt-1">
                 {{ $ads->links() }}

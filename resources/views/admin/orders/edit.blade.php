@@ -61,7 +61,7 @@
                         <!-- Select Products (Multiple Selection) -->
                         <div class="mb-1">
                             <label for="product_ids" class="form-label">{{ __('messages.select_products') }}</label>
-                            <select class="form-select select2" id="product_ids" name="product_ids[]" multiple required>
+                            <select readonly class="form-select select2" id="product_ids" name="product_ids[]" multiple required>
                                 @foreach ($products as $product)
                                     <option value="{{ $product->id }}" data-price="{{ $product->price }}" 
                                             data-vendor="{{ $product->vendor_id }}"
@@ -84,6 +84,11 @@
                             <div class="text-danger error-message" id="status-error"></div>
                         </div>
 
+                        <div class="mb-1">
+                            <label for="notes" class="form-label">{{ __('messages.notes') }}</label>
+                            <textarea class="form-control" id="notes" name="notes" rows="3">{{ old('notes', $order->notes) }}</textarea>
+                            <div class="text-danger error-message" id="notes-error"></div>
+                        </div>
                         <!-- Submit Button -->
                         <button type="submit" class="btn btn-primary">{{ __('messages.update_order') }}</button>
                     </form>

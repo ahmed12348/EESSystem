@@ -106,6 +106,26 @@
                                 </div>
                             </div>
 
+                            <!-- New Fields -->
+                            <div class="row">
+                                <!-- Min Order Quantity -->
+                                <div class="col-md-4 mb-3">
+                                    <label for="min_order_quantity" class="form-label fw-bold">{{ __('messages.min_order_quantity') }}</label>
+                                    <input class="form-control" type="number" id="min_order_quantity" name="min_order_quantity"
+                                        value="{{ old('min_order_quantity', $product->min_order_quantity) }}">
+                                    @error('min_order_quantity') <div class="text-danger">{{ $message }}</div> @enderror
+                                </div>
+
+                                <!-- Max Order Quantity -->
+                                <div class="col-md-4 mb-3">
+                                    <label for="max_order_quantity" class="form-label fw-bold">{{ __('messages.max_order_quantity') }}</label>
+                                    <input class="form-control" type="number" id="max_order_quantity" name="max_order_quantity"
+                                        value="{{ old('max_order_quantity', $product->max_order_quantity) }}">
+                                    @error('max_order_quantity') <div class="text-danger">{{ $message }}</div> @enderror
+                                </div>
+
+                              
+                            </div>
                             <!-- Category Selection -->
                             <div class="mb-3">
                                 <label for="category_id" class="form-label">{{ __('messages.select_category') }}</label>

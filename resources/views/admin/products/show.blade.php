@@ -1,83 +1,37 @@
 @extends('admin.layouts.app')
 
+@section('title', __('messages.view_product'))
+
 @section('content')
 
-<div class="container">
+@php
+$data = [
+    'messages.product_name' => $product->name,
+    'messages.description' => $product->description,
+    'messages.price' => $product->price . ' $',
+    'messages.category' => $product->category ? $product->category->name : __('messages.no_category_assigned'),
+    'messages.items' => $product->items,
+    'messages.color' => $product->color ?? __('messages.na'),
+    'messages.shape' => $product->shape ?? __('messages.na'),
+    'messages.min_order_quantity' => $product->min_order_quantity ?? __('messages.na'),
+    'messages.max_order_quantity' => $product->max_order_quantity ?? __('messages.na'),
+    'messages.vendor' => $product->vendor?->vendor?->business_name ?? __('messages.na'),
+    'messages.notes' => $product->notes ?? __('messages.na'),
+    'messages.status' => ucfirst($product->status),
+];
+@endphp
 
-    <!-- Breadcrumb Navigation -->
-    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Products</div>
-        <div class="ps-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="{{ url('/') }}"><i class="bx bx-home-alt"></i></a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('admin.products.index') }}">{{ __('messages.products') }}Products</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ __('messages.view_product') }}</li>
-                </ol>
-            </nav>
-        </div>
-
-        <div class="ms-auto">
-            <!-- Back Button -->
-            <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">{{ __('messages.back') }}</a>
-        </div>
-    </div>
-    <!-- End Breadcrumb -->
-
-    <!-- Product Details -->
-    <div class="row">
-        <div class="col-xl-9 mx-auto">
-            <h6 class="mb-0 text-uppercase">Product Details</h6>
-            <hr />
-            <div class="card">
-                <div class="card-body">
-                    <div class="mb-3">
-                        <label class="form-label">Product Name</label>
-                        <p>{{ $product->name }}</p>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Product Description</label>
-                        <p>{{ $product->description }}</p>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Product Price ($)</label>
-                        <p>{{ $product->price }}</p>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Product Category</label>
-                        <p>{{ $product->category ? $product->category->name : 'No category assigned' }}</p>
-                    </div>
-
-                    <!-- Product Image -->
-                    <div class="mb-3">
-                        <label class="form-label">Product Image</label>
-                        @if ($product->image)
-                            <div class="row mb-3">
-                                <div class="col-md-3">
-                                    <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image" class="img-fluid rounded mb-2" />
-                                </div>
-                            </div>
-                        @else
-                        <div class="col-md-3">
-                        <img src="{{ asset('assets/images/default-product.png') }}" alt="Default Profile" class="rounded-circle mb-3" width="100">
-                         </div>
-                            {{-- <p>No image available for this product.</p>  --}}
-                        @endif
-                    </div>
-
-                    
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-</div>
-@push('scripts')
-
-@endpush
+@include('components.admin-show-product', [
+    'title' => __('messages.view_product'),
+    'data' => $data,
+    'backRoute' => route('admin.products.index'),
+    'image' => $product->image ? asset('storage/' . $product->image) : asset('assets/images/default-product.png'),
+    'imageAlt' => __('messages.product_image'),
+    'id' => $product->id,
+    'statusField' => 'status',
+    'statusValue' => $product->status,
+    'approveRoute' => 'admin.products.approve',
+    'rejectRoute' => 'admin.products.reject'
+])
 
 @endsection

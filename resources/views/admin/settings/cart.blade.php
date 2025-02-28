@@ -12,11 +12,6 @@
                     <div class="card-body">
                         <h5 class="mb-3">{{ __('messages.set_cart_expiration') }}</h5>
 
-                        {{-- Success Message --}}
-                        @if(session('success'))
-                            <div class="alert alert-success">{{ session('success') }}</div>
-                        @endif
-
                         <form method="POST" action="{{ route('admin.settings.cart.update') }}">
                             @csrf
                             @method('POST')
@@ -26,8 +21,10 @@
                                 <input type="number" name="cart_expiration_hours" class="form-control" 
                                        value="{{ old('cart_expiration_hours', $expirationHours) }}" min="1">
                             </div>
-
-                            <button type="submit" class="btn btn-primary">{{ __('messages.update_expiration_time') }}</button>
+                            
+                            @can('settings-edit')
+                                <button type="submit" class="btn btn-primary">{{ __('messages.update_expiration_time') }}</button>
+                            @endcan
                         </form>
                     </div>
                 </div>

@@ -41,7 +41,7 @@
                             <div class="mb-3">
                                 <label for="parent_id" class="form-label">{{ __('messages.parent_category') }}</label>
                                 <select class="form-select select2" id="parent_id" name="parent_id">
-                                    <option value="">{{ __('messages.no_parent') }}</option>
+                                    <option value="">{{ __('messages.na') }}</option>
                                     @foreach ($categories as $parentCategory)
                                         <option value="{{ $parentCategory->id }}" 
                                             {{ $category->parent_id == $parentCategory->id ? 'selected' : '' }}>

@@ -90,6 +90,31 @@
                                 </div>
                             </div>
 
+                            <!-- New Fields -->
+                            <div class="row">
+                                <!-- Min Order Quantity -->
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="min_order_quantity" class="form-label">{{ __('messages.min_order_quantity') }}</label>
+                                        <input class="form-control" type="number" id="min_order_quantity" name="min_order_quantity"
+                                            placeholder="{{ __('messages.min_order_quantity') }}">
+                                        @error('min_order_quantity') <div class="text-danger">{{ $message }}</div> @enderror
+                                    </div>
+                                </div>
+
+                                <!-- Max Order Quantity -->
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="max_order_quantity" class="form-label">{{ __('messages.max_order_quantity') }}</label>
+                                        <input class="form-control" type="number" id="max_order_quantity" name="max_order_quantity"
+                                            placeholder="{{ __('messages.max_order_quantity') }}">
+                                        @error('max_order_quantity') <div class="text-danger">{{ $message }}</div> @enderror
+                                    </div>
+                                </div>
+
+                           
+                            </div>
+
                             <!-- Category Selection -->
                             <div class="mb-3">
                                 <label for="category_id" class="form-label">{{ __('messages.category') }}</label>
@@ -105,9 +130,9 @@
                                 <label for="image" class="form-label">{{ __('messages.image') }}</label>
                                 <input class="form-control" type="file" id="image" name="image" onchange="previewImage(event)">
                                 @error('image') <span class="text-danger">{{ $message }}</span> @enderror
-                                <div class="mt-2">
+                                {{-- <div class="mt-2">
                                     <img id="imagePreview" class="img-fluid border rounded shadow" style="max-width: 120px; display: none;">
-                                </div>
+                                </div> --}}
                             </div>
 
                             <!-- Submit Button -->

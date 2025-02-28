@@ -21,6 +21,7 @@ return [
     'export_data' => 'تصدير',
     'select' => 'اختر',
     'search' => 'ابحث',
+    'not_assigned' => '',
     // Buttons
     'edit' => 'تعديل',
     'delete' => 'حذف',
@@ -57,6 +58,7 @@ return [
     'category_updated' => 'تم تحديث التصنيف بنجاح',
     'category_deleted' => 'تم حذف التصنيف بنجاح',
 
+    
     // Notifications
     'new_order' => 'لديك طلب جديد!',
     'new_message' => 'لديك رسالة جديدة!',
@@ -236,6 +238,8 @@ return [
             'password' => 'كلمة المرور',
             'enter_password' => 'أدخل كلمة المرور',
             'select_role' => 'اختر الدور',
+            'role' => ' الدور',
+            
             'profile_picture' => 'صورة الملف الشخصي',
             'actions' => 'الإجراءات',
             'edit' => 'تعديل',
@@ -549,8 +553,42 @@ return [
 
     // أخرى
     'na' => 'غير متاح',
-                                                
-                                                'copyright' => 'حقوق الطبع والنشر © 2025. جميع الحقوق محفوظة.',
+    // business_name
+    'business_name' => 'اسم الشركة',
+    'enter_business_name' => 'أدخل اسم الشركة',
+    'business_type' => 'نوع العمل',
+    'enter_business_type' => 'أدخل نوع العمل',
+    'enter_phone' => 'أدخل رقم الهاتف',
+    'longitude' => 'خط الطول',
+    'enter_longitude' => 'أدخل خط الطول',
+    'select_city' => 'اختر المدينة',
+    'select_region' => 'اختر المنطقة',
+    'create_customer' => 'إنشاء عميل',
+    'latitude' => 'خط العرض',
+    'enter_latitude' => 'خط العرض',
+    'loading' => 'جاري التحميل',          
+    'customers' => 'العملاء',
+    'customers_list' => 'قائمة العملاء',
+    'edit_customer' => 'تعديل العميل',  
+    'customer_details' => 'تفاصيل العميل',
+    'region' => 'المنطقة', 
+    'view_vendor_details' => 'عرض تفاصيل البائع',
+    'view_vendor' => 'عرض البائع',
+    
+    'final_price' => 'السعر النهائي',
+    'discount' => 'الخصم',
+    'quantity' => 'الكمية',
+    'order_details' => 'تفاصيل الطلب',
+    'placed_at' => 'تم وضعه في',
+    'total_price' => 'السعر الإجمالي',
+    'profile_picture' => 'الصورة',
+    'min_order_quantity' => 'اقل عدد للطلب',
+    'max_order_quantity' => 'اكبر عدد للطلب',
+    'notes' => 'ملاحظة',
+    'category' => 'الفئة',
+    'rejected' => 'مرفوض',
+    
+    'copyright' => 'حقوق الطبع والنشر © 2025. جميع الحقوق محفوظة.',
 
                                             
 ];

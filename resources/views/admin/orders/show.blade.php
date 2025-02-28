@@ -55,6 +55,17 @@
                 </table>
 
                 <h6>{{ __('messages.total_price') }}: ${{ number_format($order->total_price, 2) }}</h6>
+
+                <!-- Notes Section -->
+                <h6 class="mt-3">{{ __('messages.notes') }}</h6>
+                <div class="card border p-3">
+                    @if($order->notes)
+                        <p>{{ $order->notes }}</p>
+                    @else
+                        <p class="text-muted">{{ __('messages.no_notes_available') }}</p>
+                    @endif
+                </div>
+
             </div>
         </div>
     </div>

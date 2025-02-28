@@ -12,8 +12,8 @@
             <div class="card">
                 <div class="card-body text-center">
                     <!-- Display profile picture -->
-                    @if(Auth::user()->profile_picture)           
-                        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="Profile" class="rounded-circle mb-3" width="150">
+                    @if(Auth::user()->photo)           
+                        <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="Profile" class="rounded-circle mb-3" width="150">
                     @else
                         <img src="{{ asset('assets/images/default-avatar.png') }}" alt="Default Profile" class="rounded-circle mb-3" width="150">
                     @endif
@@ -51,12 +51,12 @@
 
                 <!-- Profile Picture -->
                 <div class="mb-3">
-                    <label for="profile_picture" class="form-label">{{ __('messages.profile_picture') }}</label>
-                    <input type="file" name="profile_picture" class="form-control">
+                    <label for="photo" class="form-label">{{ __('messages.photo') }}</label>
+                    <input type="file" name="photo" class="form-control">
                 </div>
 
                 <!-- Submit Button -->
-                <button type="submit" class="btn btn-primary mb-3">{{ __('messages.update_profile') }}</button>
+                <button type="submit" class="btn btn-primary mb-3">{{ __('messages.update') }}</button>
             </form>
         </div>
     </div>

@@ -39,7 +39,8 @@ return [
     'cancel' => 'Cancel',
     'confirm' => 'Confirm',
     'back' => 'Back',
-
+    'not_assigned' => 'Not Assigned',
+    
     // Forms
     'name' => 'Name',
     'email' => 'Email',
@@ -173,6 +174,7 @@ return [
     'delete_user_confirmation' => 'Are you sure you want to delete this user?',
     'approve_user_confirmation' => 'Are you sure you want to approve this user?',
     'reject_user_confirmation' => 'Are you sure you want to reject this user?',
+    'edit_user' => 'Edit User',
 
     // Roles & Permissions
     'role_management' => 'Role Management',
@@ -277,7 +279,9 @@ return [
     'number_of_search' => 'Number of Searches',
     'start_date' => 'Start Date',
     'end_date' => 'End Date',
-
+     'profile_picture' => 'Profile Picture',
+     'picture' => 'Picture',
+     'role' => ' Role',
     // Vendors
     'vendors' => 'Vendors',
 
@@ -312,6 +316,40 @@ return [
       
     // Other
     'na' => 'N/A',
+
+    'business_name' => 'Business Name',
+    'enter_business_name' => 'Enter Business Name',
+    'business_type' => 'Business Type',
+    'enter_business_type' => 'Enter Business Type',
+    'enter_phone' => 'Enter Phone',
+    'longitude' => 'Longitude',
+    'enter_longitude' => 'Enter Longitude',
+    'select_city' => 'Select City',
+    'select_region' => 'Select Region',
+    'create_customer' => 'Create Customer',
+    'loading' => 'Loading',
+    'latitude' => 'Latitude',
+    'enter_latitude' => 'Enter Latitude',
+    'customers' => 'Customers',
+    'customers_list' => 'Customers List',
+    'edit_customer' => 'Edit Customer',
+    'customer_details' => 'Customer Details',
+    'region' => 'Region',
+    'view_vendor_details' => 'View Vendor Details',
+    'view_vendor' => 'View Vendor',
+    'product_details' => 'Product Details',
+    'view_product' => 'Product Details',
+    'final_price' => 'Final Price',
+    'discount' => 'Discount',
+    'quantity' => 'Quantity',
+    'order_details' => 'Order Details',
+    'placed_at' => 'Placed At',
+    'total_price' => 'Total Price',
+    'min_order_quantity' => 'Min Order Quantity',
+    'max_order_quantity' => 'Max Order Quantity',
+    'notes' => 'Notes',
+    'category' => 'Category',
+    'rejected' => 'Rejected',
     // Footer
     'copyright' => 'Copyright © 2025. All rights reserved.',
 

@@ -3,7 +3,7 @@
 @section('title', __('messages.discounts_dashboard'))
 
 @section('content')
-    <!-- Breadcrumb -->
+<div class="container">
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">{{ __('messages.discounts') }}</div>
         <div class="ps-3">
@@ -14,31 +14,29 @@
                 </ol>
             </nav>
         </div>
-
         <div class="ms-auto">
-            <div class="btn-group">
-                <a class="btn btn-info text-white" href="{{ route('admin.discounts.create') }}">
-                    <i class="bi bi-plus-circle"></i> {{ __('messages.add_discount') }}
-                </a>
-            </div>
+          
+            @can('discounts-create')
+            <a class="btn btn-info text-white" href="{{ route('admin.discounts.create') }}">
+                <i class="bi bi-plus-circle"></i> {{ __('messages.add_discount') }}
+            </a>
+            @endcan
         </div>
     </div>
-    <!-- End Breadcrumb -->
 
     <div class="card">
         <div class="card-body">
-            <div class="d-flex align-items-center justify-content-between mb-3">
+            <div class="d-flex align-items-center">
                 <h5 class="mb-0">{{ __('messages.discounts_offers') }}</h5>
-                <form class="ms-auto position-relative" method="GET" action="{{ route('admin.categories.index') }}">
+                <form class="ms-auto position-relative" method="GET" action="{{ route('admin.discounts.index') }}">
                     <div class="position-absolute top-50 translate-middle-y search-icon px-3">
                         <i class="bi bi-search"></i>
                     </div>
-                    <input class="form-control ps-5" type="text" name="search" placeholder="{{ __('messages.search') }}"
-                        value="{{ request()->query('search') }}">
+                    <input class="form-control ps-5" type="text" name="search" placeholder="{{ __('messages.search') }}" value="{{ request()->query('search') }}">
                 </form>
             </div>
 
-            <div class="table-responsive">
+            <div class="table-responsive mt-3">
                 <table class="table align-middle table-hover">
                     <thead class="table-secondary">
                         <tr>
@@ -58,20 +56,28 @@
                                 <td>{{ $discount->end_date }}</td>
                                 <td>
                                     <div class="table-actions d-flex align-items-center gap-2 fs-6">
+                                     
+                                        @can('discounts-edit')
                                         <a href="{{ route('admin.discounts.edit', $discount->id) }}" class="text-warning" data-bs-toggle="tooltip" title="{{ __('messages.edit') }}">
                                             <i class="bi bi-pencil-fill"></i>
                                         </a>
+                                        @endcan
+                                        
+                                     
+                                        @can('discounts-view')
                                         <a href="{{ route('admin.discounts.show', $discount->id) }}" class="text-primary" data-bs-toggle="tooltip" title="{{ __('messages.view_details') }}">
                                             <i class="bi bi-eye-fill"></i>
                                         </a>
+                                        @endcan
+                                        @can('discounts-delete')
                                         <form action="{{ route('admin.discounts.destroy', $discount->id) }}" method="POST" style="display:inline;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-link p-0 text-danger" data-bs-toggle="tooltip" title="{{ __('messages.delete') }}"
-                                                onclick="return confirm('{{ __('messages.confirm_delete') }}')">
+                                            <button type="submit" class="btn btn-link p-0 text-danger" data-bs-toggle="tooltip" title="{{ __('messages.delete') }}" onclick="return confirm('{{ __('messages.confirm_delete') }}')">
                                                 <i class="bi bi-trash-fill"></i>
                                             </button>
                                         </form>
+                                        @endcan
                                     </div>
                                 </td>
                             </tr>
@@ -86,4 +92,5 @@
             </div>
         </div>
     </div>
-@endsection  
+</div>
+@endsection

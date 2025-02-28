@@ -49,6 +49,20 @@
                                 @enderror
                             </div>
 
+                         <!-- Vendor ID Dropdown -->
+                        <div class="mb-1">
+                        <label for="vendor_id" class="form-label">Select Vendor</label>
+                            <select class="form-select select2" id="vendor_id" name="vendor_id" required>
+                                <option value="">Select Vendor</option>
+                                @foreach($vendors as $vendor)
+                                    <option value="{{ $vendor->id }}">{{ $vendor->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('vendor_id')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                             {{-- <!-- Ad Type -->
                             <div class="mb-1">
                                 <label for="type" class="form-label">Ad Type</label>

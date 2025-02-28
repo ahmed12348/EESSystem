@@ -65,7 +65,6 @@
                                         <span class="badge bg-success p-2 m-1">{{ $product->name }}</span>
                                     @endforeach
                                 </div>
-                               
                             </div>
                   
                         

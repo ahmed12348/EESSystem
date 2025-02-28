@@ -17,9 +17,11 @@
 
         <div class="ms-auto">
             <div class="btn-group">
+                @can('products-create')
                 <a class="btn btn-info text-white" href="{{ route('vendor.products.create') }}">
                     <i class="bi bi-plus-circle"></i> {{ __('messages.add_new_product') }}
                 </a>
+                @endcan
             </div>
         </div>
     </div>
@@ -30,6 +32,7 @@
             <div class="d-flex align-items-center justify-content-between">
                 <!-- Import Form and Export Button -->
                 <div class="d-flex align-items-center">
+                    @can('products-create')
                     <!-- Import Form -->
                     <form action="{{ route('vendor.products.import') }}" method="POST" enctype="multipart/form-data" class="d-flex align-items-center me-2">
                         @csrf
@@ -39,6 +42,7 @@
                 
                     <!-- Export Sample Button (for downloading the header template) -->
                     <a href="{{ route('vendor.products.export.sample') }}" class="btn btn-light btn-sm ms-2">{{ __('messages.sample') }}</a>
+                    @endcan
                 </div>
                 
                 <!-- Search Form -->
@@ -56,17 +60,19 @@
                 <table id='example2' class="table align-middle table-hover">
                     <thead class="table-secondary">
                         <tr>
-                            <th>ID</th>
+                            <th>#</th>
                             <th>{{ __('messages.image') }}</th>
                             <th>{{ __('messages.product_name') }}</th>
                             <th>{{ __('messages.status') }}</th>  
+
                             <th>{{ __('messages.actions') }}</th>  
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($products as $product)
+                        @foreach ($products as $index => $product)
                             <tr>
-                                <td>#{{ $product->id }}</td>
+                                
+                                <td>{{ $index + 1 }}</td>
                                 <td>    
                                     @if ($product->image)
                                         <img src="{{ asset('storage/' . $product->image) }}" 
@@ -77,28 +83,34 @@
                                         <img src="{{ asset('assets/images/default-product.png') }}" 
                                              class="img-fluid rounded shadow border p-2" 
                                              style="max-width: 50px;" 
-                                             alt="{{ __('messages.default_image') }}">
+                                             alt="{{ __('messages.image') }}">
                                     @endif 
                                 </td> 
                                 <td>{{ $product->name }}</td>
                                 <td>
-                                    @if ($product->status)
+                                    @if ($product->status == 'approved')
                                         <span class="badge bg-success">{{ __('messages.approved') }}</span>
+                                    @elseif($product->status == 'rejected')
+                                        <span class="badge bg-danger">{{ __('messages.rejected') }}</span>
                                     @else
-                                        <span class="badge bg-danger">{{ __('messages.not_approved') }}</span>
+                                    <span class="badge bg-warning">{{ __('messages.pending') }}</span>
+
                                     @endif
                                 </td>
                                 <td>
+                                       @can('products-create')
                                     <div class="table-actions d-flex align-items-center gap-2 fs-6">
                                         <a href="{{ route('vendor.products.edit', $product->id) }}" class="text-primary"
                                             data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ __('messages.edit') }}">
                                             <i class="bi bi-pencil-fill"></i>
                                         </a>
-
+                                        @endcan
+                                        @can('products-view')
                                         <a href="{{ route('vendor.products.show', $product->id) }}" class="text-warning"
                                             data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ __('messages.view') }}">
                                             <i class="bi bi-eye-fill"></i>
                                         </a>
+                                        @endcan
                                     </div>
                                 </td>
                             </tr>

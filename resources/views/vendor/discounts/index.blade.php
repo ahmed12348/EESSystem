@@ -17,9 +17,11 @@
 
         <div class="ms-auto">
             <div class="btn-group">
+                @can('discounts-create')
                 <a class="btn btn-info text-white" href="{{ route('vendor.discounts.create') }}">
                     <i class="bi bi-plus-circle"></i> {{ __('messages.add_discount') }}
                 </a>
+                @endcan
             </div>
         </div>
     </div>
@@ -57,13 +59,18 @@
                                 <td>{{ $discount->start_date }}</td>
                                 <td>{{ $discount->end_date }}</td>
                                 <td>
+                                    
                                     <div class="table-actions d-flex align-items-center gap-2 fs-6">
+                                        @can('discounts-edit')
                                         <a href="{{ route('vendor.discounts.edit', $discount->id) }}" class="text-warning" data-bs-toggle="tooltip" title="{{ __('messages.edit') }}">
                                             <i class="bi bi-pencil-fill"></i>
                                         </a>
+                                        @endcan
+                                        @can('discounts-view')
                                         <a href="{{ route('vendor.discounts.show', $discount->id) }}" class="text-primary" data-bs-toggle="tooltip" title="{{ __('messages.view_details') }}">
                                             <i class="bi bi-eye-fill"></i>
                                         </a>
+                                        @endcan
                                     </div>
                                 </td>
                             </tr>

@@ -1,34 +1,34 @@
 @extends('admin.layouts.app')
 
-@section('title', __('messages.create_vendor'))
+@section('title', __('messages.create_customer'))
 
 @section('content')
     <div class="container">
 
         <!-- Breadcrumb -->
         <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-            <div class="breadcrumb-title pe-3">{{ __('messages.vendors') }}</div>
+            <div class="breadcrumb-title pe-3">{{ __('messages.customers') }}</div>
             <div class="ps-3">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{ url('/') }}"><i class="bx bx-home-alt"></i></a></li>
-                        <li class="breadcrumb-item active" aria-current="page">{{ __('messages.create_vendor') }}</li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ __('messages.create_customer') }}</li>
                     </ol>
                 </nav>
             </div>
             <div class="ms-auto">
-                <a href="{{ route('admin.vendors.index') }}" class="btn btn-secondary">{{ __('messages.back') }}</a>
+                <a href="{{ route('admin.customers.index') }}" class="btn btn-secondary">{{ __('messages.back') }}</a>
             </div>
         </div>
         <!-- End Breadcrumb -->
 
         <div class="row">
             <div class="col-xl-9 mx-auto">
-                <h6 class="mb-0 text-uppercase">{{ __('messages.create_vendor') }}</h6>
+                <h6 class="mb-0 text-uppercase">{{ __('messages.create_customer') }}</h6>
                 <hr />
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('admin.vendors.store') }}" method="POST">
+                        <form action="{{ route('admin.customers.store') }}" method="POST">
                             @csrf
 
                             <!-- Name -->
@@ -71,47 +71,9 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-1">
-                                <label for="role" class="form-label fw-bold">{{ __('messages.role') }}</label>
-                                <select class="form-select" id="role" name="role" required>
-                                    @foreach ($roles as $role)
-                                        <option value="{{ $role->name }}">{{ ucfirst($role->name) }}</option>
-                                    @endforeach
-                                </select>
-                                @error('role')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
 
-                            <!-- Email -->
-                            <div class="mb-1">
-                                <label for="email" class="form-label">{{ __('messages.email') }}</label>
-                                <input class="form-control" type="email" id="email" name="email"
-                                    placeholder="{{ __('messages.email') }}" required>
-                                @error('email')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
 
-                            <!-- Password -->
-                            <div class="mb-1">
-                                <label for="password" class="form-label">{{ __('messages.password') }}</label>
-                                <input class="form-control" type="password" id="password" name="password"
-                                    placeholder="{{ __('messages.password') }}" required>
-                                @error('password')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
 
-                            <!-- Confirm Password -->
-                            <div class="mb-1">
-                                <label for="password_confirmation" class="form-label">{{ __('messages.confirm_password') }}</label>
-                                <input class="form-control" type="password" id="password_confirmation" name="password_confirmation"
-                                    placeholder="{{ __('messages.confirm_password') }}" required>
-                                @error('password_confirmation')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
 
                             <!-- Address -->
                             <div class="mb-1">
@@ -183,14 +145,14 @@
 
                             
                             <div class="mb-1">
-                                <label for="notes" class="form-label">{{ __('messages.description') }}</label>
+                                <label for="notes" class="form-label">{{ __('messages.notes') }}</label>
                                 <textarea class="form-control" id="notes" name="notes" rows="4" required></textarea>
                                 @error('notes')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                             <!-- Submit Button -->
-                            <button type="submit" class="btn btn-primary mt-2">{{ __('messages.create_vendor') }}</button>
+                            <button type="submit" class="btn btn-primary mt-2">{{ __('messages.create_customer') }}</button>
                         </form>
                     </div>
                 </div>

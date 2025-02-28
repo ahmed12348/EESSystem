@@ -117,13 +117,13 @@
 
                             <div class="mb-3 d-none" id="zone_section">
                                 <label class="form-label"><i class="bi bi-shop"></i> Select Zone</label>
-                                <select name="zone_id" class="form-select select2">
+                                <select name="zone" class="form-select select2">
                                     <option value="">-- Select Zone --</option>
                                     <option value="zone_1">Zone 1</option>
                                     <option value="zone_2">Zone 2</option>
                                     <option value="zone_3">Zone 3</option>
                                 </select>
-                                @error('zone_id')
+                                @error('zone')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -152,7 +152,7 @@
 
                     // Hide and clear all fields
                     $('#product_section, #category_section, #vendor_section, #zone_section').addClass('d-none');
-                    $('select[name="product_id"], select[name="category_id"], select[name="vendor_id"], select[name="zone_id"]').val(null).trigger('change');
+                    $('select[name="product_id"], select[name="category_id"], select[name="vendor_id"], select[name="zone"]').val(null).trigger('change');
 
                     // Show the selected section
                     if (selectedType === 'product') {

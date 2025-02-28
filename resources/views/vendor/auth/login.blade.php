@@ -106,7 +106,7 @@
 
                   <!-- Forgot Password -->
                   <div class="mt-3">
-                    <a href="#" class="text-primary">Forgot Password?</a>
+                    {{-- <a href="#" class="text-primary">Forgot Password?</a> --}}
                   </div>
 
                   <!-- Don't have an account? -->
